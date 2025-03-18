@@ -111,8 +111,8 @@
             text-align: right;
         }
         .paragraph {
-            margin-bottom: 30px; /* Decent gap between paragraphs */
-            line-height: 1.5;
+            margin-bottom: 15px; /* Reduced gap between paragraphs */
+            line-height: 1.3; /* Reduced line height */
         }
         #hugeParagraph {
             display: none;
@@ -122,12 +122,14 @@
             transform: translate(-50%, -50%);
             width: 80%;
             max-width: 800px;
+            max-height: 80vh; /* Limit height and make it scrollable */
             font-size: 1.5em;
             text-align: center;
             padding: 20px;
             background-color: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
             animation: slideIn 1s ease-in-out;
+            overflow-y: auto; /* Make it scrollable */
         }
         #loveAnimation {
             display: none;
@@ -201,28 +203,19 @@
 <div id="smallParagraphs">
     <div class="left-paragraphs">
         <div class="paragraph">
-            <<p>Your laugh, your giggles, your goofyness, truely keeps me alive,
-                can't wait to hear to it non-stop in our house.
-             your smile is literalyy black magic the way it made me 
-                fall in love with you.. ma favourite witch</ </p>
+            <p>Your laugh, your giggles, your goofyness, truly keeps me alive, can't wait to hear it non-stop in our house. Your smile is literally black magic the way it made me fall in love with you... ma favourite witch.</p>
         </div>
         <div class="paragraph">
-            <p>i don't know what i would do without yo magic in ma boring a** life..
-                life without you is like a book with blank pages..useless
-            I pray for us and your success everydayy jaana......ILubu infinite times .</p>
+            <p>I don't know what I would do without your magic in ma boring a** life. Life without you is like a book with blank pages... useless. I pray for us and your success every day, Jaana... ILubu infinite times.</p>
+        </div>
     </div>
     <div class="right-paragraphs">
         <div class="paragraph">
-            <p>Every moment with you feels like a dream, a dream I never want to wake up from.
-            you can't imagine how many dreams i have gotten of us being together.. it is crazy!!
-                enjoyy your birthday one day you'll enjoy it with me too ameen</p>
+            <p>Every moment with you feels like a dream, a dream I never want to wake up from. You can't imagine how many dreams I've had of us being together... it is crazy!! Enjoy your birthday; one day you'll enjoy it with me too, ameen.</p>
         </div>
         <div class="paragraph">
-            <p>When writing this the bake sale memory was playing in ma head constantly,what a day that was muwaaa!!
-            all though ma heart was racing and itni sharam arahi thi but still once in a life time moment tha!!</p>
-            </p>Jaan i really really really hope that our duaa get accepted and we live a very happy, romantic, funny, supportive life
-        HAPPYYYY BIRTHDAY MY CHEESECAKE FROM YOUR SUNSHINE, HUSBANDO, LOVE, BONGA, manhoos, beghairat.... CHANDAA💗</p>
-
+            <p>When writing this, the bake sale memory was playing in ma head constantly. What a day that was, muwaaa!! Although ma heart was racing and itni sharam arahi thi, but still, it was a once-in-a-lifetime moment!!</p>
+            <p>Jaan, I really really really hope that our duaa gets accepted and we live a very happy, romantic, funny, supportive life. HAPPY BIRTHDAY MY CHEESECAKE FROM YOUR SUNSHINE, HUSBANDO, LOVE, BONGA, manhoos, beghairat.... CHANDAA💗</p>
         </div>
     </div>
     <button class="button" onclick="showHugeParagraph()">Next</button>
@@ -230,7 +223,7 @@
 
 <!-- Huge Paragraph Section -->
 <div id="hugeParagraph">
-    <p>MY Love i truly pray for your successful future with ME and i hope you achieve everythink you want in life which is benefical for you..Hamesha khush rahena jaan your happiness decides my mood too.. I love everything about you, your personality, your apperance, your mindset, your morals and ethics.. literally evrything I love how you motivates me to work more harder even when i am not talking to you and all alone..thankk youu seriously serious for being  in ma live..In Sha Allah our future will be together (ameen)i love you MWAAAAAAAAAAA. I CAN'T WAIT TO HAVE YOU NEXT TO ME..may our duaas get accepted indeed Allah never disappoints His belivers but for now... Happy birthday kucchuuu, You are my everything, my princess, my jaan, my darling, my sweetheart, my cheesecake my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, Jaana (i tried ma best to make it look the best but still it isn't perfect soorryyy) ❤️</p>
+    <p>MY Love, I truly pray for your successful future with ME, and I hope you achieve everything you want in life which is beneficial for you. Hamesha khush rahena jaan; your happiness decides my mood too. I love everything about you, your personality, your appearance, your mindset, your morals and ethics... literally everything. I love how you motivate me to work harder even when I am not talking to you and all alone. Thank you, seriously, for being in ma life. In Sha Allah, our future will be together (ameen). I love you MWAAAAAAAAAAA. I CAN'T WAIT TO HAVE YOU NEXT TO ME. May our duaas get accepted indeed; Allah never disappoints His believers. But for now... Happy birthday kucchuuu. You are my everything, my princess, my jaan, my darling, my sweetheart, my cheesecake, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, Jaana (I tried ma best to make it look the best, but still, it isn't perfect, sorryyy) ❤️</p>
     <button class="button" onclick="showLoveAnimation()">Next</button>
 </div>
 
