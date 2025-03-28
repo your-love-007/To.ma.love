@@ -75,15 +75,21 @@
             opacity: 0;
             z-index: 5;
             will-change: transform;
-            animation: floatUp 15s linear forwards;
+            animation: floatUp 12s linear forwards;
         }
         @keyframes floatUp {
             0% { 
                 transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            80% {
                 opacity: 1;
             }
             100% { 
-                transform: translateY(-100px) translateX(0);
+                transform: translateY(10vh) translateX(0);
                 opacity: 0;
             }
         }
@@ -317,7 +323,7 @@
         "You make my heart smile..."
     ];
 
-    const nicknames = ["Princess", "Jaan", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
+    const nicknames = ["Princess", "Jaan","Cheesecake", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
     let loveIndex = 0;
     let nicknameInterval;
 
@@ -366,31 +372,13 @@
     function startCelebration() {
         const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
         
-        // Create nicknames continuously
-        function createNickname() {
-            const nickname = document.createElement('div');
-            nickname.className = 'nickname';
-            nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
-            nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
-            nickname.style.left = `${Math.random() * 80 + 10}%`;
-            nickname.style.opacity = '1';
-            nickname.style.animationDuration = `${Math.random() * 10 + 10}s`; // 10-20 seconds
-            
-            document.getElementById('celebration').appendChild(nickname);
-            
-            // Remove after animation completes
-            setTimeout(() => {
-                nickname.remove();
-            }, 20000);
-        }
-        
-        // Create initial batch
+        // Create initial batch of nicknames
         for (let i = 0; i < 30; i++) {
-            setTimeout(createNickname, i * 300);
+            setTimeout(() => createNickname(), i * 400); // Increased delay between nicknames
         }
         
-        // Keep creating new ones
-        nicknameInterval = setInterval(createNickname, 500);
+        // Keep creating new nicknames continuously
+        nicknameInterval = setInterval(createNickname, 400); // Increased interval
         
         // Add Next button
         const nextBtn = document.createElement('button');
@@ -405,6 +393,24 @@
             proceedToBirthdayMessage();
         };
         document.getElementById('celebration').appendChild(nextBtn);
+    }
+
+    function createNickname() {
+        const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
+        const nickname = document.createElement('div');
+        nickname.className = 'nickname';
+        nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
+        nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
+        nickname.style.left = `${Math.random() * 80 + 10}%`;
+        nickname.style.opacity = '0';
+        nickname.style.animationDuration = `${Math.random() * 3 + 10}s`; // 10-13 seconds
+        
+        document.getElementById('celebration').appendChild(nickname);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+            nickname.remove();
+        }, 13000);
     }
 
     function proceedToBirthdayMessage() {
