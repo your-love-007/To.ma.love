@@ -198,6 +198,7 @@
             100% { opacity: 1; }
         }
         #nextButton {
+            display: none;
             position: fixed;
             bottom: 30px;
             right: 30px;
@@ -241,7 +242,6 @@
 <div id="celebration">
     <h1>Just to remind you what I'll call you after our marriage irl</h1>
     <div id="confetti"></div>
-    <button class="button" id="celebrationNextBtn" onclick="proceedToBirthdayMessage()">Next</button>
 </div>
 
 <div id="birthdayMessage"></div>
@@ -312,7 +312,7 @@
         "You make my heart smile..."
     ];
 
-    const nicknames = ["Princess", "Jaan", "cheesecake", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
+    const nicknames = ["Princess", "Jaan", "Cheesecake", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
     let loveIndex = 0;
 
     // Add Balloons
@@ -361,16 +361,62 @@
         const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
         
         // Create nicknames with better distribution
-        for (let i = 0; i < 80; i++) {
+        const nicknameCount = 50;
+        const minDistance = 100; // Minimum distance between nicknames
+        
+        for (let i = 0; i < nicknameCount; i++) {
             const nickname = document.createElement('div');
             nickname.className = 'nickname';
             nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
             nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
-            nickname.style.left = `${Math.random() * 100}%`;
-            nickname.style.animationDuration = `${Math.random() * 15 + 10}s`; // Slower animation
-            nickname.style.animationDelay = `${Math.random() * 5}s`; // Staggered start
+            
+            // Position nicknames with minimum distance
+            let leftPos, topPos;
+            let validPosition = false;
+            let attempts = 0;
+            
+            while (!validPosition && attempts < 20) {
+                leftPos = Math.random() * 80 + 10; // 10-90%
+                topPos = Math.random() * 80 + 10; // 10-90%
+                validPosition = true;
+                
+                // Check distance from existing nicknames
+                const existingNicknames = document.querySelectorAll('.nickname');
+                for (const existing of existingNicknames) {
+                    const rect = existing.getBoundingClientRect();
+                    const existingLeft = parseFloat(existing.style.left);
+                    const existingTop = parseFloat(existing.style.top);
+                    
+                    const distance = Math.sqrt(
+                        Math.pow(leftPos - existingLeft, 2) + 
+                        Math.pow(topPos - existingTop, 2)
+                    );
+                    
+                    if (distance < minDistance) {
+                        validPosition = false;
+                        break;
+                    }
+                }
+                attempts++;
+            }
+            
+            nickname.style.left = `${leftPos}%`;
+            nickname.style.top = `${topPos}%`;
+            nickname.style.animationDuration = `${Math.random() * 15 + 10}s`;
+            nickname.style.animationDelay = `${Math.random() * 2}s`;
             document.getElementById('celebration').appendChild(nickname);
         }
+        
+        // Add Next button after nicknames are created
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'button';
+        nextBtn.textContent = 'Next';
+        nextBtn.style.position = 'fixed';
+        nextBtn.style.bottom = '30px';
+        nextBtn.style.right = '30px';
+        nextBtn.style.zIndex = '100';
+        nextBtn.onclick = proceedToBirthdayMessage;
+        document.getElementById('celebration').appendChild(nextBtn);
     }
 
     function proceedToBirthdayMessage() {
