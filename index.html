@@ -74,9 +74,9 @@
             text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
             z-index: 5;
             will-change: transform;
-            animation: floatUp 7s ease-in forwards;
+            animation: floatUp 8s ease-in forwards;
+            left: var(--nickname-left);
             bottom: 0;
-            left: calc(10% + (80% * var(--random-pos)));
             opacity: 0;
         }
         @keyframes floatUp {
@@ -91,7 +91,7 @@
                 opacity: 1;
             }
             100% {
-                transform: translateY(-80vh);
+                transform: translateY(-70vh);
                 opacity: 0;
             }
         }
@@ -372,13 +372,15 @@
     }
 
     function startCelebration() {
-        // Create initial batch of nicknames
-        for (let i = 0; i < 30; i++) {
-            setTimeout(() => createNickname(), i * 300);
+        // Create initial batch of nicknames - evenly distributed
+        for (let i = 0; i < 50; i++) {
+            setTimeout(() => {
+                createNickname();
+            }, i * 200);
         }
         
         // Keep creating new nicknames continuously
-        nicknameInterval = setInterval(createNickname, 300);
+        nicknameInterval = setInterval(createNickname, 200);
         
         // Add Next button
         const nextBtn = document.createElement('button');
@@ -401,14 +403,31 @@
         nickname.className = 'nickname';
         nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
         nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
-        nickname.style.setProperty('--random-pos', Math.random());
+        
+        // Distribute evenly across the screen
+        const section = Math.floor(Math.random() * 5); // 0-4
+        if (section === 0) {
+            nickname.style.setProperty('--nickname-left', `${Math.random() * 20}%`); // Far left
+        } else if (section === 1) {
+            nickname.style.setProperty('--nickname-left', `${Math.random() * 20 + 20}%`); // Left-center
+        } else if (section === 2) {
+            nickname.style.setProperty('--nickname-left', `${Math.random() * 20 + 40}%`); // Center
+        } else if (section === 3) {
+            nickname.style.setProperty('--nickname-left', `${Math.random() * 20 + 60}%`); // Right-center
+        } else {
+            nickname.style.setProperty('--nickname-left', `${Math.random() * 20 + 80}%`); // Far right
+        }
+        
+        // Random speed variation
+        const duration = Math.random() * 2 + 6; // 6-8 seconds
+        nickname.style.animationDuration = `${duration}s`;
         
         document.getElementById('celebration').appendChild(nickname);
         
         // Remove after animation completes
         setTimeout(() => {
             nickname.remove();
-        }, 7000);
+        }, duration * 1000);
     }
 
     function proceedToBirthdayMessage() {
