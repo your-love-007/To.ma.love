@@ -67,15 +67,14 @@
             100% { transform: translate(-50%, -50%); }
         }
         .nickname {
-            position: absolute;
+            position: fixed;
             font-size: 2.5em;
             font-weight: bold;
             color: #d81b60;
             text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
             z-index: 5;
-            will-change: transform;
-            animation: floatUp 8s ease-in forwards;
-            left: var(--nickname-left);
+            animation: floatUp 7s ease-in forwards;
+            left: calc(10% + (80% * var(--random-pos)));
             bottom: 0;
             opacity: 0;
         }
@@ -373,12 +372,12 @@
 
     function startCelebration() {
         // Create initial batch of nicknames
-        for (let i = 0; i < 50; i++) {
-            setTimeout(() => createNickname(), i * 200);
+        for (let i = 0; i < 30; i++) {
+            setTimeout(() => createNickname(), i * 300);
         }
         
         // Keep creating new nicknames continuously
-        nicknameInterval = setInterval(createNickname, 200);
+        nicknameInterval = setInterval(createNickname, 300);
         
         // Add Next button
         const nextBtn = document.createElement('button');
@@ -401,16 +400,14 @@
         nickname.className = 'nickname';
         nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
         nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
-        
-        // Position randomly across the screen
-        nickname.style.setProperty('--nickname-left', `${Math.random() * 80 + 10}%`);
+        nickname.style.setProperty('--random-pos', Math.random());
         
         document.getElementById('celebration').appendChild(nickname);
         
         // Remove after animation completes
         setTimeout(() => {
             nickname.remove();
-        }, 8000);
+        }, 7000);
     }
 
     function proceedToBirthdayMessage() {
