@@ -75,6 +75,17 @@
             opacity: 0;
             z-index: 5;
             will-change: transform;
+            animation: floatUp 15s linear forwards;
+        }
+        @keyframes floatUp {
+            0% { 
+                transform: translateY(100vh) translateX(0);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(-100px) translateX(0);
+                opacity: 0;
+            }
         }
         #finalMessage {
             display: none;
@@ -306,7 +317,7 @@
         "You make my heart smile..."
     ];
 
-    const nicknames = ["Princess", "Jaan","Cheesecake", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
+    const nicknames = ["Princess", "Jaan", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
     let loveIndex = 0;
     let nicknameInterval;
 
@@ -355,13 +366,31 @@
     function startCelebration() {
         const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
         
-        // Create initial batch of nicknames
-        createNicknames(100);
+        // Create nicknames continuously
+        function createNickname() {
+            const nickname = document.createElement('div');
+            nickname.className = 'nickname';
+            nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
+            nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
+            nickname.style.left = `${Math.random() * 80 + 10}%`;
+            nickname.style.opacity = '1';
+            nickname.style.animationDuration = `${Math.random() * 10 + 10}s`; // 10-20 seconds
+            
+            document.getElementById('celebration').appendChild(nickname);
+            
+            // Remove after animation completes
+            setTimeout(() => {
+                nickname.remove();
+            }, 20000);
+        }
         
-        // Keep creating new nicknames continuously
-        nicknameInterval = setInterval(() => {
-            createNicknames(20);
-        }, 2000);
+        // Create initial batch
+        for (let i = 0; i < 30; i++) {
+            setTimeout(createNickname, i * 300);
+        }
+        
+        // Keep creating new ones
+        nicknameInterval = setInterval(createNickname, 500);
         
         // Add Next button
         const nextBtn = document.createElement('button');
@@ -376,58 +405,6 @@
             proceedToBirthdayMessage();
         };
         document.getElementById('celebration').appendChild(nextBtn);
-    }
-
-    function createNicknames(count) {
-        const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
-        
-        for (let i = 0; i < count; i++) {
-            setTimeout(() => {
-                const nickname = document.createElement('div');
-                nickname.className = 'nickname';
-                nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
-                nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
-                nickname.style.fontSize = `${Math.random() * 1 + 2}em`; // Random size between 2-3em
-                
-                // Start at bottom of screen
-                nickname.style.left = `${Math.random() * 80 + 10}%`;
-                nickname.style.top = '100%';
-                nickname.style.opacity = '1';
-                
-                document.getElementById('celebration').appendChild(nickname);
-                
-                // Animate upwards slowly
-                const duration = Math.random() * 10000 + 10000; // 10-20 seconds
-                const endTop = -50;
-                
-                const startTime = performance.now();
-                
-                function animateNickname(currentTime) {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    
-                    // Move upwards with easing
-                    const currentTop = 100 - (progress * 150); // Moves from 100% to -50%
-                    
-                    // Slight horizontal movement
-                    const currentLeft = 10 + (Math.sin(progress * Math.PI * 2) * 5) + (Math.random() * 70);
-                    
-                    nickname.style.top = `${currentTop}%`;
-                    nickname.style.left = `${currentLeft}%`;
-                    
-                    // Fade out as it reaches top
-                    nickname.style.opacity = `${1 - (progress * 0.8)}`;
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(animateNickname);
-                    } else {
-                        nickname.remove();
-                    }
-                }
-                
-                requestAnimationFrame(animateNickname);
-            }, Math.random() * 1000);
-        }
     }
 
     function proceedToBirthdayMessage() {
