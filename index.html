@@ -73,14 +73,8 @@
             color: #d81b60;
             text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
             opacity: 0;
-            animation: floatNickname 25s linear forwards;
             z-index: 5;
-        }
-        @keyframes floatNickname {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+            will-change: transform;
         }
         #finalMessage {
             display: none;
@@ -312,7 +306,7 @@
         "You make my heart smile..."
     ];
 
-    const nicknames = ["Princess", "Jaan", "Cheesecake", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
+    const nicknames = ["Princess", "Jaan", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
     let loveIndex = 0;
 
     // Add Balloons
@@ -359,55 +353,67 @@
 
     function startCelebration() {
         const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
-        
-        // Create nicknames with better distribution
         const nicknameCount = 50;
-        const minDistance = 100; // Minimum distance between nicknames
+        const minDistance = 100;
         
+        // Create nicknames with physics-based movement
         for (let i = 0; i < nicknameCount; i++) {
             const nickname = document.createElement('div');
             nickname.className = 'nickname';
             nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
             nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
             
-            // Position nicknames with minimum distance
-            let leftPos, topPos;
-            let validPosition = false;
-            let attempts = 0;
-            
-            while (!validPosition && attempts < 20) {
-                leftPos = Math.random() * 80 + 10; // 10-90%
-                topPos = Math.random() * 80 + 10; // 10-90%
-                validPosition = true;
-                
-                // Check distance from existing nicknames
-                const existingNicknames = document.querySelectorAll('.nickname');
-                for (const existing of existingNicknames) {
-                    const rect = existing.getBoundingClientRect();
-                    const existingLeft = parseFloat(existing.style.left);
-                    const existingTop = parseFloat(existing.style.top);
-                    
-                    const distance = Math.sqrt(
-                        Math.pow(leftPos - existingLeft, 2) + 
-                        Math.pow(topPos - existingTop, 2)
-                    );
-                    
-                    if (distance < minDistance) {
-                        validPosition = false;
-                        break;
-                    }
-                }
-                attempts++;
-            }
-            
+            // Initial random position
+            let leftPos = Math.random() * 80 + 10;
+            let topPos = 100; // Start below screen
             nickname.style.left = `${leftPos}%`;
             nickname.style.top = `${topPos}%`;
-            nickname.style.animationDuration = `${Math.random() * 15 + 10}s`;
-            nickname.style.animationDelay = `${Math.random() * 2}s`;
+            nickname.style.opacity = '1';
+            
+            // Physics properties
+            nickname.velocityY = -((Math.random() * 2) + 1); // Upward speed
+            nickname.velocityX = (Math.random() * 4) - 2; // Random horizontal movement
+            nickname.repelForce = 0.5; // Force when hitting edges
+            
             document.getElementById('celebration').appendChild(nickname);
+            
+            // Animate using requestAnimationFrame for smoother physics
+            function animateNickname() {
+                // Update position
+                leftPos += nickname.velocityX;
+                topPos += nickname.velocityY;
+                
+                // Edge collision detection
+                if (leftPos < 5) {
+                    leftPos = 5;
+                    nickname.velocityX *= -nickname.repelForce;
+                } else if (leftPos > 95) {
+                    leftPos = 95;
+                    nickname.velocityX *= -nickname.repelForce;
+                }
+                
+                // Apply slight gravity
+                nickname.velocityY += 0.02;
+                
+                // Update position
+                nickname.style.left = `${leftPos}%`;
+                nickname.style.top = `${topPos}%`;
+                
+                // Continue animation if still on screen
+                if (topPos > -10) {
+                    requestAnimationFrame(animateNickname);
+                } else {
+                    nickname.remove();
+                }
+            }
+            
+            // Start animation after random delay
+            setTimeout(() => {
+                requestAnimationFrame(animateNickname);
+            }, Math.random() * 2000);
         }
         
-        // Add Next button after nicknames are created
+        // Add Next button
         const nextBtn = document.createElement('button');
         nextBtn.className = 'button';
         nextBtn.textContent = 'Next';
