@@ -73,7 +73,7 @@
             color: #d81b60;
             text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
             opacity: 0;
-            animation: floatNickname 8s linear forwards;
+            animation: floatNickname 25s linear forwards;
             z-index: 5;
         }
         @keyframes floatNickname {
@@ -198,7 +198,6 @@
             100% { opacity: 1; }
         }
         #nextButton {
-            display: none;
             position: fixed;
             bottom: 30px;
             right: 30px;
@@ -230,7 +229,6 @@
 </head>
 <body>
 
-<!-- Your original elements -->
 <div id="bulbs"></div>
 <div id="balloons"></div>
 
@@ -241,8 +239,9 @@
 </div>
 
 <div id="celebration">
-    <h1>You're ma...</h1>
+    <h1>Just to remind you what I'll call you after our marriage irl</h1>
     <div id="confetti"></div>
+    <button class="button" id="celebrationNextBtn" onclick="proceedToBirthdayMessage()">Next</button>
 </div>
 
 <div id="birthdayMessage"></div>
@@ -278,30 +277,28 @@
     I LOVE YOUUU JAAAAAAAAAN 💗💝💓💖💞💕💖💓💗💝😙
 </div>
 
-<!-- New elements -->
 <button id="nextButton" class="button" onclick="showFinalSection()">Next</button>
 
 <div id="finalSection">
     <div class="para-box">
-        <h2 style="color:#d81b60;">Our First Meeting</h2>
-        <p>Remember when we first met? That instant connection we felt was something magical. Your smile lit up the room, and I knew right then you were someone special. Those early days of getting to know you remain some of my most cherished memories.</p>
+        <h2 style="color:#d81b60;">Our Special Connection</h2>
+        <p>From our very first conversation, I felt a connection with you that I've never felt with anyone else. Your energy, your spirit, and the way you see the world make every moment with you feel magical and unique.</p>
     </div>
     <div class="para-box">
-        <h2 style="color:#d81b60;">Your Beautiful Heart</h2>
-        <p>What I love most about you isn't just your gorgeous smile, but the kindness in your heart. The way you care for others, your compassion, and your strength inspire me every day. You make the world a better place just by being in it.</p>
+        <h2 style="color:#d81b60;">Your Beautiful Qualities</h2>
+        <p>What makes you so special isn't just your beautiful smile, but your kind heart, your brilliant mind, and your incredible strength. The way you face challenges with grace and determination inspires me every single day.</p>
     </div>
     <div class="para-box">
-        <h2 style="color:#d81b60;">Our Journey Together</h2>
-        <p>Every challenge we've faced has only brought us closer. Through ups and downs, your love has been my constant. The way you understand me without words, the comfort of your presence - these are the treasures I cherish most.</p>
+        <h2 style="color:#d81b60;">Our Shared Memories</h2>
+        <p>Every memory we've created together, from the silly moments to the deep conversations, has become a treasure I hold close to my heart. These experiences have built the foundation of our unbreakable bond.</p>
     </div>
     <div class="para-box">
-        <h2 style="color:#d81b60;">Our Bright Future</h2>
-        <p>I dream of our future together - building a home filled with love and laughter, supporting each other's dreams, and growing old together. With you by my side, I know every day will be an adventure worth cherishing.</p>
+        <h2 style="color:#d81b60;">Our Future Together</h2>
+        <p>I dream of our future - building a life together filled with love, laughter, and mutual growth. With you by my side, I know every challenge will be easier and every joy will be multiplied. You're my partner in every sense of the word.</p>
     </div>
 </div>
 
 <script>
-    // Your original JavaScript with fixes
     const loveStatements = [
         "Are you sure?",
         "Think about it...",
@@ -315,7 +312,7 @@
         "You make my heart smile..."
     ];
 
-    const nicknames = ["Princess", "Jaan", "Cheesecake", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
+    const nicknames = ["Princess", "Jaan", "cheesecake", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
     let loveIndex = 0;
 
     // Add Balloons
@@ -363,29 +360,27 @@
     function startCelebration() {
         const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
         
-        // Create 80 nicknames with better distribution
+        // Create nicknames with better distribution
         for (let i = 0; i < 80; i++) {
-            setTimeout(() => {
-                const nickname = document.createElement('div');
-                nickname.className = 'nickname';
-                nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
-                nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
-                nickname.style.left = `${Math.random() * 100}%`;
-                nickname.style.animationDuration = `${Math.random() * 8 + 6}s`;
-                nickname.style.animationDelay = `${Math.random() * 2}s`;
-                document.getElementById('celebration').appendChild(nickname);
-            }, i * 200);
+            const nickname = document.createElement('div');
+            nickname.className = 'nickname';
+            nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
+            nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
+            nickname.style.left = `${Math.random() * 100}%`;
+            nickname.style.animationDuration = `${Math.random() * 15 + 10}s`; // Slower animation
+            nickname.style.animationDelay = `${Math.random() * 5}s`; // Staggered start
+            document.getElementById('celebration').appendChild(nickname);
         }
+    }
 
-        setTimeout(() => {
-            document.getElementById('celebration').style.display = 'none';
-            document.getElementById('birthdayMessage').style.display = 'block';
-            document.getElementById('birthdayMessage').innerHTML = `
-                <h1>Happy Birthday, My Love! 🎂</h1>
-                <p>You are my everything, my princess, my cheesecake, my jaan, my darling, my sweetheart, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, my love!</p>
-                <button class="button" onclick="showSmallParagraphs()">Next</button>
-            `;
-        }, 8000);
+    function proceedToBirthdayMessage() {
+        document.getElementById('celebration').style.display = 'none';
+        document.getElementById('birthdayMessage').style.display = 'block';
+        document.getElementById('birthdayMessage').innerHTML = `
+            <h1>Happy Birthday, My Love! 🎂</h1>
+            <p>You are my everything, my princess, my cheesecake, my jaan, my darling, my sweetheart, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, my love!</p>
+            <button class="button" onclick="showSmallParagraphs()">Next</button>
+        `;
     }
 
     function showSmallParagraphs() {
