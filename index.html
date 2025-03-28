@@ -306,8 +306,9 @@
         "You make my heart smile..."
     ];
 
-    const nicknames = ["Princess", "Jaan", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
+    const nicknames = ["Princess", "Jaan","Cheesecake", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
     let loveIndex = 0;
+    let nicknameInterval;
 
     // Add Balloons
     const balloonColors = ["#ff66b3", "#ffcc00", "#66ccff", "#ff6666", "#cc66ff"];
@@ -353,65 +354,14 @@
 
     function startCelebration() {
         const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
-        const nicknameCount = 50;
-        const minDistance = 100;
         
-        // Create nicknames with physics-based movement
-        for (let i = 0; i < nicknameCount; i++) {
-            const nickname = document.createElement('div');
-            nickname.className = 'nickname';
-            nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
-            nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
-            
-            // Initial random position
-            let leftPos = Math.random() * 80 + 10;
-            let topPos = 100; // Start below screen
-            nickname.style.left = `${leftPos}%`;
-            nickname.style.top = `${topPos}%`;
-            nickname.style.opacity = '1';
-            
-            // Physics properties
-            nickname.velocityY = -((Math.random() * 2) + 1); // Upward speed
-            nickname.velocityX = (Math.random() * 4) - 2; // Random horizontal movement
-            nickname.repelForce = 0.5; // Force when hitting edges
-            
-            document.getElementById('celebration').appendChild(nickname);
-            
-            // Animate using requestAnimationFrame for smoother physics
-            function animateNickname() {
-                // Update position
-                leftPos += nickname.velocityX;
-                topPos += nickname.velocityY;
-                
-                // Edge collision detection
-                if (leftPos < 5) {
-                    leftPos = 5;
-                    nickname.velocityX *= -nickname.repelForce;
-                } else if (leftPos > 95) {
-                    leftPos = 95;
-                    nickname.velocityX *= -nickname.repelForce;
-                }
-                
-                // Apply slight gravity
-                nickname.velocityY += 0.02;
-                
-                // Update position
-                nickname.style.left = `${leftPos}%`;
-                nickname.style.top = `${topPos}%`;
-                
-                // Continue animation if still on screen
-                if (topPos > -10) {
-                    requestAnimationFrame(animateNickname);
-                } else {
-                    nickname.remove();
-                }
-            }
-            
-            // Start animation after random delay
-            setTimeout(() => {
-                requestAnimationFrame(animateNickname);
-            }, Math.random() * 2000);
-        }
+        // Create initial batch of nicknames
+        createNicknames(100);
+        
+        // Keep creating new nicknames continuously
+        nicknameInterval = setInterval(() => {
+            createNicknames(20);
+        }, 2000);
         
         // Add Next button
         const nextBtn = document.createElement('button');
@@ -421,8 +371,63 @@
         nextBtn.style.bottom = '30px';
         nextBtn.style.right = '30px';
         nextBtn.style.zIndex = '100';
-        nextBtn.onclick = proceedToBirthdayMessage;
+        nextBtn.onclick = function() {
+            clearInterval(nicknameInterval);
+            proceedToBirthdayMessage();
+        };
         document.getElementById('celebration').appendChild(nextBtn);
+    }
+
+    function createNicknames(count) {
+        const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
+        
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                const nickname = document.createElement('div');
+                nickname.className = 'nickname';
+                nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
+                nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
+                nickname.style.fontSize = `${Math.random() * 1 + 2}em`; // Random size between 2-3em
+                
+                // Start at bottom of screen
+                nickname.style.left = `${Math.random() * 80 + 10}%`;
+                nickname.style.top = '100%';
+                nickname.style.opacity = '1';
+                
+                document.getElementById('celebration').appendChild(nickname);
+                
+                // Animate upwards slowly
+                const duration = Math.random() * 10000 + 10000; // 10-20 seconds
+                const endTop = -50;
+                
+                const startTime = performance.now();
+                
+                function animateNickname(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // Move upwards with easing
+                    const currentTop = 100 - (progress * 150); // Moves from 100% to -50%
+                    
+                    // Slight horizontal movement
+                    const currentLeft = 10 + (Math.sin(progress * Math.PI * 2) * 5) + (Math.random() * 70);
+                    
+                    nickname.style.top = `${currentTop}%`;
+                    nickname.style.left = `${currentLeft}%`;
+                    
+                    // Fade out as it reaches top
+                    nickname.style.opacity = `${1 - (progress * 0.8)}`;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(animateNickname);
+                    } else {
+                        nickname.remove();
+                    }
+                }
+                
+                requestAnimationFrame(animateNickname);
+            }, Math.random() * 1000);
+        }
     }
 
     function proceedToBirthdayMessage() {
