@@ -14,7 +14,6 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            /* Romantic screen border */
             border: 15px solid transparent;
             border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%23ff66b3" stroke-width="5" stroke-dasharray="5,5"/><path d="M20,20 Q30,10 40,20 T60,20 T80,20" fill="none" stroke="%23ff1493" stroke-width="2"/><circle cx="15" cy="15" r="3" fill="%23ff66b3"/><circle cx="85" cy="15" r="3" fill="%23ff66b3"/><circle cx="15" cy="85" r="3" fill="%23ff66b3"/><circle cx="85" cy="85" r="3" fill="%23ff66b3"/></svg>') 30 round;
             box-sizing: border-box;
@@ -406,8 +405,8 @@
 
 <div id="question">
     <p>Do you love me?</p>
-    <button class="button" id="yesButton" onclick="handleResponse('yes')">Yes</button>
-    <button class="button" id="noButton" onclick="handleResponse('no')">No</button>
+    <button class="button" id="yesButton">Yes</button>
+    <button class="button" id="noButton">No</button>
 </div>
 
 <div id="nickname-container"></div>
@@ -433,19 +432,19 @@
             <p>Jaan, I really really really hope that our duaa gets accepted and we live a very happy, romantic, funny, supportive life. HAPPY BIRTHDAY MY CHEESECAKE FROM YOUR SUNSHINE, HUSBANDO, LOVE, BONGA, manhoos, beghairat.... CHANDAA💗</p>
         </div>
     </div>
-    <button class="button" onclick="showHugeParagraph()">Next</button>
+    <button class="button" id="nextButton1">Next</button>
 </div>
 
 <div id="hugeParagraph">
     <p>MY Love, I truly pray for your successful future with ME, and I hope you achieve everything you want in life which is beneficial for you. Hamesha khush rahena jaan; your happiness decides my mood too. I love everything about you, your personality, your appearance, your mindset, your morals and ethics... literally everything. I love how you motivate me to work harder even when I am not talking to you and all alone. Thank you, seriously, for being in ma life. In Sha Allah, our future will be together (ameen). I love you MWAAAAAAAAAAA. I CAN'T WAIT TO HAVE YOU NEXT TO ME. May our duaas get accepted indeed; Allah never disappoints His believers. But for now... Happy birthday kucchuuu. You are my everything, my princess, my jaan, my darling, my sweetheart, my cheesecake, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, Jaana (I tried ma best to make it look the best, but still, it isn't perfect, sorryyy) ❤️</p>
-    <button class="button" onclick="showLoveAnimation()">Next</button>
+    <button class="button" id="nextButton2">Next</button>
 </div>
 
 <div id="loveAnimation">
     I LOVE YOUUU JAAAAAAAAAN 💗💝💓💖💞💕💖💓💗💝😙
 </div>
 
-<button id="nextButton" class="button" onclick="showFinalSection()">Next</button>
+<button id="nextButton3" class="button">Next</button>
 
 <div id="finalSection">
     <div class="para-box">
@@ -492,13 +491,19 @@
     let loveIndex = 0;
     let nicknameInterval;
 
+    // Initialize all elements
+    function init() {
+        createDecorations();
+        setupEventListeners();
+    }
+
     // Create decorative elements
     function createDecorations() {
         const balloonColors = ["#ff66b3", "#ffcc00", "#66ccff", "#ff6666", "#cc66ff"];
         const bulbColors = ["#ff6666", "#66ff66", "#6666ff", "#ffcc00", "#cc66ff"];
         const confettiColors = ["#ff66b3", "#ff1493", "#66ccff", "#ffcc00", "#ff6666"];
         
-        // Create balloons (more balloons)
+        // Create balloons
         for (let i = 0; i < 30; i++) {
             setTimeout(() => {
                 const balloon = document.createElement('div');
@@ -511,7 +516,7 @@
             }, i * 300);
         }
         
-        // Create bulbs (more bulbs)
+        // Create bulbs
         for (let i = 0; i < 30; i++) {
             const bulb = document.createElement('div');
             bulb.className = 'bulb';
@@ -523,7 +528,7 @@
             document.getElementById('bulbs').appendChild(bulb);
         }
         
-        // Create confetti (more colorful)
+        // Create confetti
         for (let i = 0; i < 80; i++) {
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
@@ -561,19 +566,36 @@
         }
     }
 
-    window.onload = createDecorations;
+    // Setup all event listeners
+    function setupEventListeners() {
+        document.getElementById('yesButton').addEventListener('click', function() {
+            handleResponse('yes');
+        });
+        
+        document.getElementById('noButton').addEventListener('click', function() {
+            handleResponse('no');
+        });
+        
+        document.getElementById('nextButton1').addEventListener('click', showHugeParagraph);
+        document.getElementById('nextButton2').addEventListener('click', showLoveAnimation);
+        document.getElementById('nextButton3').addEventListener('click', showFinalSection);
+    }
 
     function handleResponse(response) {
         if (response === 'no') {
             if (loveIndex < loveStatements.length) {
                 document.getElementById('question').innerHTML = `<p>${loveStatements[loveIndex]}</p>
-                    <button class="button" id="yesButton" onclick="handleResponse('yes')">Yes</button>
-                    <button class="button" id="noButton" onclick="handleResponse('no')">No</button>`;
+                    <button class="button" id="yesButton">Yes</button>
+                    <button class="button" id="noButton">No</button>`;
                 loveIndex++;
+                // Reattach event listeners to new buttons
+                setupEventListeners();
             } else {
                 document.getElementById('question').innerHTML = `<p>Are you really sure?</p>
-                    <button class="button" id="yesButton" onclick="handleResponse('yes')">Yes</button>
-                    <button class="button" id="noButton" onclick="handleResponse('no')">No</button>`;
+                    <button class="button" id="yesButton">Yes</button>
+                    <button class="button" id="noButton">No</button>`;
+                // Reattach event listeners to new buttons
+                setupEventListeners();
             }
         } else if (response === 'yes') {
             document.getElementById('question').style.display = 'none';
@@ -618,8 +640,9 @@
         document.getElementById('birthdayMessage').innerHTML = `
             <h1>Happy Birthday, My Love! 🎂</h1>
             <p>You are my everything, my princess, my cheesecake, my jaan, my darling, my sweetheart, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, my love!</p>
-            <button class="button" onclick="showSmallParagraphs()">Next</button>
+            <button class="button" id="nextButton0">Next</button>
         `;
+        document.getElementById('nextButton0').addEventListener('click', showSmallParagraphs);
     }
 
     function showSmallParagraphs() {
@@ -649,13 +672,13 @@
         
         // Show next button after delay
         setTimeout(() => {
-            document.getElementById('nextButton').style.display = 'block';
+            document.getElementById('nextButton3').style.display = 'block';
         }, 2000);
     }
 
     function showFinalSection() {
         document.getElementById('loveAnimation').style.display = 'none';
-        document.getElementById('nextButton').style.display = 'none';
+        document.getElementById('nextButton3').style.display = 'none';
         document.getElementById('finalSection').style.display = 'block';
         
         // Add special effects to final section
@@ -686,6 +709,9 @@
             document.getElementById('finalSection').appendChild(sparkle);
         }
     }
+
+    // Initialize everything when page loads
+    window.onload = init;
 </script>
 </body>
 </html>
