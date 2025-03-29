@@ -192,7 +192,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 2em; /* Reduced from 3em */
+            font-size: 2.5em;
             color: #ff66b3;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             animation: 
@@ -273,11 +273,19 @@
 
         .next-button {
             position: fixed;
-            bottom: 50px; /* Moved down from 30px */
-            right: 50px; /* Moved right from 30px */
+            bottom: 40px;
+            right: 40px;
             z-index: 100;
+        }
+
+        #loveAnimation .next-button {
             opacity: 0;
-            transition: opacity 0.5s ease;
+            animation: fadeInButton 0.5s ease-in 1.5s forwards;
+        }
+
+        @keyframes fadeInButton {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         #finalSection {
@@ -616,11 +624,6 @@
                 heart.style.animationDelay = `${Math.random() * 3}s`;
                 document.body.appendChild(heart);
             }
-            
-            // Show next button after 1.5 seconds
-            setTimeout(function() {
-                document.getElementById('nextButton4').style.opacity = '1';
-            }, 1500);
         });
         
         document.getElementById('nextButton4').addEventListener('click', function() {
