@@ -490,7 +490,6 @@
 
     let loveIndex = 0;
     let nicknameInterval;
-    let currentSection = 0;
 
     // Initialize all elements
     document.addEventListener('DOMContentLoaded', function() {
@@ -569,6 +568,7 @@
 
     // Setup all event listeners
     function setupEventListeners() {
+        // Yes/No buttons
         document.getElementById('yesButton').addEventListener('click', function() {
             handleResponse('yes');
         });
@@ -577,7 +577,7 @@
             handleResponse('no');
         });
         
-        // Next button event listeners
+        // Next buttons
         document.getElementById('nextButton1').addEventListener('click', function() {
             document.getElementById('birthdayMessage').style.display = 'none';
             document.getElementById('smallParagraphs').style.display = 'block';
