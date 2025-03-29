@@ -262,14 +262,6 @@
             100% { opacity: 1; transform: scale(1.1); }
         }
 
-        #nextButton {
-            display: none;
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 100;
-        }
-
         #finalSection {
             display: none;
             position: fixed;
@@ -393,6 +385,13 @@
             0% { opacity: 0.2; transform: scale(0.5); }
             100% { opacity: 1; transform: scale(1.2); }
         }
+
+        .auto-progress {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
     </style>
 </head>
 <body>
@@ -412,7 +411,6 @@
 <div id="nickname-container"></div>
 
 <div id="birthdayMessage"></div>
-<div id="finalMessage"></div>
 
 <div id="smallParagraphs">
     <div class="left-paragraphs">
@@ -432,19 +430,15 @@
             <p>Jaan, I really really really hope that our duaa gets accepted and we live a very happy, romantic, funny, supportive life. HAPPY BIRTHDAY MY CHEESECAKE FROM YOUR SUNSHINE, HUSBANDO, LOVE, BONGA, manhoos, beghairat.... CHANDAA💗</p>
         </div>
     </div>
-    <button class="button" id="nextButton1">Next</button>
 </div>
 
 <div id="hugeParagraph">
     <p>MY Love, I truly pray for your successful future with ME, and I hope you achieve everything you want in life which is beneficial for you. Hamesha khush rahena jaan; your happiness decides my mood too. I love everything about you, your personality, your appearance, your mindset, your morals and ethics... literally everything. I love how you motivate me to work harder even when I am not talking to you and all alone. Thank you, seriously, for being in ma life. In Sha Allah, our future will be together (ameen). I love you MWAAAAAAAAAAA. I CAN'T WAIT TO HAVE YOU NEXT TO ME. May our duaas get accepted indeed; Allah never disappoints His believers. But for now... Happy birthday kucchuuu. You are my everything, my princess, my jaan, my darling, my sweetheart, my cheesecake, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, Jaana (I tried ma best to make it look the best, but still, it isn't perfect, sorryyy) ❤️</p>
-    <button class="button" id="nextButton2">Next</button>
 </div>
 
 <div id="loveAnimation">
     I LOVE YOUUU JAAAAAAAAAN 💗💝💓💖💞💕💖💓💗💝😙
 </div>
-
-<button id="nextButton3" class="button">Next</button>
 
 <div id="finalSection">
     <div class="para-box">
@@ -472,7 +466,6 @@
         "My Love", "Ma Baby", "Kucchhuuu Pucchuu",
         "Bongi", "Jaana", "Wifey", "Cheesecake",
         "Sunshine", "Chandaa", "Husbando", "Bonga"
-        // Add more nicknames here following same format
     ];
 
     const loveStatements = [
@@ -490,6 +483,14 @@
 
     let loveIndex = 0;
     let nicknameInterval;
+    let currentSection = 0;
+    const sections = [
+        'birthdayMessage',
+        'smallParagraphs',
+        'hugeParagraph',
+        'loveAnimation',
+        'finalSection'
+    ];
 
     // Initialize all elements
     document.addEventListener('DOMContentLoaded', function() {
@@ -576,9 +577,19 @@
             handleResponse('no');
         });
         
-        document.getElementById('nextButton1').addEventListener('click', showHugeParagraph);
-        document.getElementById('nextButton2').addEventListener('click', showLoveAnimation);
-        document.getElementById('nextButton3').addEventListener('click', showFinalSection);
+        // Auto-progress through sections
+        document.addEventListener('click', function() {
+            if (currentSection < sections.length - 1) {
+                document.getElementById(sections[currentSection]).style.display = 'none';
+                currentSection++;
+                document.getElementById(sections[currentSection]).style.display = 'block';
+                
+                // Special handling for final section
+                if (currentSection === sections.length - 1) {
+                    addFinalEffects();
+                }
+            }
+        });
     }
 
     function handleResponse(response) {
@@ -621,7 +632,7 @@
         setTimeout(() => {
             clearInterval(nicknameInterval);
             showBirthdayMessage();
-        }, 5000);
+        }, 3000);
     }
 
     function createNickname() {
@@ -645,49 +656,7 @@
         document.getElementById('birthdayMessage').innerHTML = `
             <h1>Happy Birthday, My Love! 🎂</h1>
             <p>You are my everything, my princess, my cheesecake, my jaan, my darling, my sweetheart, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, my love!</p>
-            <button class="button" id="nextButton0">Next</button>
         `;
-        document.getElementById('nextButton0').addEventListener('click', showSmallParagraphs);
-    }
-
-    function showSmallParagraphs() {
-        document.getElementById('birthdayMessage').style.display = 'none';
-        document.getElementById('smallParagraphs').style.display = 'block';
-    }
-
-    function showHugeParagraph() {
-        document.getElementById('smallParagraphs').style.display = 'none';
-        document.getElementById('hugeParagraph').style.display = 'block';
-    }
-
-    function showLoveAnimation() {
-        document.getElementById('hugeParagraph').style.display = 'none';
-        document.getElementById('loveAnimation').style.display = 'block';
-
-        // Add more hearts animation
-        for (let i = 0; i < 30; i++) {
-            const heart = document.createElement('div');
-            heart.className = 'heart';
-            heart.innerHTML = '❤️💗💝💖';
-            heart.style.top = `${Math.random() * 100}%`;
-            heart.style.animationDuration = `${Math.random() * 6 + 4}s`;
-            heart.style.animationDelay = `${Math.random() * 3}s`;
-            document.body.appendChild(heart);
-        }
-        
-        // Show next button after delay
-        setTimeout(() => {
-            document.getElementById('nextButton3').style.display = 'block';
-        }, 2000);
-    }
-
-    function showFinalSection() {
-        document.getElementById('loveAnimation').style.display = 'none';
-        document.getElementById('nextButton3').style.display = 'none';
-        document.getElementById('finalSection').style.display = 'block';
-        
-        // Add special effects to final section
-        addFinalEffects();
     }
 
     function addFinalEffects() {
