@@ -492,10 +492,10 @@
     let nicknameInterval;
 
     // Initialize all elements
-    function init() {
+    document.addEventListener('DOMContentLoaded', function() {
         createDecorations();
         setupEventListeners();
-    }
+    });
 
     // Create decorative elements
     function createDecorations() {
@@ -589,13 +589,18 @@
                     <button class="button" id="noButton">No</button>`;
                 loveIndex++;
                 // Reattach event listeners to new buttons
-                setupEventListeners();
+                document.getElementById('yesButton').addEventListener('click', function() {
+                    handleResponse('yes');
+                });
+                document.getElementById('noButton').addEventListener('click', function() {
+                    handleResponse('no');
+                });
             } else {
-                document.getElementById('question').innerHTML = `<p>Are you really sure?</p>
-                    <button class="button" id="yesButton">Yes</button>
-                    <button class="button" id="noButton">No</button>`;
-                // Reattach event listeners to new buttons
-                setupEventListeners();
+                document.getElementById('question').innerHTML = `<p>I'll keep asking until you say Yes!</p>
+                    <button class="button" id="yesButton">Yes</button>`;
+                document.getElementById('yesButton').addEventListener('click', function() {
+                    handleResponse('yes');
+                });
             }
         } else if (response === 'yes') {
             document.getElementById('question').style.display = 'none';
@@ -615,7 +620,7 @@
         // Show birthday message after delay
         setTimeout(() => {
             clearInterval(nicknameInterval);
-            proceedToBirthdayMessage();
+            showBirthdayMessage();
         }, 5000);
     }
 
@@ -635,7 +640,7 @@
         }, 7000);
     }
 
-    function proceedToBirthdayMessage() {
+    function showBirthdayMessage() {
         document.getElementById('birthdayMessage').style.display = 'block';
         document.getElementById('birthdayMessage').innerHTML = `
             <h1>Happy Birthday, My Love! 🎂</h1>
@@ -709,9 +714,6 @@
             document.getElementById('finalSection').appendChild(sparkle);
         }
     }
-
-    // Initialize everything when page loads
-    window.onload = init;
 </script>
 </body>
 </html>
