@@ -86,7 +86,7 @@
             10% {
                 opacity: 1;
             }
-            80% {
+            90% {
                 opacity: 1;
             }
             100% {
@@ -205,10 +205,6 @@
             border-radius: 50%;
             animation: floatUp 6s infinite ease-in;
             z-index: 1;
-        }
-        @keyframes floatUp {
-            0% { transform: translateY(100vh); }
-            100% { transform: translateY(-100vh); }
         }
         .bulb {
             position: absolute;
@@ -414,7 +410,7 @@
         nickname.className = 'nickname';
         nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
         nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
-        nickname.style.setProperty('--nickname-left', `${Math.random() * 80 + 10}%`);
+        nickname.style.left = `${Math.random() * 80 + 10}%`;
         
         document.getElementById('nickname-container').appendChild(nickname);
         
