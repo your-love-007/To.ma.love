@@ -203,8 +203,19 @@
             width: 60px;
             height: 80px;
             border-radius: 50%;
-            animation: floatUp 6s infinite ease-in;
+            animation: balloonFloat 6s linear infinite;
+            bottom: -100px;
             z-index: 1;
+        }
+        @keyframes balloonFloat {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120vh);
+                opacity: 0.7;
+            }
         }
         .bulb {
             position: absolute;
@@ -321,6 +332,15 @@
 </div>
 
 <script>
+    // NICKNAMES TO EDIT - ADD/REMOVE AS NEEDED
+    const nicknames = [
+        "Princess", "Jaan","Cheesecake", "Darling", "Sweetheart", 
+        "My Love", "Ma Baby", "Kucchhuuu Pucchuu", 
+        "Bongi", "Jaana", "Wifey", "Cheesecake",
+        "Sunshine", "Chandaa", "Husbando", "Bonga",
+        "Love", "Baby", "Kucchuu Pucchuu", "My Heart"
+    ];
+
     const loveStatements = [
         "Are you sure?",
         "Think about it...",
@@ -334,32 +354,53 @@
         "You make my heart smile..."
     ];
 
-    const nicknames = ["Princess", "Jaan", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey"];
     let loveIndex = 0;
     let nicknameInterval;
 
-    // Add Balloons
-    const balloonColors = ["#ff66b3", "#ffcc00", "#66ccff", "#ff6666", "#cc66ff"];
-    for (let i = 0; i < 20; i++) {
-        const balloon = document.createElement('div');
-        balloon.className = 'balloon';
-        balloon.style.left = `${Math.random() * 100}%`;
-        balloon.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
-        balloon.style.animationDuration = `${Math.random() * 6 + 4}s`;
-        document.getElementById('balloons').appendChild(balloon);
+    // Initialize balloons
+    function initBalloons() {
+        const balloonColors = ["#ff66b3", "#ffcc00", "#66ccff", "#ff6666", "#cc66ff"];
+        const balloonsContainer = document.getElementById('balloons');
+        
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                const balloon = document.createElement('div');
+                balloon.className = 'balloon';
+                balloon.style.left = `${Math.random() * 100}%`;
+                balloon.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+                balloon.style.animationDuration = `${Math.random() * 6 + 4}s`;
+                balloon.style.setProperty('--balloon-delay', `${i * 0.5}s`);
+                balloonsContainer.appendChild(balloon);
+                
+                // Remove balloon after animation
+                setTimeout(() => {
+                    balloon.remove();
+                }, 8000);
+            }, i * 500);
+        }
     }
 
-    // Add Colorful Bulbs
-    const bulbColors = ["#ff6666", "#66ff66", "#6666ff", "#ffcc00", "#cc66ff"];
-    for (let i = 0; i < 20; i++) {
-        const bulb = document.createElement('div');
-        bulb.className = 'bulb';
-        bulb.style.left = `${Math.random() * 100}%`;
-        bulb.style.top = `${Math.random() * 10}%`;
-        bulb.style.backgroundColor = bulbColors[Math.floor(Math.random() * bulbColors.length)];
-        bulb.style.animationDuration = `${Math.random() * 1 + 0.5}s`;
-        document.getElementById('bulbs').appendChild(bulb);
+    // Initialize bulbs
+    function initBulbs() {
+        const bulbColors = ["#ff6666", "#66ff66", "#6666ff", "#ffcc00", "#cc66ff"];
+        const bulbsContainer = document.getElementById('bulbs');
+        
+        for (let i = 0; i < 20; i++) {
+            const bulb = document.createElement('div');
+            bulb.className = 'bulb';
+            bulb.style.left = `${Math.random() * 100}%`;
+            bulb.style.top = `${Math.random() * 10}%`;
+            bulb.style.backgroundColor = bulbColors[Math.floor(Math.random() * bulbColors.length)];
+            bulb.style.animationDuration = `${Math.random() * 1 + 0.5}s`;
+            bulbsContainer.appendChild(bulb);
+        }
     }
+
+    // Initialize on page load
+    window.onload = function() {
+        initBalloons();
+        initBulbs();
+    };
 
     function handleResponse(response) {
         if (response === 'no') {
