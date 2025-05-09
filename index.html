@@ -3,367 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday Surprise</title>
+    <title>Birthday Celebration</title>
     <style>
-        body {
-            background: linear-gradient(135deg, #ffb6c1 0%, #e0f7e0 100%);
-            color: #004d00;
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            overflow: hidden;
+        /* Basic Reset */
+        * {
             margin: 0;
             padding: 0;
-            min-height: 100vh;
-            border: 15px solid transparent;
-            border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%23ff66b3" stroke-width="5" stroke-dasharray="5,5"/><path d="M20,20 Q30,10 40,20 T60,20 T80,20" fill="none" stroke="%23ff1493" stroke-width="2"/><circle cx="15" cy="15" r="3" fill="%23ff66b3"/><circle cx="85" cy="15" r="3" fill="%23ff66b3"/><circle cx="15" cy="85" r="3" fill="%23ff66b3"/><circle cx="85" cy="85" r="3" fill="%23ff66b3"/></svg>') 30 round;
             box-sizing: border-box;
         }
-
-        #question {
-            margin-top: 20%;
-            font-size: 2em;
-            animation: fadeIn 2s ease-in-out;
-            text-shadow: 2px 2px 4px rgba(255,255,255,0.7);
-            position: relative;
-            z-index: 100;
-        }
-        
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        .button {
-            padding: 12px 25px;
-            font-size: 1.5em;
-            margin: 20px;
-            cursor: pointer;
-            border: none;
-            border-radius: 30px;
-            background: linear-gradient(45deg, #ff66b3, #ff1493);
-            color: white;
-            animation: bounce 2s infinite;
-            box-shadow: 0 5px 15px rgba(255,102,179,0.4);
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 100;
-        }
-        
-        .button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(255,102,179,0.6);
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        #nickname-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
             overflow: hidden;
-            z-index: 5;
-            pointer-events: none;
         }
 
-        .nickname {
-            position: absolute;
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #d81b60;
-            text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
-            animation: floatUp 7s linear forwards;
-            left: var(--nickname-left);
-            bottom: -50px;
-            opacity: 0;
-            pointer-events: none;
-        }
-        
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh);
-                opacity: 0;
-            }
+        /* Button styles */
+        .button {
+            background-color: #ff66b3;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
         }
 
-        #birthdayMessage {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: slideIn 1s ease-in-out;
-            z-index: 50;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            padding: 30px;
-            border-radius: 20px;
-            border: 2px solid rgba(255,102,179,0.3);
-            box-shadow: 0 10px 30px rgba(255,102,179,0.2);
-            max-width: 80%;
-        }
-        
-        @keyframes slideIn {
-            0% { transform: translate(-50%, -100%); }
-            100% { transform: translate(-50%, -50%); }
+        .button:hover {
+            background-color: #ff3385;
         }
 
-        #smallParagraphs {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            max-width: 800px;
-            text-align: left;
-            animation: fadeIn 1s ease-in-out;
-            z-index: 50;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 20px;
-            border: 2px solid rgba(255,102,179,0.3);
-            box-shadow: 0 10px 30px rgba(255,102,179,0.2);
+        /* Next button position adjustment */
+        .next-button {
+            margin-top: 20px; /* Adds space below the text */
         }
 
-        .left-paragraphs, .right-paragraphs {
-            width: 45%;
-            display: inline-block;
-            vertical-align: top;
-            margin: 10px;
-        }
-
-        .left-paragraphs {
-            text-align: left;
-        }
-
-        .right-paragraphs {
-            text-align: right;
-        }
-
-        .paragraph {
-            margin-bottom: 15px;
-            line-height: 1.5;
-            color: #333;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
-        }
-
-        #hugeParagraph {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            max-width: 800px;
-            max-height: 80vh;
-            font-size: 1.5em;
-            text-align: center;
-            padding: 30px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            animation: slideIn 1s ease-in-out;
-            overflow-y: auto;
-            z-index: 50;
-            border: 2px solid rgba(255,102,179,0.3);
-            box-shadow: 0 10px 30px rgba(255,102,179,0.2);
-            color: #333;
-        }
-
-        #loveAnimation {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2em; /* Reduced size */
-            font-weight: 800; /* Made bolder */
-            color: #ff66b3;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            animation: 
-                loveAppear 1.5s ease-out forwards,
-                pulse 2s infinite 1.5s;
-            z-index: 50;
-            width: 90%;
-            text-align: center;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(255,102,179,0.3);
-        }
-        
-        @keyframes loveAppear {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.1); }
-        }
-
-        .heart {
-            position: absolute;
-            font-size: 2em;
-            color: #ff66b3;
-            animation: moveHearts 5s linear infinite;
-            z-index: 10;
-            pointer-events: none;
-        }
-        
-        @keyframes moveHearts {
-            0% { transform: translateX(100vw); }
-            100% { transform: translateX(-100%); }
-        }
-
+        /* Decorations */
         .balloon {
             position: absolute;
-            width: 60px;
+            width: 50px;
             height: 80px;
             border-radius: 50%;
-            animation: balloonFloat 8s linear infinite;
-            bottom: -100px;
-            z-index: 10;
-            opacity: 0.8;
-            pointer-events: none;
+            animation: floatBalloon 6s ease-in infinite;
         }
         
-        @keyframes balloonFloat {
+        @keyframes floatBalloon {
             0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0.8;
+                transform: translateY(100vh) rotate(0deg);
             }
             100% {
-                transform: translateY(-120vh) rotate(360deg);
-                opacity: 0;
+                transform: translateY(-100vh) rotate(360deg);
             }
         }
 
         .bulb {
             position: absolute;
-            width: 25px;
-            height: 25px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            animation: blink 1.5s infinite alternate;
-            z-index: 10;
-            filter: drop-shadow(0 0 5px currentColor);
-            pointer-events: none;
+            animation: blinkBulb 1.5s ease-in-out infinite;
         }
         
-        @keyframes blink {
-            0% { opacity: 0.4; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1.1); }
+        @keyframes blinkBulb {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
         }
 
-        .next-button {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 100;
-            margin: 0;
-        }
-
-        #loveAnimation .next-button {
-            opacity: 0;
-            animation: fadeInButton 0.5s ease-in 1.5s forwards;
-        }
-
-        @keyframes fadeInButton {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        .message-container {
-            position: relative;
-            padding-bottom: 80px; /* Added space for the button */
-        }
-
-        #finalSection {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #ffb6d9 0%, #c8f7c5 100%);
-            z-index: 50;
-            overflow-y: auto;
-            padding: 40px 20px;
-            box-sizing: border-box;
-        }
-
-        .para-box {
-            background-color: rgba(255,255,255,0.85);
-            border-radius: 15px;
-            padding: 30px;
-            margin: 25px auto;
-            max-width: 700px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border: 3px solid #ff66b3;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .para-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-
-        .para-box::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 8px;
-            background: linear-gradient(90deg, #ff66b3, #ffcc00, #66ccff, #ff6666, #cc66ff);
-            border-radius: 15px 15px 0 0;
-        }
-
-        .para-box h2 {
-            color: #d81b60;
-            margin-top: 0;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .para-box h2::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #ff66b3, transparent);
-        }
-
-        /* Confetti particles */
+        /* Confetti animation */
         .confetti {
             position: absolute;
-            width: 12px;
-            height: 12px;
-            opacity: 0.7;
+            width: 10px;
+            height: 10px;
+            background-color: #ff66b3;
             animation: confettiFall 5s linear infinite;
+            opacity: 0;
             z-index: 10;
-            pointer-events: none;
         }
         
         @keyframes confettiFall {
@@ -563,165 +278,78 @@
             confetti.className = 'confetti';
             confetti.style.left = `${Math.random() * 100}%`;
             confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-            confetti.style.animationDuration = `${Math.random() * 4 + 3}s`;
+            confetti.style.animationDuration = `${Math.random() * 3 + 4}s`;
             confetti.style.animationDelay = `${Math.random() * 5}s`;
-            confetti.style.width = `${Math.random() * 10 + 5}px`;
-            confetti.style.height = `${Math.random() * 10 + 5}px`;
-            confetti.style.borderRadius = `${Math.random() * 50}%`;
             document.getElementById('confetti-container').appendChild(confetti);
         }
         
-        // Create floating hearts
+        // Create hearts
         for (let i = 0; i < 20; i++) {
             const heart = document.createElement('div');
             heart.className = 'floating-heart';
-            heart.innerHTML = '❤️';
+            heart.innerHTML = "❤️";
             heart.style.left = `${Math.random() * 100}%`;
-            heart.style.animationDuration = `${Math.random() * 15 + 10}s`;
-            heart.style.animationDelay = `${Math.random() * 10}s`;
-            heart.style.fontSize = `${Math.random() * 2 + 1.5}em`;
+            heart.style.animationDuration = `${Math.random() * 4 + 6}s`;
+            heart.style.animationDelay = `${Math.random() * 6}s`;
             document.getElementById('hearts-container').appendChild(heart);
         }
-        
+
         // Create sparkles
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 40; i++) {
             const sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
             sparkle.style.left = `${Math.random() * 100}%`;
             sparkle.style.top = `${Math.random() * 100}%`;
-            sparkle.style.animationDuration = `${Math.random() * 2 + 1}s`;
-            sparkle.style.animationDelay = `${Math.random() * 3}s`;
+            sparkle.style.animationDuration = `${Math.random() * 2 + 2}s`;
+            sparkle.style.animationDelay = `${Math.random() * 5}s`;
             document.getElementById('sparkles-container').appendChild(sparkle);
         }
     }
-
-    // Setup all event listeners
+    
+    // Function to handle event listeners
     function setupEventListeners() {
-        // Yes/No buttons
-        document.getElementById('yesButton').addEventListener('click', function() {
-            handleResponse('yes');
-        });
-        
-        document.getElementById('noButton').addEventListener('click', function() {
-            handleResponse('no');
-        });
-        
-        // Next buttons
-        document.getElementById('nextButton1').addEventListener('click', function() {
-            document.getElementById('birthdayMessage').style.display = 'none';
-            document.getElementById('smallParagraphs').style.display = 'block';
-        });
-        
-        document.getElementById('nextButton2').addEventListener('click', function() {
-            document.getElementById('smallParagraphs').style.display = 'none';
-            document.getElementById('hugeParagraph').style.display = 'block';
-        });
-        
-        document.getElementById('nextButton3').addEventListener('click', function() {
-            document.getElementById('hugeParagraph').style.display = 'none';
-            document.getElementById('loveAnimation').style.display = 'block';
-            
-            // Add more hearts animation
-            for (let i = 0; i < 30; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.innerHTML = '❤️💗💝💖';
-                heart.style.top = `${Math.random() * 100}%`;
-                heart.style.animationDuration = `${Math.random() * 6 + 4}s`;
-                heart.style.animationDelay = `${Math.random() * 3}s`;
-                document.body.appendChild(heart);
-            }
-        });
-        
-        document.getElementById('nextButton4').addEventListener('click', function() {
-            document.getElementById('loveAnimation').style.display = 'none';
-            document.getElementById('finalSection').style.display = 'block';
-            addFinalEffects();
-        });
+        document.getElementById('yesButton').addEventListener('click', showBirthdayMessage);
+        document.getElementById('noButton').addEventListener('click', showNicknameInput);
+        document.getElementById('nextButton1').addEventListener('click', showSmallParagraphs);
+        document.getElementById('nextButton2').addEventListener('click', showHugeParagraph);
+        document.getElementById('nextButton3').addEventListener('click', showLoveAnimation);
+        document.getElementById('nextButton4').addEventListener('click', showFinalSection);
     }
 
-    function handleResponse(response) {
-        if (response === 'no') {
-            if (loveIndex < loveStatements.length) {
-                document.getElementById('question').innerHTML = `<p>${loveStatements[loveIndex]}</p>
-                    <button class="button" id="yesButton">Yes</button>
-                    <button class="button" id="noButton">No</button>`;
-                loveIndex++;
-                // Reattach event listeners to new buttons
-                document.getElementById('yesButton').addEventListener('click', function() {
-                    handleResponse('yes');
-                });
-                document.getElementById('noButton').addEventListener('click', function() {
-                    handleResponse('no');
-                });
-            } else {
-                document.getElementById('question').innerHTML = `<p>I'll keep asking until you say Yes!</p>
-                    <button class="button" id="yesButton">Yes</button>`;
-                document.getElementById('yesButton').addEventListener('click', function() {
-                    handleResponse('yes');
-                });
-            }
-        } else if (response === 'yes') {
-            document.getElementById('question').style.display = 'none';
-            startCelebration();
-        }
+    // Show the birthday message
+    function showBirthdayMessage() {
+        document.getElementById('birthdayMessage').style.display = "block";
     }
 
-    function startCelebration() {
-        // Create initial batch of nicknames
-        for (let i = 0; i < 30; i++) {
-            setTimeout(() => createNickname(), i * 300);
-        }
-        
-        // Keep creating new nicknames continuously
-        nicknameInterval = setInterval(createNickname, 300);
-        
-        // Show birthday message after delay
-        setTimeout(() => {
-            clearInterval(nicknameInterval);
-            document.getElementById('birthdayMessage').style.display = 'block';
-        }, 3000);
+    // Show the nickname input field
+    function showNicknameInput() {
+        let nicknameInput = document.createElement("input");
+        nicknameInput.type = "text";
+        nicknameInput.placeholder = "Enter a nickname";
+        nicknameInput.addEventListener('change', function() {
+            document.getElementById('nickname-container').innerText = `Your nickname is: ${nicknameInput.value}`;
+        });
+        document.getElementById('nickname-container').appendChild(nicknameInput);
     }
 
-    function createNickname() {
-        const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
-        const nickname = document.createElement('div');
-        nickname.className = 'nickname';
-        nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
-        nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
-        nickname.style.left = `${Math.random() * 80 + 10}%`;
-        
-        document.getElementById('nickname-container').appendChild(nickname);
-        
-        // Remove after animation completes
-        setTimeout(() => {
-            nickname.remove();
-        }, 7000);
+    // Show small paragraphs
+    function showSmallParagraphs() {
+        document.getElementById('smallParagraphs').style.display = "block";
     }
 
-    function addFinalEffects() {
-        // Add floating hearts to final section
-        for (let i = 0; i < 15; i++) {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.innerHTML = '❤️';
-            heart.style.left = `${Math.random() * 100}%`;
-            heart.style.animationDuration = `${Math.random() * 12 + 8}s`;
-            heart.style.animationDelay = `${Math.random() * 5}s`;
-            heart.style.fontSize = `${Math.random() * 2 + 1.5}em`;
-            document.getElementById('finalSection').appendChild(heart);
-        }
-        
-        // Add sparkles to final section
-        for (let i = 0; i < 30; i++) {
-            const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
-            sparkle.style.left = `${Math.random() * 100}%`;
-            sparkle.style.top = `${Math.random() * 100}%`;
-            sparkle.style.animationDuration = `${Math.random() * 2 + 1}s`;
-            sparkle.style.animationDelay = `${Math.random() * 3}s`;
-            document.getElementById('finalSection').appendChild(sparkle);
-        }
+    // Show huge paragraph
+    function showHugeParagraph() {
+        document.getElementById('hugeParagraph').style.display = "block";
+    }
+
+    // Show love animation
+    function showLoveAnimation() {
+        document.getElementById('loveAnimation').style.display = "block";
+    }
+
+    // Show final section
+    function showFinalSection() {
+        document.getElementById('finalSection').style.display = "block";
     }
 </script>
 </body>
