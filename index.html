@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Birthday Celebration</title>
     <style>
-        /* Basic Reset */
         * {
             margin: 0;
             padding: 0;
@@ -14,10 +13,8 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f8f8f8;
-            overflow: hidden;
+            overflow-x: hidden;
         }
-
-        /* Button styles */
         .button {
             background-color: #ff66b3;
             color: white;
@@ -27,18 +24,38 @@
             cursor: pointer;
             font-size: 1.2em;
             transition: background-color 0.3s;
+            display: inline-block;
+            margin-top: 20px;
         }
-
         .button:hover {
             background-color: #ff3385;
         }
-
-        /* Next button position adjustment */
-        .next-button {
-            margin-top: 20px; /* Adds space below the text */
+        .message-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-
-        /* Decorations */
+        .paragraph {
+            margin-bottom: 20px;
+        }
+        .left-paragraphs, .right-paragraphs {
+            width: 48%;
+        }
+        #smallParagraphs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4%;
+        }
+        .para-box {
+            background: white;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
         .balloon {
             position: absolute;
             width: 50px;
@@ -46,16 +63,10 @@
             border-radius: 50%;
             animation: floatBalloon 6s ease-in infinite;
         }
-        
         @keyframes floatBalloon {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-            }
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
         }
-
         .bulb {
             position: absolute;
             width: 10px;
@@ -63,14 +74,11 @@
             border-radius: 50%;
             animation: blinkBulb 1.5s ease-in-out infinite;
         }
-        
         @keyframes blinkBulb {
             0% { opacity: 0.5; }
             50% { opacity: 1; }
             100% { opacity: 0.5; }
         }
-
-        /* Confetti animation */
         .confetti {
             position: absolute;
             width: 10px;
@@ -80,19 +88,10 @@
             opacity: 0;
             z-index: 10;
         }
-        
         @keyframes confettiFall {
-            0% {
-                transform: translateY(-100vh) rotate(0deg);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
-
-        /* Floating hearts */
         .floating-heart {
             position: absolute;
             font-size: 1.8em;
@@ -102,25 +101,12 @@
             opacity: 0.7;
             pointer-events: none;
         }
-        
         @keyframes floatHeart {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            20% {
-                opacity: 0.7;
-            }
-            80% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
-
-        /* Sparkle effect */
         .sparkle {
             position: absolute;
             width: 5px;
@@ -131,7 +117,6 @@
             z-index: 10;
             pointer-events: none;
         }
-        
         @keyframes sparkleTwinkle {
             0% { opacity: 0.2; transform: scale(0.5); }
             100% { opacity: 1; transform: scale(1.2); }
@@ -139,218 +124,147 @@
     </style>
 </head>
 <body>
-
 <div id="bulbs"></div>
 <div id="balloons"></div>
 <div id="confetti-container"></div>
 <div id="hearts-container"></div>
 <div id="sparkles-container"></div>
 
-<div id="question">
+<div id="question" class="message-container">
     <p>Do you love me?</p>
     <button class="button" id="yesButton">Yes</button>
     <button class="button" id="noButton">No</button>
 </div>
 
-<div id="nickname-container"></div>
+<div id="nickname-container" class="message-container"></div>
 
-<div id="birthdayMessage" class="message-container">
+<div id="birthdayMessage" class="message-container" style="display: none;">
     <h1>Happy Birthday, My Love! 🎂</h1>
-    <p>You are my everything, my princess, my cheesecake, my jaan, my darling, my sweetheart, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, my love!</p>
-    <button class="button next-button" id="nextButton1">Next</button>
+    <p>You are my everything... Happy Birthday, my love!</p>
+    <button class="button" id="nextButton1">Next</button>
 </div>
 
-<div id="smallParagraphs" class="message-container">
+<div id="smallParagraphs" class="message-container" style="display: none;">
     <div class="left-paragraphs">
         <div class="paragraph">
-            <p>Your laugh, your giggles, your goofyness, truly keeps me alive, can't wait to hear it non-stop in our house. Your smile is literally black magic the way it made me fall in love with you... ma favourite witch.</p>
+            <p>Your laugh, your giggles...</p>
         </div>
         <div class="paragraph">
-            <p>I don't know what I would do without your magic in ma boring a** life. Life without you is like a book with blank pages... useless. I pray for us and your success every day, Jaana... ILubu infinite times.</p>
+            <p>I don't know what I would do...</p>
         </div>
     </div>
     <div class="right-paragraphs">
         <div class="paragraph">
-            <p>Every moment with you feels like a dream, a dream I never want to wake up from. You can't imagine how many dreams I've had of us being together... it is crazy!! Enjoy your birthday; one day you'll enjoy it with me too, ameen.</p>
+            <p>Every moment with you feels like a dream...</p>
         </div>
         <div class="paragraph">
-            <p>When writing this, the bake sale memory was playing in ma head constantly. What a day that was, muwaaa!! Although ma heart was racing and itni sharam arahi thi, but still, it was a once-in-a-lifetime moment!!</p>
-            <p>Jaan, I really really really hope that our duaa gets accepted and we live a very happy, romantic, funny, supportive life. HAPPY BIRTHDAY MY CHEESECAKE FROM YOUR SUNSHINE, HUSBANDO, LOVE, BONGA, manhoos, beghairat.... CHANDAA💗</p>
+            <p>When writing this, the bake sale memory...</p>
         </div>
     </div>
-    <button class="button next-button" id="nextButton2">Next</button>
+    <button class="button" id="nextButton2">Next</button>
 </div>
 
-<div id="hugeParagraph" class="message-container">
-    <p>MY Love, I truly pray for your successful future with ME, and I hope you achieve everything you want in life which is beneficial for you. Hamesha khush rahena jaan; your happiness decides my mood too. I love everything about you, your personality, your appearance, your mindset, your morals and ethics... literally everything. I love how you motivate me to work harder even when I am not talking to you and all alone. Thank you, seriously, for being in ma life. In Sha Allah, our future will be together (ameen). I love you MWAAAAAAAAAAA. I CAN'T WAIT TO HAVE YOU NEXT TO ME. May our duaas get accepted indeed; Allah never disappoints His believers. But for now... Happy birthday kucchuuu. You are my everything, my princess, my jaan, my darling, my sweetheart, my cheesecake, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, Jaana (I tried ma best to make it look the best, but still, it isn't perfect, sorryyy) ❤️</p>
-    <button class="button next-button" id="nextButton3">Next</button>
+<div id="hugeParagraph" class="message-container" style="display: none;">
+    <p>MY Love, I truly pray for your successful future...</p>
+    <button class="button" id="nextButton3">Next</button>
 </div>
 
-<div id="loveAnimation" class="message-container">
-    I LOVE YOUUU JAAAAAAAAAN 💗💝💓💖💞💕💖💓💗💝😙
-    <button class="button next-button" id="nextButton4">Next</button>
+<div id="loveAnimation" class="message-container" style="display: none;">
+    I LOVE YOUUU JAAAAAAAAAN 💗💫
+    <button class="button" id="nextButton4">Next</button>
 </div>
 
-<div id="finalSection">
+<div id="finalSection" style="display: none;">
     <div class="para-box">
         <h2>Our Special Connection</h2>
-        <p>From our very first conversation, I felt a connection with you that I've never felt with anyone else. Your energy, your spirit, and the way you see the world make every moment with you feel magical and unique.</p>
+        <p>From our very first conversation...</p>
     </div>
     <div class="para-box">
         <h2>Your Beautiful Qualities</h2>
-        <p>What makes you so special isn't just your beautiful smile, but your kind heart, your brilliant mind, and your incredible strength. The way you face challenges with grace and determination inspires me every single day.</p>
+        <p>What makes you so special isn't just your beautiful smile...</p>
     </div>
     <div class="para-box">
         <h2>Our Shared Memories</h2>
-        <p>Every memory we've created together, from the silly moments to the deep conversations, has become a treasure I hold close to my heart. These experiences have built the foundation of our unbreakable bond.</p>
+        <p>Every memory we've created together...</p>
     </div>
     <div class="para-box">
         <h2>Our Future Together</h2>
-        <p>I dream of our future - building a life together filled with love, laughter, and mutual growth. With you by my side, I know every challenge will be easier and every joy will be multiplied. You're my partner in every sense of the word.</p>
+        <p>I dream of our future...</p>
     </div>
 </div>
 
 <script>
-    // ========== EDIT NICKNAMES HERE ==========
-    const nicknames = [
-        "Princess", "Jaan","Cheesecake", "Darling", "Sweetheart",
-        "My Love", "Ma Baby", "Kucchhuuu Pucchuu",
-        "Bongi", "Jaana", "Wifey", "Cheesecake",
-        "Sunshine", "Chandaa", "Husbando", "Bonga"
-    ];
-
     const loveStatements = [
-        "Are you sure?",
-        "Think about it...",
-        "Don't do this to me...",
-        "Please reconsider...",
-        "You mean the world to me...",
-        "I can't imagine life without you...",
-        "You're my everything...",
-        "Think again, jaan...",
-        "You're my sunshine...",
-        "You make my heart smile..."
+        "Are you sure?", "Think about it...", "Don't do this to me...",
+        "Please reconsider...", "You mean the world to me...",
+        "I can't imagine life without you...", "You're my everything...",
+        "Think again, jaan...", "You're my sunshine...", "You make my heart smile..."
     ];
 
-    let loveIndex = 0;
-    let nicknameInterval;
-
-    // Initialize all elements
     document.addEventListener('DOMContentLoaded', function() {
         createDecorations();
         setupEventListeners();
     });
 
-    // Create decorative elements
     function createDecorations() {
-        const balloonColors = ["#ff66b3", "#ffcc00", "#66ccff", "#ff6666", "#cc66ff"];
-        const bulbColors = ["#ff6666", "#66ff66", "#6666ff", "#ffcc00", "#cc66ff"];
-        const confettiColors = ["#ff66b3", "#ff1493", "#66ccff", "#ffcc00", "#ff6666"];
-        
-        // Create balloons
+        const colors = ["#ff66b3", "#ffcc00", "#66ccff", "#ff6666", "#cc66ff"];
         for (let i = 0; i < 30; i++) {
             setTimeout(() => {
-                const balloon = document.createElement('div');
+                let balloon = document.createElement('div');
                 balloon.className = 'balloon';
                 balloon.style.left = `${Math.random() * 100}%`;
-                balloon.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+                balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                 balloon.style.animationDuration = `${Math.random() * 8 + 6}s`;
-                balloon.style.animationDelay = `${Math.random() * 5}s`;
                 document.getElementById('balloons').appendChild(balloon);
             }, i * 300);
-        }
-        
-        // Create bulbs
-        for (let i = 0; i < 30; i++) {
-            const bulb = document.createElement('div');
+
+            let bulb = document.createElement('div');
             bulb.className = 'bulb';
             bulb.style.left = `${Math.random() * 100}%`;
             bulb.style.top = `${Math.random() * 100}%`;
-            bulb.style.backgroundColor = bulbColors[Math.floor(Math.random() * bulbColors.length)];
-            bulb.style.animationDuration = `${Math.random() * 1.5 + 0.5}s`;
-            bulb.style.animationDelay = `${Math.random() * 2}s`;
+            bulb.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
             document.getElementById('bulbs').appendChild(bulb);
         }
-        
-        // Create confetti
+
         for (let i = 0; i < 80; i++) {
-            const confetti = document.createElement('div');
+            let confetti = document.createElement('div');
             confetti.className = 'confetti';
             confetti.style.left = `${Math.random() * 100}%`;
-            confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-            confetti.style.animationDuration = `${Math.random() * 3 + 4}s`;
-            confetti.style.animationDelay = `${Math.random() * 5}s`;
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
             document.getElementById('confetti-container').appendChild(confetti);
         }
-        
-        // Create hearts
+
         for (let i = 0; i < 20; i++) {
-            const heart = document.createElement('div');
+            let heart = document.createElement('div');
             heart.className = 'floating-heart';
             heart.innerHTML = "❤️";
             heart.style.left = `${Math.random() * 100}%`;
-            heart.style.animationDuration = `${Math.random() * 4 + 6}s`;
-            heart.style.animationDelay = `${Math.random() * 6}s`;
             document.getElementById('hearts-container').appendChild(heart);
         }
 
-        // Create sparkles
         for (let i = 0; i < 40; i++) {
-            const sparkle = document.createElement('div');
+            let sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
             sparkle.style.left = `${Math.random() * 100}%`;
             sparkle.style.top = `${Math.random() * 100}%`;
-            sparkle.style.animationDuration = `${Math.random() * 2 + 2}s`;
-            sparkle.style.animationDelay = `${Math.random() * 5}s`;
             document.getElementById('sparkles-container').appendChild(sparkle);
         }
     }
-    
-    // Function to handle event listeners
+
     function setupEventListeners() {
-        document.getElementById('yesButton').addEventListener('click', showBirthdayMessage);
-        document.getElementById('noButton').addEventListener('click', showNicknameInput);
-        document.getElementById('nextButton1').addEventListener('click', showSmallParagraphs);
-        document.getElementById('nextButton2').addEventListener('click', showHugeParagraph);
-        document.getElementById('nextButton3').addEventListener('click', showLoveAnimation);
-        document.getElementById('nextButton4').addEventListener('click', showFinalSection);
-    }
-
-    // Show the birthday message
-    function showBirthdayMessage() {
-        document.getElementById('birthdayMessage').style.display = "block";
-    }
-
-    // Show the nickname input field
-    function showNicknameInput() {
-        let nicknameInput = document.createElement("input");
-        nicknameInput.type = "text";
-        nicknameInput.placeholder = "Enter a nickname";
-        nicknameInput.addEventListener('change', function() {
-            document.getElementById('nickname-container').innerText = `Your nickname is: ${nicknameInput.value}`;
-        });
-        document.getElementById('nickname-container').appendChild(nicknameInput);
-    }
-
-    // Show small paragraphs
-    function showSmallParagraphs() {
-        document.getElementById('smallParagraphs').style.display = "block";
-    }
-
-    // Show huge paragraph
-    function showHugeParagraph() {
-        document.getElementById('hugeParagraph').style.display = "block";
-    }
-
-    // Show love animation
-    function showLoveAnimation() {
-        document.getElementById('loveAnimation').style.display = "block";
-    }
-
-    // Show final section
-    function showFinalSection() {
-        document.getElementById('finalSection').style.display = "block";
+        document.getElementById('yesButton').onclick = () => document.getElementById('birthdayMessage').style.display = 'block';
+        document.getElementById('noButton').onclick = () => {
+            let input = document.createElement('input');
+            input.placeholder = "Enter a nickname";
+            input.onchange = () => document.getElementById('nickname-container').innerText = `Your nickname is: ${input.value}`;
+            document.getElementById('nickname-container').appendChild(input);
+        };
+        document.getElementById('nextButton1').onclick = () => document.getElementById('smallParagraphs').style.display = 'flex';
+        document.getElementById('nextButton2').onclick = () => document.getElementById('hugeParagraph').style.display = 'block';
+        document.getElementById('nextButton3').onclick = () => document.getElementById('loveAnimation').style.display = 'block';
+        document.getElementById('nextButton4').onclick = () => document.getElementById('finalSection').style.display = 'block';
     }
 </script>
 </body>
 </html>
+
