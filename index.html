@@ -81,11 +81,11 @@
 
         /* === #hugeParagraph - THE SCROLLABLE SECTION (Flexbox Approach) === */
         #hugeParagraph { /* This is the main modal container */
+            display: none; /* CRITICAL: MUST BE INITIALLY HIDDEN. JS will set to flex. */
             width: 80%; max-width: 800px; max-height: 80vh; 
             animation: slideIn 1s ease-in-out;
             
-            display: flex; /* Switched to display: none initially, JS will set to flex */
-            flex-direction: column;
+            flex-direction: column; /* Will be set to flex by JS */
             padding: 25px; /* Padding for the overall modal box */
         }
 
@@ -332,22 +332,21 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         document.getElementById('nextButton2').addEventListener('click', () => {
             document.getElementById('smallParagraphs').style.display = 'none';
             const hugeParagraphModal = document.getElementById('hugeParagraph');
-            const hugeParagraphTextScroller = document.getElementById('hugeParagraphTextWrapper'); // The div that scrolls
+            const hugeParagraphTextScroller = document.getElementById('hugeParagraphTextWrapper'); 
             const nextButton3 = hugeParagraphModal.querySelector('#nextButton3');
 
             hugeParagraphModal.style.display = 'flex'; // Show the modal (it's a flex container)
 
             function checkScrollHugeParagraph() {
-                const scrollBuffer = 10; // How close to bottom (in pixels) to show button
-                // Check if scrolled to the bottom of the text scroller
+                const scrollBuffer = 10; 
                 if (hugeParagraphTextScroller.scrollHeight - hugeParagraphTextScroller.scrollTop <= hugeParagraphTextScroller.clientHeight + scrollBuffer) { 
                     nextButton3.classList.add('visible');
                 } else {
                      nextButton3.classList.remove('visible'); 
                 }
             }
-            checkScrollHugeParagraph(); // Call once in case content is too short to scroll
-            hugeParagraphTextScroller.addEventListener('scroll', checkScrollHugeParagraph); // Listen on the text scroller
+            checkScrollHugeParagraph(); 
+            hugeParagraphTextScroller.addEventListener('scroll', checkScrollHugeParagraph); 
         });
         
         document.getElementById('nextButton3').addEventListener('click', () => {
@@ -366,7 +365,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             document.getElementById('loveAnimation').style.display = 'none';
             const finalSectionEl = document.getElementById('finalSection');
             finalSectionEl.style.display = 'block'; 
-            finalSectionEl.style.transform = 'none'; // Explicitly remove any transform
+            finalSectionEl.style.transform = 'none'; // Ensure no transform
             addFinalEffects();
         });
     }
