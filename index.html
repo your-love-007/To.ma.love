@@ -132,7 +132,7 @@
             width: 80%;
             max-width: 800px;
             text-align: left;
-            animation: fadeIn 1s ease-in-out; /* Changed from slideIn for variety */
+            animation: fadeIn 1s ease-in-out; 
             z-index: 50;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
@@ -178,7 +178,7 @@
             font-size: 1.5em;
             text-align: center;
             padding: 30px;
-            padding-bottom: 80px; 
+            padding-bottom: 120px; /* Increased padding for button space */
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -191,10 +191,12 @@
             box-sizing: border-box;
         }
 
-        #hugeParagraph .next-button { /* Specific styling for button in hugeParagraph */
+        #hugeParagraph .next-button { 
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease-in-out;
+            bottom: 20px; /* Adjusted position within new padding */
+            right: 20px;
         }
          #hugeParagraph .next-button.visible {
             opacity: 1;
@@ -203,12 +205,14 @@
 
 
         #loveAnimation {
-            display: none;
+            display: none; /* Initially hidden, set to flex by JS */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 1.8em; /* Adjusted */
             font-weight: 800; 
             color: #ff66b3;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
@@ -217,18 +221,16 @@
                 pulse 2s infinite 1.5s;
             z-index: 50;
             width: 90%;
+            max-width: 700px; /* Max width for better layout */
             text-align: center;
-            padding: 20px; 
-            padding-bottom: 80px; 
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(255,102,179,0.3);
+            padding: 40px 20px; 
+            padding-bottom: 100px; 
+            background: rgba(255, 255, 255, 0.25); /* Slightly more opaque */
+            backdrop-filter: blur(8px); /* Slightly less blur */
+            border-radius: 25px; /* More rounded */
+            box-shadow: 0 10px 35px rgba(255,102,179,0.35);
             box-sizing: border-box;
-            /* Added for new content layout */
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            overflow: hidden; /* To contain falling hearts and orbs */
         }
         
         @keyframes loveAppear {
@@ -241,13 +243,11 @@
             50% { transform: translate(-50%, -50%) scale(1.1); }
         }
 
-        /* New styles for #loveAnimation content */
         #animatedLoveTextContainer {
-            margin-bottom: 20px;
-            font-size: 1.8em; 
+            margin-bottom: 25px;
+            font-size: 2em; /* Slightly larger */
             font-weight: bold;
             color: #e91e63; 
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.7), 0 0 10px #ff80ab, 0 0 20px #ff80ab;
             position: relative;
             z-index: 2;
         }
@@ -255,34 +255,43 @@
         .love-char {
             display: inline-block;
             opacity: 0;
-            transform: translateY(20px);
-            animation: revealChar 0.5s forwards;
+            transform: translateY(25px);
+            animation: revealChar 0.6s forwards;
+            /* Base text shadow for depth */
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
         }
 
         @keyframes revealChar {
             to {
                 opacity: 1;
                 transform: translateY(0);
+                /* Added glow effect on reveal */
+                text-shadow: 1px 1px 0px rgba(255,255,255,0.5), 
+                             0 0 8px #fff, 
+                             0 0 15px #ff80ab, 
+                             0 0 25px #ff80ab;
             }
         }
 
         #animatedCake {
-            font-size: 4em; 
+            font-size: 4.5em; 
             opacity: 0;
             transform: scale(0.5);
             animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-            animation-delay: 2s; /* Stagger after text (approx 1.8s for text) */
-            text-shadow: 0 0 15px #ffc107;
+            animation-delay: 2.2s; 
+            text-shadow: 0 0 15px #ffc107, 0 0 25px #ff9800;
             position: relative;
             z-index: 2;
+            margin-bottom: 10px;
         }
 
         #pulsingHeartSymbol {
-            font-size: 3.5em; 
+            font-size: 4em; 
             color: #ff4081;
             opacity: 0;
             animation: heartPulseSimple 1.5s infinite, popIn 0.8s ease-out forwards;
-            animation-delay: 2.5s; /* Stagger after cake */
+            animation-delay: 2.8s; 
+            text-shadow: 0 0 10px #fff, 0 0 20px #ff4081;
             position: relative;
             z-index: 2;
         }
@@ -299,40 +308,52 @@
 
         .falling-love-heart {
             position: absolute;
-            font-size: 1.5em; 
+            top: -50px; /* Start above the container */
+            font-size: 1.8em; 
             color: #ff80ab; 
             opacity: 0;
-            animation: fallAndFade 5s linear infinite;
+            animation: fallAndFade 7s linear infinite; /* Slower fall */
             user-select: none;
             pointer-events: none;
-            z-index: 1; /* Behind main text/cake/heart, above container bg */
+            z-index: 1; 
         }
 
         @keyframes fallAndFade {
             0% {
-                transform: translateY(-50px) rotate(0deg);
-                opacity: 1;
+                transform: translateY(0vh) rotate(0deg); /* Start at top of container */
+                opacity: 0.8;
             }
             100% {
-                transform: translateY(100vh) rotate(360deg); /* Fall through the container */
+                transform: translateY(110vh) rotate(360deg); /* Fall completely through container */
                 opacity: 0;
             }
         }
 
-
-        .heart {
+        .glowing-orb {
             position: absolute;
-            font-size: 2em;
-            color: #ff66b3;
-            animation: moveHearts 5s linear infinite;
-            z-index: 10;
+            border-radius: 50%;
+            opacity: 0;
+            animation: glowAndDrift 8s ease-in-out infinite;
             pointer-events: none;
+            z-index: 0; /* Deepest background */
         }
-        
-        @keyframes moveHearts {
-            0% { transform: translateX(100vw); }
-            100% { transform: translateX(-100%); }
+        @keyframes glowAndDrift {
+            0%, 100% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+            }
+            20% {
+                opacity: 0.5; /* Softer glow */
+            }
+            50% {
+                opacity: 0.7;
+                transform: translateY(-20px) scale(1.1);
+            }
+            80% {
+                opacity: 0.4;
+            }
         }
+
 
         .balloon {
             position: absolute;
@@ -374,7 +395,7 @@
         }
 
         .next-button {
-            position: absolute; /* Changed from fixed to be relative to parent message container */
+            position: absolute; 
             bottom: 30px;
             right: 30px;
             z-index: 100;
@@ -384,7 +405,9 @@
         #loveAnimation .next-button {
             opacity: 0;
             animation: fadeInButton 0.5s ease-in forwards;
-            animation-delay: 3.5s; /* Adjusted delay for new animations */
+            animation-delay: 4s; /* Adjusted delay for new animations */
+            bottom: 25px; /* Position within #loveAnimation padding */
+            right: 25px;
         }
 
         @keyframes fadeInButton {
@@ -393,7 +416,7 @@
         }
 
         .message-container {
-            position: relative; /* Ensures next-button is positioned relative to this */
+            position: relative; 
         }
 
         #finalSection {
@@ -585,6 +608,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 </div>
 
 <div id="loveAnimation" class="message-container">
+    <!-- Content dynamically populated by JS or static like this if preferred -->
     <div id="animatedLoveTextContainer">
         <span class="love-char">H</span><span class="love-char">a</span><span class="love-char">p</span><span class="love-char">p</span><span class="love-char">y</span>
         <span class="love-char"> </span>
@@ -620,7 +644,6 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 </div>
 
 <script>
-    // ========== EDIT NICKNAMES HERE ==========
     const nicknames = [
         "Princess", "Jaan","Cheesecake", "Darling", "Sweetheart",
         "My Love", "Ma Baby", "Kucchhuuu Pucchuu",
@@ -629,16 +652,9 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
     ];
 
     const loveStatements = [
-        "Are you sure?",
-        "Think about it...",
-        "Don't do this to me...",
-        "Please reconsider...",
-        "You mean the world to me...",
-        "I can't imagine life without you...",
-        "You're my everything...",
-        "Think again, jaan...",
-        "You're my sunshine...",
-        "You make my heart smile..."
+        "Are you sure?", "Think about it...", "Don't do this to me...", "Please reconsider...",
+        "You mean the world to me...", "I can't imagine life without you...", "You're my everything...",
+        "Think again, jaan...", "You're my sunshine...", "You make my heart smile..."
     ];
 
     let loveIndex = 0;
@@ -713,73 +729,45 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
     }
 
     function setupEventListeners() {
-        document.getElementById('yesButton').addEventListener('click', function() {
-            handleResponse('yes');
-        });
+        document.getElementById('yesButton').addEventListener('click', () => handleResponse('yes'));
+        document.getElementById('noButton').addEventListener('click', () => handleResponse('no'));
         
-        document.getElementById('noButton').addEventListener('click', function() {
-            handleResponse('no');
-        });
-        
-        document.getElementById('nextButton1').addEventListener('click', function() {
+        document.getElementById('nextButton1').addEventListener('click', () => {
             document.getElementById('birthdayMessage').style.display = 'none';
             document.getElementById('smallParagraphs').style.display = 'block';
         });
         
-        document.getElementById('nextButton2').addEventListener('click', function() {
+        document.getElementById('nextButton2').addEventListener('click', () => {
             document.getElementById('smallParagraphs').style.display = 'none';
             const hugeParagraph = document.getElementById('hugeParagraph');
-            const nextButton3 = document.getElementById('nextButton3'); // Get the button
+            const nextButton3 = document.getElementById('nextButton3');
             hugeParagraph.style.display = 'block';
 
-            // Initially, button is hidden by CSS (.opacity = 0, .pointerEvents = 'none')
-            // Add scroll listener to show it
             function checkScrollHugeParagraph() {
-                // Check if scrolled to the bottom (with a small buffer for precision)
-                if (hugeParagraph.scrollHeight - hugeParagraph.scrollTop <= hugeParagraph.clientHeight + 5) {
+                if (hugeParagraph.scrollHeight - hugeParagraph.scrollTop <= hugeParagraph.clientHeight + 10) { // Added a bit more buffer
                     nextButton3.classList.add('visible');
-                    hugeParagraph.removeEventListener('scroll', checkScrollHugeParagraph); // Remove listener once visible
+                    hugeParagraph.removeEventListener('scroll', checkScrollHugeParagraph);
                 }
             }
-            // Check once in case content is not scrollable enough to hide button initially
             checkScrollHugeParagraph(); 
             hugeParagraph.addEventListener('scroll', checkScrollHugeParagraph);
         });
         
-        document.getElementById('nextButton3').addEventListener('click', function() {
+        document.getElementById('nextButton3').addEventListener('click', () => {
             document.getElementById('hugeParagraph').style.display = 'none';
             const loveAnimationSection = document.getElementById('loveAnimation');
-            loveAnimationSection.style.display = 'flex'; // Use flex for new layout
+            loveAnimationSection.style.display = 'flex'; 
 
-            // Animate characters in "Happy Birthday My Love!"
             const chars = loveAnimationSection.querySelectorAll('#animatedLoveTextContainer .love-char');
-            let maxDelay = 0;
             chars.forEach((char, index) => {
-                const delay = index * 0.1;
-                char.style.animationDelay = `${delay}s`;
-                if (delay > maxDelay) maxDelay = delay;
+                char.style.animationDelay = `${index * 0.12}s`; // Slightly adjusted char delay
             });
             
-            // Trigger cake and heart animations with slight delay adjustments
-            // CSS animation-delay handles this, but JS can ensure dynamic calculation if needed
-            // e.g., document.getElementById('animatedCake').style.animationDelay = `${maxDelay + 0.5}s`;
-
-            // Add existing horizontal moving hearts
-            for (let i = 0; i < 30; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart'; // Existing class for horizontal moving hearts
-                heart.innerHTML = '❤️💗💝💖';
-                heart.style.top = `${Math.random() * 100}%`;
-                heart.style.animationDuration = `${Math.random() * 6 + 4}s`;
-                heart.style.animationDelay = `${Math.random() * 3}s`;
-                document.body.appendChild(heart); // Appended to body, z-index 10
-            }
-
-            // Add new falling hearts for this specific section
-            createFallingLoveHearts(loveAnimationSection, 20);
+            createFallingLoveHearts(loveAnimationSection, 25); // More hearts
+            createGlowingOrbs(loveAnimationSection, 15); // Add orbs
         });
         
-        document.getElementById('nextButton4').addEventListener('click', function() {
+        document.getElementById('nextButton4').addEventListener('click', () => {
             document.getElementById('loveAnimation').style.display = 'none';
             document.getElementById('finalSection').style.display = 'block';
             addFinalEffects();
@@ -787,40 +775,40 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
     }
 
     function handleResponse(response) {
+        const questionDiv = document.getElementById('question');
         if (response === 'no') {
             if (loveIndex < loveStatements.length) {
-                document.getElementById('question').innerHTML = `<p>${loveStatements[loveIndex]}</p>
+                questionDiv.innerHTML = `<p>${loveStatements[loveIndex]}</p>
                     <button class="button" id="yesButton">Yes</button>
                     <button class="button" id="noButton">No</button>`;
                 loveIndex++;
-                document.getElementById('yesButton').addEventListener('click', function() { handleResponse('yes'); });
-                document.getElementById('noButton').addEventListener('click', function() { handleResponse('no'); });
+                questionDiv.querySelector('#yesButton').addEventListener('click', () => handleResponse('yes'));
+                questionDiv.querySelector('#noButton').addEventListener('click', () => handleResponse('no'));
             } else {
-                document.getElementById('question').innerHTML = `<p>I'll keep asking until you say Yes!</p>
+                questionDiv.innerHTML = `<p>I'll keep asking until you say Yes!</p>
                     <button class="button" id="yesButton">Yes</button>`;
-                document.getElementById('yesButton').addEventListener('click', function() { handleResponse('yes'); });
+                questionDiv.querySelector('#yesButton').addEventListener('click', () => handleResponse('yes'));
             }
         } else if (response === 'yes') {
-            document.getElementById('question').style.display = 'none';
+            questionDiv.style.display = 'none';
             startCelebration();
         }
     }
 
     function startCelebration() {
         for (let i = 0; i < 30; i++) {
-            setTimeout(() => createNickname(), i * 300);
+            setTimeout(createNickname, i * 250); // Slightly slower creation
         }
-        nicknameInterval = setInterval(createNickname, 300);
+        nicknameInterval = setInterval(createNickname, 250);
         
         setTimeout(() => {
             clearInterval(nicknameInterval);
-            // Clear any remaining nicknames from the DOM that might not have self-removed
             const nicknameContainer = document.getElementById('nickname-container');
             while (nicknameContainer.firstChild) {
                 nicknameContainer.removeChild(nicknameContainer.firstChild);
             }
             document.getElementById('birthdayMessage').style.display = 'block';
-        }, 3000); // Show message after 3s, clear interval & nicknames
+        }, 4000); // Increased duration for nicknames
     }
 
     function createNickname() {
@@ -829,46 +817,64 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         nicknameEl.className = 'nickname';
         nicknameEl.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
         nicknameEl.style.color = colors[Math.floor(Math.random() * colors.length)];
-        nicknameEl.style.left = `${Math.random() * 80 + 10}%`; 
+        nicknameEl.style.left = `${Math.random() * 85 + 7.5}%`; // Centered more
         
         document.getElementById('nickname-container').appendChild(nicknameEl);
         
         setTimeout(() => {
-            // Check if element is still in DOM before trying to remove
-            if (nicknameEl.parentNode) {
-                nicknameEl.remove();
-            }
-        }, 7000); // Matches animation duration
+            if (nicknameEl.parentNode) nicknameEl.remove();
+        }, 7000);
     }
 
     function createFallingLoveHearts(containerElement, count) {
-        const heartEmojis = ['💖', '💕', '💞', '💓', '💗'];
+        const heartEmojis = ['💖', '💕', '💞', '💓', '💗', '❤️'];
         for (let i = 0; i < count; i++) {
             setTimeout(() => {
                 const heart = document.createElement('div');
                 heart.className = 'falling-love-heart';
                 heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                heart.style.left = `${Math.random() * 95}%`; 
-                heart.style.animationDuration = `${Math.random() * 3 + 4}s`; // 4-7s duration
-                heart.style.animationDelay = `${Math.random() * 2}s`; // Stagger appearance
+                heart.style.left = `${Math.random() * 90 + 5}%`; // Distribute more evenly
+                heart.style.animationDuration = `${Math.random() * 4 + 5}s`; // 5-9s
+                heart.style.animationDelay = `${Math.random() * 5}s`; // Increased random delay up to 5s
+                heart.style.fontSize = `${Math.random() * 0.8 + 1.2}em`; // Vary size a bit more
                 
-                containerElement.appendChild(heart); // Append to the #loveAnimation section
-
-                // Remove heart after animation to prevent DOM clutter
+                containerElement.appendChild(heart);
                 heart.addEventListener('animationend', () => {
-                    if (heart.parentNode) {
-                        heart.remove();
-                    }
+                    if (heart.parentNode) heart.remove();
                 });
-            }, i * 150); // Stagger creation of hearts
+            }, i * 200); // Slower creation stagger
         }
     }
 
+    function createGlowingOrbs(containerElement, count) {
+        const orbColors = ['rgba(255, 182, 193, 0.6)', 'rgba(255, 105, 180, 0.5)', 'rgba(255, 240, 245, 0.7)', 'rgba(221, 160, 221, 0.6)'];
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                const orb = document.createElement('div');
+                orb.className = 'glowing-orb';
+                orb.style.width = orb.style.height = `${Math.random() * 60 + 30}px`; // Size 30px to 90px
+                orb.style.backgroundColor = orbColors[Math.floor(Math.random() * orbColors.length)];
+                orb.style.left = `${Math.random() * 90}%`;
+                orb.style.top = `${Math.random() * 80}%`; // Start at various vertical positions too
+                orb.style.animationDuration = `${Math.random() * 5 + 7}s`; // 7-12s
+                orb.style.animationDelay = `${Math.random() * 4}s`;
+                
+                containerElement.appendChild(orb);
+                orb.addEventListener('animationend', () => { // Orbs will loop, but good practice if they didn't
+                    // For looping animations, this isn't strictly needed unless you want to re-randomize on loop end
+                    // if (orb.parentNode) orb.remove(); 
+                });
+            }, i * 300);
+        }
+    }
+
+
     function addFinalEffects() {
         const finalSection = document.getElementById('finalSection');
+        // Add floating hearts to final section
         for (let i = 0; i < 15; i++) {
             const heart = document.createElement('div');
-            heart.className = 'floating-heart';
+            heart.className = 'floating-heart'; // Existing class
             heart.innerHTML = '❤️';
             heart.style.left = `${Math.random() * 100}%`;
             heart.style.animationDuration = `${Math.random() * 12 + 8}s`;
@@ -877,9 +883,10 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             finalSection.appendChild(heart);
         }
         
+        // Add sparkles to final section
         for (let i = 0; i < 30; i++) {
             const sparkle = document.createElement('div');
-            sparkle.className = 'sparkle';
+            sparkle.className = 'sparkle'; // Existing class
             sparkle.style.left = `${Math.random() * 100}%`;
             sparkle.style.top = `${Math.random() * 100}%`;
             sparkle.style.animationDuration = `${Math.random() * 2 + 1}s`;
