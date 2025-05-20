@@ -50,7 +50,7 @@
 
         /* Common styles for modal-like sections */
         #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation {
-            display: none; /* All start hidden */
+            display: none !important; /* CRITICAL: Force all modals to start hidden */
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%); /* Center on screen */
@@ -81,39 +81,40 @@
 
         /* === #hugeParagraph - THE SCROLLABLE SECTION (Flexbox Approach) === */
         #hugeParagraph { /* This is the main modal container */
-            display: none; /* CRITICAL: MUST BE INITIALLY HIDDEN. JS will set to flex. */
+            /* display: none !important; <-- This is now handled by the shared rule above */
             width: 80%; max-width: 800px; max-height: 80vh; 
             animation: slideIn 1s ease-in-out;
             
-            flex-direction: column; /* Will be set to flex by JS */
-            padding: 25px; /* Padding for the overall modal box */
+            /* When JS sets display:flex, these flex properties will apply */
+            flex-direction: column; 
+            padding: 25px; 
         }
 
-        #hugeParagraphTextWrapper { /* NEW: Inner wrapper for the text, this will scroll */
-            flex-grow: 1; /* Allows this to take available vertical space */
-            overflow-y: auto; /* Makes this part scrollable */
-            margin-bottom: 20px; /* Space between text and the button below */
-            padding-right: 15px; /* Space for scrollbar to avoid overlapping text */
+        #hugeParagraphTextWrapper { /* Inner wrapper for the text, this will scroll */
+            flex-grow: 1; 
+            overflow-y: auto; 
+            margin-bottom: 20px; 
+            padding-right: 15px; 
             
             color: #333; font-size: 1.4em; 
             text-align: center; line-height: 1.6;
         }
-        #hugeParagraphTextWrapper p { margin: 0; } /* Remove default p margins */
+        #hugeParagraphTextWrapper p { margin: 0; } 
 
         /* Button within #hugeParagraph (now a flex item) */
         #hugeParagraph .next-button { /* Targets #nextButton3 */
-            flex-shrink: 0; /* Prevent button from shrinking */
-            align-self: center; /* Center horizontally within the flex column */
+            flex-shrink: 0; 
+            align-self: center; 
             
-            position: relative; /* Overrides general .next-button absolute */
-            bottom: auto; right: auto; /* Not needed with flex */
+            position: relative; 
+            bottom: auto; right: auto; 
 
-            opacity: 0; /* Initially hidden */
+            opacity: 0; 
             pointer-events: none;
             transition: opacity 0.5s ease-in-out;
             
-            margin: 0; /* Reset margin from .button, rely on flex alignment */
-            animation: none; /* IMPORTANT: Override the general bounce animation */
+            margin: 0; 
+            animation: none; 
             z-index: 51; 
         }
          #hugeParagraph .next-button.visible {
@@ -124,7 +125,7 @@
 
         /* === #loveAnimation Section === */
         #loveAnimation {
-            /* display: none; Will be set to flex by JS */
+            /* display: none !important; <-- Handled by shared rule. JS sets to flex. */
             flex-direction: column; align-items: center; justify-content: center;
             font-weight: 800; color: #ff66b3; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             animation: loveAppear 1.5s ease-out forwards, pulse 2s infinite 1.5s;
@@ -163,19 +164,19 @@
         #loveAnimation .next-button { opacity: 0; animation: fadeInButton 0.5s ease-in 4.2s forwards; }
         @keyframes fadeInButton { 0% { opacity: 0; } 100% { opacity: 1; } }
         
-        .message-container { position: relative; } /* For absolutely positioned next-buttons within these containers */
+        .message-container { position: relative; } 
 
         /* === Final Section - ENSURE FULL SCREEN AND NO TRANSFORM === */
         #finalSection {
-            display: none; /* Starts hidden */
+            display: none !important; /* CRITICAL: Force hidden initially */
             position: fixed; 
             top: 0; 
             left: 0; 
             width: 100%; 
             height: 100%;
-            transform: none !important; /* CRITICAL: Ensure no unwanted transform */
+            transform: none !important; /* CRITICAL: Ensure no unwanted transform from other modals */
             background: linear-gradient(135deg, #ffb6d9 0%, #c8f7c5 100%);
-            z-index: 60; /* High z-index to be on top */
+            z-index: 60; 
             overflow-y: auto; 
             padding: 40px 20px;
             box-sizing: border-box;
@@ -244,8 +245,8 @@
     <button class="button next-button" id="nextButton2">Next</button>
 </div>
 
-<div id="hugeParagraph" class="message-container"> <!-- This is the flex container modal -->
-    <div id="hugeParagraphTextWrapper"> <!-- This inner div will scroll -->
+<div id="hugeParagraph" class="message-container"> 
+    <div id="hugeParagraphTextWrapper"> 
         <p>MY LOVE,
 I truly pray for your successful future with ME, and I hope you achieve everything you want in life which is beneficial for you.
 Hamesha khush rahena jaan — whether I am with you or not, whether I am on earth or not.
@@ -262,7 +263,7 @@ Happy Birthday, Jaana (I tried my best to make it look the best, but still, it i
 I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 </p>
     </div>
-    <button class="button next-button" id="nextButton3">Next</button> <!-- This button is a flex item -->
+    <button class="button next-button" id="nextButton3">Next</button> 
 </div>
 
 <div id="loveAnimation" class="message-container">
@@ -325,8 +326,8 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         document.getElementById('noButton').addEventListener('click', () => handleResponse('no'));
         
         document.getElementById('nextButton1').addEventListener('click', () => {
-            document.getElementById('birthdayMessage').style.display = 'none';
-            document.getElementById('smallParagraphs').style.display = 'block';
+            document.getElementById('birthdayMessage').style.display = 'none'; // JS hides previous
+            document.getElementById('smallParagraphs').style.display = 'block'; // JS shows current
         });
         
         document.getElementById('nextButton2').addEventListener('click', () => {
@@ -335,7 +336,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             const hugeParagraphTextScroller = document.getElementById('hugeParagraphTextWrapper'); 
             const nextButton3 = hugeParagraphModal.querySelector('#nextButton3');
 
-            hugeParagraphModal.style.display = 'flex'; // Show the modal (it's a flex container)
+            hugeParagraphModal.style.display = 'flex'; // JS shows current, uses flex for layout
 
             function checkScrollHugeParagraph() {
                 const scrollBuffer = 10; 
@@ -365,7 +366,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             document.getElementById('loveAnimation').style.display = 'none';
             const finalSectionEl = document.getElementById('finalSection');
             finalSectionEl.style.display = 'block'; 
-            finalSectionEl.style.transform = 'none'; // Ensure no transform
+            finalSectionEl.style.transform = 'none'; // Ensure no transform from centering modals
             addFinalEffects();
         });
     }
@@ -395,7 +396,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             clearInterval(nicknameInterval);
             const nicknameContainer = document.getElementById('nickname-container');
             while (nicknameContainer.firstChild) { nicknameContainer.removeChild(nicknameContainer.firstChild); }
-            document.getElementById('birthdayMessage').style.display = 'block';
+            document.getElementById('birthdayMessage').style.display = 'block'; // JS Shows first modal
         }, 4500); 
     }
 
