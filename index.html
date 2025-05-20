@@ -77,7 +77,6 @@
             color: #d81b60;
             text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
             animation: floatUp 7s linear forwards;
-            /* left: var(--nickname-left); CSS variable was not defined, switched to random JS positioning */
             bottom: -50px;
             opacity: 0;
             pointer-events: none;
@@ -110,13 +109,13 @@
             z-index: 50;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            padding: 30px; /* General padding */
-            padding-bottom: 80px; /* Specific bottom padding for the button space */
+            padding: 30px;
+            padding-bottom: 80px; 
             border-radius: 20px;
             border: 2px solid rgba(255,102,179,0.3);
             box-shadow: 0 10px 30px rgba(255,102,179,0.2);
             max-width: 80%;
-            box-sizing: border-box; /* Ensures padding & border are within max-width */
+            box-sizing: border-box;
         }
         
         @keyframes slideIn {
@@ -133,16 +132,16 @@
             width: 80%;
             max-width: 800px;
             text-align: left;
-            animation: fadeIn 1s ease-in-out;
+            animation: fadeIn 1s ease-in-out; /* Changed from slideIn for variety */
             z-index: 50;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
-            padding: 25px; /* General padding */
-            padding-bottom: 80px; /* Specific bottom padding for the button space */
+            padding: 25px; 
+            padding-bottom: 80px;
             border-radius: 20px;
             border: 2px solid rgba(255,102,179,0.3);
             box-shadow: 0 10px 30px rgba(255,102,179,0.2);
-            box-sizing: border-box; /* Ensures padding & border are within width/max-width */
+            box-sizing: border-box;
         }
 
         .left-paragraphs, .right-paragraphs {
@@ -178,8 +177,8 @@
             max-height: 80vh;
             font-size: 1.5em;
             text-align: center;
-            padding: 30px; /* General padding */
-            padding-bottom: 80px; /* Specific bottom padding for the button space */
+            padding: 30px;
+            padding-bottom: 80px; 
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -189,8 +188,19 @@
             border: 2px solid rgba(255,102,179,0.3);
             box-shadow: 0 10px 30px rgba(255,102,179,0.2);
             color: #333;
-            box-sizing: border-box; /* Important with overflow-y and padding */
+            box-sizing: border-box;
         }
+
+        #hugeParagraph .next-button { /* Specific styling for button in hugeParagraph */
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease-in-out;
+        }
+         #hugeParagraph .next-button.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
 
         #loveAnimation {
             display: none;
@@ -198,8 +208,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 2em; /* Reduced size */
-            font-weight: 800; /* Made bolder */
+            font-size: 1.8em; /* Adjusted */
+            font-weight: 800; 
             color: #ff66b3;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             animation: 
@@ -208,13 +218,17 @@
             z-index: 50;
             width: 90%;
             text-align: center;
-            padding: 20px; /* General padding */
-            padding-bottom: 80px; /* Specific bottom padding for the button space */
+            padding: 20px; 
+            padding-bottom: 80px; 
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(5px);
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(255,102,179,0.3);
-            box-sizing: border-box; /* Ensures padding & border are within width */
+            box-sizing: border-box;
+            /* Added for new content layout */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         
         @keyframes loveAppear {
@@ -226,6 +240,85 @@
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
             50% { transform: translate(-50%, -50%) scale(1.1); }
         }
+
+        /* New styles for #loveAnimation content */
+        #animatedLoveTextContainer {
+            margin-bottom: 20px;
+            font-size: 1.8em; 
+            font-weight: bold;
+            color: #e91e63; 
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.7), 0 0 10px #ff80ab, 0 0 20px #ff80ab;
+            position: relative;
+            z-index: 2;
+        }
+
+        .love-char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealChar 0.5s forwards;
+        }
+
+        @keyframes revealChar {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #animatedCake {
+            font-size: 4em; 
+            opacity: 0;
+            transform: scale(0.5);
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            animation-delay: 2s; /* Stagger after text (approx 1.8s for text) */
+            text-shadow: 0 0 15px #ffc107;
+            position: relative;
+            z-index: 2;
+        }
+
+        #pulsingHeartSymbol {
+            font-size: 3.5em; 
+            color: #ff4081;
+            opacity: 0;
+            animation: heartPulseSimple 1.5s infinite, popIn 0.8s ease-out forwards;
+            animation-delay: 2.5s; /* Stagger after cake */
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes heartPulseSimple {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .falling-love-heart {
+            position: absolute;
+            font-size: 1.5em; 
+            color: #ff80ab; 
+            opacity: 0;
+            animation: fallAndFade 5s linear infinite;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1; /* Behind main text/cake/heart, above container bg */
+        }
+
+        @keyframes fallAndFade {
+            0% {
+                transform: translateY(-50px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg); /* Fall through the container */
+                opacity: 0;
+            }
+        }
+
 
         .heart {
             position: absolute;
@@ -281,16 +374,17 @@
         }
 
         .next-button {
-            position: fixed; /* Positioned relative to parent with transform (e.g., #birthdayMessage) */
+            position: absolute; /* Changed from fixed to be relative to parent message container */
             bottom: 30px;
             right: 30px;
             z-index: 100;
-            margin: 0; /* Overrides .button's margin */
+            margin: 0; 
         }
 
         #loveAnimation .next-button {
             opacity: 0;
-            animation: fadeInButton 0.5s ease-in 1.5s forwards;
+            animation: fadeInButton 0.5s ease-in forwards;
+            animation-delay: 3.5s; /* Adjusted delay for new animations */
         }
 
         @keyframes fadeInButton {
@@ -299,8 +393,7 @@
         }
 
         .message-container {
-            position: relative;
-            /* padding-bottom: 80px; /* This was overridden by ID selectors; specific padding now applied directly via IDs. */
+            position: relative; /* Ensures next-button is positioned relative to this */
         }
 
         #finalSection {
@@ -327,7 +420,7 @@
             border: 3px solid #ff66b3;
             position: relative;
             transition: all 0.3s ease;
-            box-sizing: border-box; /* Ensures padding & border are within max-width */
+            box-sizing: border-box; 
         }
 
         .para-box:hover {
@@ -364,7 +457,6 @@
             background: linear-gradient(90deg, transparent, #ff66b3, transparent);
         }
 
-        /* Confetti particles */
         .confetti {
             position: absolute;
             width: 12px;
@@ -386,7 +478,6 @@
             }
         }
 
-        /* Floating hearts */
         .floating-heart {
             position: absolute;
             font-size: 1.8em;
@@ -414,7 +505,6 @@
             }
         }
 
-        /* Sparkle effect */
         .sparkle {
             position: absolute;
             width: 5px;
@@ -495,7 +585,18 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 </div>
 
 <div id="loveAnimation" class="message-container">
-    I LOVE YOUUU JAAAAAAAAAN 💗💝💓💖💞💕💖💓💗💝😙
+    <div id="animatedLoveTextContainer">
+        <span class="love-char">H</span><span class="love-char">a</span><span class="love-char">p</span><span class="love-char">p</span><span class="love-char">y</span>
+        <span class="love-char"> </span>
+        <span class="love-char">B</span><span class="love-char">i</span><span class="love-char">r</span><span class="love-char">t</span><span class="love-char">h</span><span class="love-char">d</span><span class="love-char">a</span><span class="love-char">y</span>
+        <br>
+        <span class="love-char">M</span><span class="love-char">y</span>
+        <span class="love-char"> </span>
+        <span class="love-char">L</span><span class="love-char">o</span><span class="love-char">v</span><span class="love-char">e</span>
+        <span class="love-char">!</span>
+    </div>
+    <div id="animatedCake">🎂</div>
+    <div id="pulsingHeartSymbol">❤️</div>
     <button class="button next-button" id="nextButton4">Next</button>
 </div>
 
@@ -543,19 +644,16 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
     let loveIndex = 0;
     let nicknameInterval;
 
-    // Initialize all elements
     document.addEventListener('DOMContentLoaded', function() {
         createDecorations();
         setupEventListeners();
     });
 
-    // Create decorative elements
     function createDecorations() {
         const balloonColors = ["#ff66b3", "#ffcc00", "#66ccff", "#ff6666", "#cc66ff"];
         const bulbColors = ["#ff6666", "#66ff66", "#6666ff", "#ffcc00", "#cc66ff"];
         const confettiColors = ["#ff66b3", "#ff1493", "#66ccff", "#ffcc00", "#ff6666"];
         
-        // Create balloons
         for (let i = 0; i < 30; i++) {
             setTimeout(() => {
                 const balloon = document.createElement('div');
@@ -568,7 +666,6 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             }, i * 300);
         }
         
-        // Create bulbs
         for (let i = 0; i < 30; i++) {
             const bulb = document.createElement('div');
             bulb.className = 'bulb';
@@ -580,7 +677,6 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             document.getElementById('bulbs').appendChild(bulb);
         }
         
-        // Create confetti
         for (let i = 0; i < 80; i++) {
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
@@ -594,7 +690,6 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             document.getElementById('confetti-container').appendChild(confetti);
         }
         
-        // Create floating hearts
         for (let i = 0; i < 20; i++) {
             const heart = document.createElement('div');
             heart.className = 'floating-heart';
@@ -606,7 +701,6 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             document.getElementById('hearts-container').appendChild(heart);
         }
         
-        // Create sparkles
         for (let i = 0; i < 50; i++) {
             const sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
@@ -618,9 +712,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         }
     }
 
-    // Setup all event listeners
     function setupEventListeners() {
-        // Yes/No buttons
         document.getElementById('yesButton').addEventListener('click', function() {
             handleResponse('yes');
         });
@@ -629,7 +721,6 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             handleResponse('no');
         });
         
-        // Next buttons
         document.getElementById('nextButton1').addEventListener('click', function() {
             document.getElementById('birthdayMessage').style.display = 'none';
             document.getElementById('smallParagraphs').style.display = 'block';
@@ -637,23 +728,55 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         
         document.getElementById('nextButton2').addEventListener('click', function() {
             document.getElementById('smallParagraphs').style.display = 'none';
-            document.getElementById('hugeParagraph').style.display = 'block';
+            const hugeParagraph = document.getElementById('hugeParagraph');
+            const nextButton3 = document.getElementById('nextButton3'); // Get the button
+            hugeParagraph.style.display = 'block';
+
+            // Initially, button is hidden by CSS (.opacity = 0, .pointerEvents = 'none')
+            // Add scroll listener to show it
+            function checkScrollHugeParagraph() {
+                // Check if scrolled to the bottom (with a small buffer for precision)
+                if (hugeParagraph.scrollHeight - hugeParagraph.scrollTop <= hugeParagraph.clientHeight + 5) {
+                    nextButton3.classList.add('visible');
+                    hugeParagraph.removeEventListener('scroll', checkScrollHugeParagraph); // Remove listener once visible
+                }
+            }
+            // Check once in case content is not scrollable enough to hide button initially
+            checkScrollHugeParagraph(); 
+            hugeParagraph.addEventListener('scroll', checkScrollHugeParagraph);
         });
         
         document.getElementById('nextButton3').addEventListener('click', function() {
             document.getElementById('hugeParagraph').style.display = 'none';
-            document.getElementById('loveAnimation').style.display = 'block';
+            const loveAnimationSection = document.getElementById('loveAnimation');
+            loveAnimationSection.style.display = 'flex'; // Use flex for new layout
+
+            // Animate characters in "Happy Birthday My Love!"
+            const chars = loveAnimationSection.querySelectorAll('#animatedLoveTextContainer .love-char');
+            let maxDelay = 0;
+            chars.forEach((char, index) => {
+                const delay = index * 0.1;
+                char.style.animationDelay = `${delay}s`;
+                if (delay > maxDelay) maxDelay = delay;
+            });
             
-            // Add more hearts animation
+            // Trigger cake and heart animations with slight delay adjustments
+            // CSS animation-delay handles this, but JS can ensure dynamic calculation if needed
+            // e.g., document.getElementById('animatedCake').style.animationDelay = `${maxDelay + 0.5}s`;
+
+            // Add existing horizontal moving hearts
             for (let i = 0; i < 30; i++) {
                 const heart = document.createElement('div');
-                heart.className = 'heart';
+                heart.className = 'heart'; // Existing class for horizontal moving hearts
                 heart.innerHTML = '❤️💗💝💖';
                 heart.style.top = `${Math.random() * 100}%`;
                 heart.style.animationDuration = `${Math.random() * 6 + 4}s`;
                 heart.style.animationDelay = `${Math.random() * 3}s`;
-                document.body.appendChild(heart);
+                document.body.appendChild(heart); // Appended to body, z-index 10
             }
+
+            // Add new falling hearts for this specific section
+            createFallingLoveHearts(loveAnimationSection, 20);
         });
         
         document.getElementById('nextButton4').addEventListener('click', function() {
@@ -670,19 +793,12 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
                     <button class="button" id="yesButton">Yes</button>
                     <button class="button" id="noButton">No</button>`;
                 loveIndex++;
-                // Reattach event listeners to new buttons
-                document.getElementById('yesButton').addEventListener('click', function() {
-                    handleResponse('yes');
-                });
-                document.getElementById('noButton').addEventListener('click', function() {
-                    handleResponse('no');
-                });
+                document.getElementById('yesButton').addEventListener('click', function() { handleResponse('yes'); });
+                document.getElementById('noButton').addEventListener('click', function() { handleResponse('no'); });
             } else {
                 document.getElementById('question').innerHTML = `<p>I'll keep asking until you say Yes!</p>
                     <button class="button" id="yesButton">Yes</button>`;
-                document.getElementById('yesButton').addEventListener('click', function() {
-                    handleResponse('yes');
-                });
+                document.getElementById('yesButton').addEventListener('click', function() { handleResponse('yes'); });
             }
         } else if (response === 'yes') {
             document.getElementById('question').style.display = 'none';
@@ -691,39 +807,65 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
     }
 
     function startCelebration() {
-        // Create initial batch of nicknames
         for (let i = 0; i < 30; i++) {
             setTimeout(() => createNickname(), i * 300);
         }
-        
-        // Keep creating new nicknames continuously
         nicknameInterval = setInterval(createNickname, 300);
         
-        // Show birthday message after delay
         setTimeout(() => {
             clearInterval(nicknameInterval);
+            // Clear any remaining nicknames from the DOM that might not have self-removed
+            const nicknameContainer = document.getElementById('nickname-container');
+            while (nicknameContainer.firstChild) {
+                nicknameContainer.removeChild(nicknameContainer.firstChild);
+            }
             document.getElementById('birthdayMessage').style.display = 'block';
-        }, 3000);
+        }, 3000); // Show message after 3s, clear interval & nicknames
     }
 
     function createNickname() {
         const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
-        const nickname = document.createElement('div');
-        nickname.className = 'nickname';
-        nickname.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
-        nickname.style.color = colors[Math.floor(Math.random() * colors.length)];
-        nickname.style.left = `${Math.random() * 80 + 10}%`; // Random horizontal position
+        const nicknameEl = document.createElement('div');
+        nicknameEl.className = 'nickname';
+        nicknameEl.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
+        nicknameEl.style.color = colors[Math.floor(Math.random() * colors.length)];
+        nicknameEl.style.left = `${Math.random() * 80 + 10}%`; 
         
-        document.getElementById('nickname-container').appendChild(nickname);
+        document.getElementById('nickname-container').appendChild(nicknameEl);
         
-        // Remove after animation completes
         setTimeout(() => {
-            nickname.remove();
-        }, 7000);
+            // Check if element is still in DOM before trying to remove
+            if (nicknameEl.parentNode) {
+                nicknameEl.remove();
+            }
+        }, 7000); // Matches animation duration
+    }
+
+    function createFallingLoveHearts(containerElement, count) {
+        const heartEmojis = ['💖', '💕', '💞', '💓', '💗'];
+        for (let i = 0; i < count; i++) {
+            setTimeout(() => {
+                const heart = document.createElement('div');
+                heart.className = 'falling-love-heart';
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = `${Math.random() * 95}%`; 
+                heart.style.animationDuration = `${Math.random() * 3 + 4}s`; // 4-7s duration
+                heart.style.animationDelay = `${Math.random() * 2}s`; // Stagger appearance
+                
+                containerElement.appendChild(heart); // Append to the #loveAnimation section
+
+                // Remove heart after animation to prevent DOM clutter
+                heart.addEventListener('animationend', () => {
+                    if (heart.parentNode) {
+                        heart.remove();
+                    }
+                });
+            }, i * 150); // Stagger creation of hearts
+        }
     }
 
     function addFinalEffects() {
-        // Add floating hearts to final section
+        const finalSection = document.getElementById('finalSection');
         for (let i = 0; i < 15; i++) {
             const heart = document.createElement('div');
             heart.className = 'floating-heart';
@@ -732,10 +874,9 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             heart.style.animationDuration = `${Math.random() * 12 + 8}s`;
             heart.style.animationDelay = `${Math.random() * 5}s`;
             heart.style.fontSize = `${Math.random() * 2 + 1.5}em`;
-            document.getElementById('finalSection').appendChild(heart);
+            finalSection.appendChild(heart);
         }
         
-        // Add sparkles to final section
         for (let i = 0; i < 30; i++) {
             const sparkle = document.createElement('div');
             sparkle.className = 'sparkle';
@@ -743,7 +884,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             sparkle.style.top = `${Math.random() * 100}%`;
             sparkle.style.animationDuration = `${Math.random() * 2 + 1}s`;
             sparkle.style.animationDelay = `${Math.random() * 3}s`;
-            document.getElementById('finalSection').appendChild(sparkle);
+            finalSection.appendChild(sparkle);
         }
     }
 </script>
