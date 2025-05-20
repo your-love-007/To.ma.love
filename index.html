@@ -90,7 +90,7 @@
         }
 
         #birthdayMessage {
-            display: none;
+            display: none; /* Initial state */
             position: fixed;
             top: 50%;
             left: 50%;
@@ -100,7 +100,7 @@
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             padding: 30px;
-            padding-bottom: 80px; 
+            padding-bottom: 80px; /* Space for its next button */
             border-radius: 20px;
             border: 2px solid rgba(255,102,179,0.3);
             box-shadow: 0 10px 30px rgba(255,102,179,0.2);
@@ -114,7 +114,7 @@
         }
 
         #smallParagraphs {
-            display: none;
+            display: none; /* Initial state */
             position: fixed;
             top: 50%;
             left: 50%;
@@ -127,7 +127,7 @@
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             padding: 25px; 
-            padding-bottom: 80px;
+            padding-bottom: 80px; /* Space for its next button */
             border-radius: 20px;
             border: 2px solid rgba(255,102,179,0.3);
             box-shadow: 0 10px 30px rgba(255,102,179,0.2);
@@ -135,25 +135,18 @@
         }
 
         .left-paragraphs, .right-paragraphs {
-            width: 45%;
-            display: inline-block;
-            vertical-align: top;
-            margin: 10px;
+            width: 45%; display: inline-block; vertical-align: top; margin: 10px;
         }
-
         .left-paragraphs { text-align: left; }
         .right-paragraphs { text-align: right; }
 
         .paragraph {
-            margin-bottom: 15px;
-            line-height: 1.5;
-            color: #333;
+            margin-bottom: 15px; line-height: 1.5; color: #333;
             text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
         }
 
-        /* This is now the wrapper for the scrollable text and its button */
-        #hugeParagraphWrapper {
-            display: none; 
+        #hugeParagraph {
+            display: none; /* CRITICAL: Initial state */
             position: fixed;
             top: 50%;
             left: 50%;
@@ -172,42 +165,41 @@
             z-index: 50;
             box-sizing: border-box;
 
-            display: flex;
-            flex-direction: column;
-            padding: 25px; /* Overall padding */
-        }
-
-        #hugeParagraphText { /* This div contains the <p> and is scrollable */
-            flex-grow: 1; 
-            overflow-y: auto;
-            margin-bottom: 15px; /* Space between text and button */
+            overflow-y: auto; /* The container scrolls */
+            padding: 30px; /* General padding around the text */
+            padding-right: 40px; /* More padding on right to avoid scrollbar over text */
+            padding-bottom: 120px; /* Ample space for the button at the bottom */
             color: #333;
-            font-size: 1.4em; /* Adjusted for better fit */
-            text-align: center;
+            font-size: 1.4em; 
+            text-align: center; /* Text itself is centered */
             line-height: 1.6;
-            padding-right: 10px; /* For scrollbar space if needed */
+        }
+        #hugeParagraph p {
+            margin: 0; /* Reset paragraph margin if needed */
         }
 
-        /* Specific styling for the next button within hugeParagraphWrapper */
-        #hugeParagraphWrapper .next-button {
-            position: relative; /* Overrides general .next-button absolute positioning */
-            bottom: auto;
-            right: auto;
-            flex-shrink: 0; 
-            align-self: center; 
-            margin: 10px auto 0 auto; /* Top margin, auto for horizontal centering */
+
+        /* Specific styling for the next button within hugeParagraph */
+        #hugeParagraph .next-button { /* This targets #nextButton3 */
+            position: absolute; /* Positioned relative to #hugeParagraph */
+            bottom: 30px; /* Sits within the padding-bottom of #hugeParagraph */
+            left: 50%;
+            transform: translateX(-50%); /* Center horizontally */
+            z-index: 51; /* Above the text content */
+            
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease-in-out;
+            margin: 0; /* Override .button's default margin */
         }
-         #hugeParagraphWrapper .next-button.visible {
+         #hugeParagraph .next-button.visible {
             opacity: 1;
             pointer-events: auto;
         }
 
 
         #loveAnimation {
-            display: none; 
+            display: none; /* Initial state */
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -224,7 +216,7 @@
             max-width: 650px; 
             text-align: center;
             padding: 30px 20px; 
-            padding-bottom: 100px; 
+            padding-bottom: 100px; /* Space for its next button */
             background: rgba(255, 255, 255, 0.3); 
             backdrop-filter: blur(7px); 
             border-radius: 30px; 
@@ -244,52 +236,38 @@
         }
 
         #animatedLoveTextContainer {
-            margin-bottom: 20px;
-            font-size: 1.9em; 
-            font-weight: bold;
-            color: #e91e63; 
-            position: relative;
-            z-index: 2;
+            margin-bottom: 20px; font-size: 1.9em; font-weight: bold;
+            color: #e91e63; position: relative; z-index: 2;
         }
 
         .love-char {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(25px);
+            display: inline-block; opacity: 0; transform: translateY(25px);
             animation: revealChar 0.6s forwards;
             text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
         }
 
         @keyframes revealChar {
             to {
-                opacity: 1;
-                transform: translateY(0);
+                opacity: 1; transform: translateY(0);
                 text-shadow: 1px 1px 0px rgba(255,255,255,0.5), 
                              0 0 8px #fff, 0 0 15px #ff80ab, 0 0 25px #ff80ab;
             }
         }
 
         #animatedCake {
-            font-size: 4.2em; 
-            opacity: 0;
-            transform: scale(0.5);
+            font-size: 4.2em; opacity: 0; transform: scale(0.5);
             animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
             animation-delay: 2.3s; 
             text-shadow: 0 0 15px #ffc107, 0 0 25px #ff9800;
-            position: relative;
-            z-index: 2;
-            margin-bottom: 10px;
+            position: relative; z-index: 2; margin-bottom: 10px;
         }
 
         #pulsingHeartSymbol {
-            font-size: 3.8em; 
-            color: #ff4081;
-            opacity: 0;
+            font-size: 3.8em; color: #ff4081; opacity: 0;
             animation: heartPulseSimple 1.5s infinite, popIn 0.8s ease-out forwards;
             animation-delay: 2.9s; 
             text-shadow: 0 0 10px #fff, 0 0 20px #ff4081;
-            position: relative;
-            z-index: 2;
+            position: relative; z-index: 2;
         }
 
         @keyframes popIn {
@@ -303,15 +281,9 @@
         }
 
         .falling-love-heart {
-            position: absolute;
-            top: -50px; 
-            font-size: 1.8em; 
-            color: #ff80ab; 
-            opacity: 0;
-            animation: fallAndFade 7s linear infinite;
-            user-select: none;
-            pointer-events: none;
-            z-index: 1; 
+            position: absolute; top: -50px; font-size: 1.8em; color: #ff80ab; 
+            opacity: 0; animation: fallAndFade 7s linear infinite;
+            user-select: none; pointer-events: none; z-index: 1; 
         }
 
         @keyframes fallAndFade {
@@ -320,14 +292,11 @@
         }
 
         .glowing-orb {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0;
-            animation-name: glowAndDriftEnhanced; /* Changed name */
+            position: absolute; border-radius: 50%; opacity: 0;
+            animation-name: glowAndDriftEnhanced;
             animation-timing-function: ease-in-out;
             animation-iteration-count: infinite;
-            pointer-events: none;
-            z-index: 0; 
+            pointer-events: none; z-index: 0; 
         }
         @keyframes glowAndDriftEnhanced {
             0%, 100% {
@@ -343,9 +312,7 @@
         }
 
         .balloon {
-            position: absolute;
-            width: 60px; height: 80px;
-            border-radius: 50%;
+            position: absolute; width: 60px; height: 80px; border-radius: 50%;
             animation: balloonFloat 8s linear infinite;
             bottom: -100px; z-index: 10; opacity: 0.8; pointer-events: none;
         }
@@ -355,9 +322,7 @@
         }
 
         .bulb {
-            position: absolute;
-            width: 25px; height: 25px;
-            border-radius: 50%;
+            position: absolute; width: 25px; height: 25px; border-radius: 50%;
             animation: blink 1.5s infinite alternate;
             z-index: 10; filter: drop-shadow(0 0 5px currentColor); pointer-events: none;
         }
@@ -366,19 +331,22 @@
             100% { opacity: 1; transform: scale(1.1); }
         }
 
-        /* General styling for next buttons in popups */
+        /* General styling for next buttons in popups that use absolute positioning */
         .next-button {
             position: absolute; 
-            bottom: 25px; /* Default bottom */
-            right: 25px;  /* Default right */
-            z-index: 100;
-            margin: 0; /* Override .button's margin for precise positioning */
+            bottom: 25px; /* Default bottom for popups */
+            right: 25px;  /* Default right for popups */
+            z-index: 100; /* High z-index */
+            margin: 0; /* Reset margin for precise positioning */
         }
+        /* #hugeParagraph .next-button is styled specifically above */
+
 
         #loveAnimation .next-button { /* Specific for loveAnimation button */
             opacity: 0;
             animation: fadeInButton 0.5s ease-in forwards;
             animation-delay: 4.2s; 
+            /* position: absolute; bottom: 25px; right: 25px; are inherited */
         }
 
         @keyframes fadeInButton {
@@ -386,10 +354,11 @@
             100% { opacity: 1; }
         }
 
-        .message-container { position: relative; }
+        .message-container { position: relative; /* For absolute positioning of next-buttons */ }
 
         #finalSection {
-            display: none; position: fixed; top: 0; left: 0;
+            display: none; /* Initial state */
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             background: linear-gradient(135deg, #ffb6d9 0%, #c8f7c5 100%);
             z-index: 50; overflow-y: auto; padding: 40px 20px; box-sizing: border-box;
@@ -485,11 +454,9 @@
     <button class="button next-button" id="nextButton2">Next</button>
 </div>
 
-<!-- Renamed #hugeParagraph to #hugeParagraphWrapper -->
-<div id="hugeParagraphWrapper" class="message-container">
-    <!-- New div for the scrollable text -->
-    <div id="hugeParagraphText">
-        <p>MY LOVE,
+<!-- hugeParagraph is the main scrollable container -->
+<div id="hugeParagraph" class="message-container">
+    <p>MY LOVE,
 I truly pray for your successful future with ME, and I hope you achieve everything you want in life which is beneficial for you.
 Hamesha khush rahena jaan — whether I am with you or not, whether I am on earth or not.
 I love everything about you — your personality, your appearance, your mindset, your morals and ethics… literally everything.
@@ -504,8 +471,7 @@ I am so lucky to have you in my life.
 Happy Birthday, Jaana (I tried my best to make it look the best, but still, it isn't perfect, sorryyy) ❤️But I can guarantee my love for you is a hundred percent the best from my side.
 I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 </p>
-    </div>
-    <!-- Button is now a sibling of the text div, within the wrapper -->
+    <!-- Button is a direct child, positioned absolutely by CSS -->
     <button class="button next-button" id="nextButton3">Next</button>
 </div>
 
@@ -568,7 +534,6 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 
     function createDecorations() {
         const balloonColors = ["#ff66b3", "#ffcc00", "#66ccff", "#ff6666", "#cc66ff"];
-        // ... (rest of decoration creation is the same)
         const bulbColors = ["#ff6666", "#66ff66", "#6666ff", "#ffcc00", "#cc66ff"];
         const confettiColors = ["#ff66b3", "#ff1493", "#66ccff", "#ffcc00", "#ff6666"];
         
@@ -641,29 +606,29 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         
         document.getElementById('nextButton2').addEventListener('click', () => {
             document.getElementById('smallParagraphs').style.display = 'none';
-            const hugeParagraphWrapper = document.getElementById('hugeParagraphWrapper');
-            const hugeParagraphText = document.getElementById('hugeParagraphText'); // Scrollable text area
-            const nextButton3 = hugeParagraphWrapper.querySelector('#nextButton3'); // Button inside wrapper
+            const hugeParagraphEl = document.getElementById('hugeParagraph');
+            const nextButton3 = hugeParagraphEl.querySelector('#nextButton3');
 
-            hugeParagraphWrapper.style.display = 'flex'; // Show the wrapper (uses flex)
+            hugeParagraphEl.style.display = 'block'; // Show the #hugeParagraph container
 
             function checkScrollHugeParagraph() {
                 // Check if scrolled to near the bottom (added buffer)
-                if (hugeParagraphText.scrollHeight - hugeParagraphText.scrollTop <= hugeParagraphText.clientHeight + 20) { 
+                // The scrollHeight is the total height of the content,
+                // scrollTop is how much is scrolled from the top,
+                // clientHeight is the visible height of the element.
+                if (hugeParagraphEl.scrollHeight - hugeParagraphEl.scrollTop <= hugeParagraphEl.clientHeight + 15) { 
                     nextButton3.classList.add('visible');
-                    // Optional: remove listener if you only want it to appear once and stay
-                    // hugeParagraphText.removeEventListener('scroll', checkScrollHugeParagraph); 
                 } else {
-                     nextButton3.classList.remove('visible'); // Hide if scrolled back up
+                     nextButton3.classList.remove('visible'); 
                 }
             }
             // Initial check: if content is short, button might be visible immediately
             checkScrollHugeParagraph(); 
-            hugeParagraphText.addEventListener('scroll', checkScrollHugeParagraph);
+            hugeParagraphEl.addEventListener('scroll', checkScrollHugeParagraph);
         });
         
         document.getElementById('nextButton3').addEventListener('click', () => {
-            document.getElementById('hugeParagraphWrapper').style.display = 'none'; // Hide the wrapper
+            document.getElementById('hugeParagraph').style.display = 'none';
             const loveAnimationSection = document.getElementById('loveAnimation');
             loveAnimationSection.style.display = 'flex'; 
 
@@ -672,8 +637,8 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
                 char.style.animationDelay = `${index * 0.12}s`;
             });
             
-            createFallingLoveHearts(loveAnimationSection, 30); // More hearts
-            createGlowingOrbs(loveAnimationSection, 18); // Add orbs
+            createFallingLoveHearts(loveAnimationSection, 30);
+            createGlowingOrbs(loveAnimationSection, 18);
         });
         
         document.getElementById('nextButton4').addEventListener('click', () => {
@@ -689,7 +654,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             if (loveIndex < loveStatements.length) {
                 questionDiv.innerHTML = `<p>${loveStatements[loveIndex]}</p>
                     <button class="button" id="yesButtonNew">Yes</button>
-                    <button class="button" id="noButtonNew">No</button>`; // Use new IDs to avoid listener conflicts if any
+                    <button class="button" id="noButtonNew">No</button>`;
                 loveIndex++;
                 questionDiv.querySelector('#yesButtonNew').addEventListener('click', () => handleResponse('yes'));
                 questionDiv.querySelector('#noButtonNew').addEventListener('click', () => handleResponse('no'));
@@ -743,7 +708,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
                 heart.className = 'falling-love-heart';
                 heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
                 heart.style.left = `${Math.random() * 92 + 4}%`; 
-                heart.style.animationDuration = `${Math.random() * 4 + 6}s`; // 6-10s
+                heart.style.animationDuration = `${Math.random() * 4 + 6}s`; 
                 heart.style.animationDelay = `${Math.random() * 6}s`; 
                 heart.style.fontSize = `${Math.random() * 0.7 + 1.3}em`; 
                 heart.style.setProperty('--r-start', `${Math.random() * 120 - 60}deg`);
@@ -763,14 +728,13 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             setTimeout(() => {
                 const orb = document.createElement('div');
                 orb.className = 'glowing-orb';
-                orb.style.width = orb.style.height = `${Math.random() * 70 + 40}px`; // 40px to 110px
+                orb.style.width = orb.style.height = `${Math.random() * 70 + 40}px`;
                 orb.style.backgroundColor = orbColors[Math.floor(Math.random() * orbColors.length)];
                 orb.style.left = `${Math.random() * 90}%`;
                 orb.style.top = `${Math.random() * 85}%`; 
-                orb.style.animationDuration = `${Math.random() * 6 + 8}s`; // 8-14s
+                orb.style.animationDuration = `${Math.random() * 6 + 8}s`;
                 orb.style.animationDelay = `${Math.random() * 5}s`;
 
-                // Set CSS variables for dynamic animation paths
                 orb.style.setProperty('--tx-start', `${Math.random() * 60 - 30}px`); 
                 orb.style.setProperty('--ty-start', `${Math.random() * 50 - 25}px`);
                 orb.style.setProperty('--r-start', `${Math.random() * 180 - 90}deg`);
