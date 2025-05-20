@@ -20,68 +20,40 @@
         }
 
         #question {
-            margin-top: 20%;
-            font-size: 2em;
-            animation: fadeIn 2s ease-in-out;
-            text-shadow: 2px 2px 4px rgba(255,255,255,0.7);
-            position: relative;
-            z-index: 100;
+            margin-top: 20%; font-size: 2em; animation: fadeIn 2s ease-in-out;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.7); position: relative; z-index: 100;
         }
-        
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
+        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
 
         .button {
-            padding: 12px 25px;
-            font-size: 1.5em;
-            margin: 20px;
-            cursor: pointer;
-            border: none;
-            border-radius: 30px;
-            background: linear-gradient(45deg, #ff66b3, #ff1493);
-            color: white;
-            animation: bounce 2s infinite; /* General bounce for buttons */
+            padding: 12px 25px; font-size: 1.5em; margin: 20px; cursor: pointer;
+            border: none; border-radius: 30px;
+            background: linear-gradient(45deg, #ff66b3, #ff1493); color: white;
+            animation: bounce 2s infinite;
             box-shadow: 0 5px 15px rgba(255,102,179,0.4);
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 100;
+            transition: all 0.3s ease; position: relative; z-index: 100;
         }
-        
-        .button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(255,102,179,0.6);
-        }
-        
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+        .button:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(255,102,179,0.6); }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
         #nickname-container {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             overflow: hidden; z-index: 5; pointer-events: none;
         }
-
         .nickname {
             position: absolute; font-size: 2.5em; font-weight: bold;
             color: #d81b60; text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
             animation: floatUp 7s linear forwards;
             bottom: -50px; opacity: 0; pointer-events: none;
         }
-        
-        @keyframes floatUp {
-            0% { transform: translateY(0); opacity: 0;}
-            10% { opacity: 1; } 90% { opacity: 1; }
-            100% { transform: translateY(-100vh); opacity: 0;}
-        }
+        @keyframes floatUp { 0% { transform: translateY(0); opacity: 0;} 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100vh); opacity: 0;} }
 
-        #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation, #finalSection {
-            display: none; /* All message sections start hidden */
+        /* Common styles for modal-like sections */
+        #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation {
+            display: none; /* All start hidden */
             position: fixed;
             top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); /* Center on screen */
             z-index: 50;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
@@ -96,68 +68,63 @@
             padding: 30px; padding-bottom: 80px; 
             max-width: 80%;
         }
-        
-        @keyframes slideIn {
-            0% { transform: translate(-50%, -100%); }
-            100% { transform: translate(-50%, -50%); }
-        }
+        @keyframes slideIn { 0% { transform: translate(-50%, -100%); } 100% { transform: translate(-50%, -50%); } }
 
         #smallParagraphs {
             width: 80%; max-width: 800px; text-align: left;
             animation: fadeIn 1s ease-in-out; 
             padding: 25px; padding-bottom: 80px;
         }
-        .left-paragraphs, .right-paragraphs {
-            width: 45%; display: inline-block; vertical-align: top; margin: 10px;
-        }
-        .left-paragraphs { text-align: left; }
-        .right-paragraphs { text-align: right; }
-        .paragraph {
-            margin-bottom: 15px; line-height: 1.5; color: #333;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+        .left-paragraphs, .right-paragraphs { width: 45%; display: inline-block; vertical-align: top; margin: 10px; }
+        .left-paragraphs { text-align: left; } .right-paragraphs { text-align: right; }
+        .paragraph { margin-bottom: 15px; line-height: 1.5; color: #333; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
+
+        /* === #hugeParagraph - THE SCROLLABLE SECTION (Flexbox Approach) === */
+        #hugeParagraph { /* This is the main modal container */
+            width: 80%; max-width: 800px; max-height: 80vh; 
+            animation: slideIn 1s ease-in-out;
+            
+            display: flex; /* Switched to display: none initially, JS will set to flex */
+            flex-direction: column;
+            padding: 25px; /* Padding for the overall modal box */
         }
 
-        /* === #hugeParagraph - THE SCROLLABLE SECTION === */
-        #hugeParagraph {
-            width: 80%; max-width: 800px; max-height: 80vh; 
-            animation: slideIn 1s ease-in-out; /* Or fadeIn, as you prefer */
-            
-            overflow-y: auto; /* This makes the container scrollable */
-            padding: 30px; /* Padding for the text content */
-            padding-bottom: 100px; /* CRITICAL: Space at the bottom for the button */
+        #hugeParagraphTextWrapper { /* NEW: Inner wrapper for the text, this will scroll */
+            flex-grow: 1; /* Allows this to take available vertical space */
+            overflow-y: auto; /* Makes this part scrollable */
+            margin-bottom: 20px; /* Space between text and the button below */
+            padding-right: 15px; /* Space for scrollbar to avoid overlapping text */
             
             color: #333; font-size: 1.4em; 
             text-align: center; line-height: 1.6;
         }
-        /* Ensure the <p> tag inside doesn't have extra margins messing with layout */
-        #hugeParagraph p {
-            margin: 0; 
-            padding: 0;
-        }
+        #hugeParagraphTextWrapper p { margin: 0; } /* Remove default p margins */
 
-        /* === Button within #hugeParagraph === */
-        #hugeParagraph .next-button { /* Targets #nextButton3 specifically */
-            position: absolute; /* Relative to #hugeParagraph */
-            bottom: 25px; /* Positioned within the padding-bottom of #hugeParagraph */
-            left: 50%;
-            transform: translateX(-50%); /* Horizontally center */
+        /* Button within #hugeParagraph (now a flex item) */
+        #hugeParagraph .next-button { /* Targets #nextButton3 */
+            flex-shrink: 0; /* Prevent button from shrinking */
+            align-self: center; /* Center horizontally within the flex column */
             
+            position: relative; /* Overrides general .next-button absolute */
+            bottom: auto; right: auto; /* Not needed with flex */
+
             opacity: 0; /* Initially hidden */
             pointer-events: none;
             transition: opacity 0.5s ease-in-out;
             
-            margin: 0; /* Override general .button margin */
-            animation: none; /* Override the general bounce animation for this specific button */
-            z-index: 51; /* Ensure it's above the scrollable text if any overlap */
+            margin: 0; /* Reset margin from .button, rely on flex alignment */
+            animation: none; /* IMPORTANT: Override the general bounce animation */
+            z-index: 51; 
         }
          #hugeParagraph .next-button.visible {
             opacity: 1;
             pointer-events: auto;
         }
 
+
         /* === #loveAnimation Section === */
         #loveAnimation {
-            display: none; /* Set to flex by JS */
+            /* display: none; Will be set to flex by JS */
             flex-direction: column; align-items: center; justify-content: center;
             font-weight: 800; color: #ff66b3; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             animation: loveAppear 1.5s ease-out forwards, pulse 2s infinite 1.5s;
@@ -169,119 +136,58 @@
             box-shadow: 0 12px 40px rgba(255,102,179,0.4);
             overflow: hidden; 
         }
-        @keyframes loveAppear {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-        @keyframes pulse { /* Container pulse */
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.03); }
-        }
-        #animatedLoveTextContainer {
-            margin-bottom: 20px; font-size: 1.9em; font-weight: bold;
-            color: #e91e63; position: relative; z-index: 2;
-        }
-        .love-char {
-            display: inline-block; opacity: 0; transform: translateY(25px);
-            animation: revealChar 0.6s forwards;
-            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
-        }
-        @keyframes revealChar {
-            to {
-                opacity: 1; transform: translateY(0);
-                text-shadow: 1px 1px 0px rgba(255,255,255,0.5), 
-                             0 0 8px #fff, 0 0 15px #ff80ab, 0 0 25px #ff80ab;
-            }
-        }
-        #animatedCake {
-            font-size: 4.2em; opacity: 0; transform: scale(0.5);
-            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
-            animation-delay: 2.3s; 
-            text-shadow: 0 0 15px #ffc107, 0 0 25px #ff9800;
-            position: relative; z-index: 2; margin-bottom: 10px;
-        }
-        #pulsingHeartSymbol {
-            font-size: 3.8em; color: #ff4081; opacity: 0;
-            animation: heartPulseSimple 1.5s infinite, popIn 0.8s ease-out forwards;
-            animation-delay: 2.9s; 
-            text-shadow: 0 0 10px #fff, 0 0 20px #ff4081;
-            position: relative; z-index: 2;
-        }
-        @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.5); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-        @keyframes heartPulseSimple {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-        .falling-love-heart {
-            position: absolute; top: -50px; font-size: 1.8em; color: #ff80ab; 
-            opacity: 0; animation: fallAndFade 7s linear infinite;
-            user-select: none; pointer-events: none; z-index: 1; 
-        }
-        @keyframes fallAndFade {
-            0% { transform: translateY(0vh) rotate(var(--r-start, 0deg)); opacity: 0.9; }
-            100% { transform: translateY(115vh) rotate(var(--r-end, 360deg)); opacity: 0; }
-        }
-        .glowing-orb {
-            position: absolute; border-radius: 50%; opacity: 0;
-            animation-name: glowAndDriftEnhanced; animation-timing-function: ease-in-out;
-            animation-iteration-count: infinite; pointer-events: none; z-index: 0; 
-        }
-        @keyframes glowAndDriftEnhanced {
-            0%, 100% { opacity: 0; transform: translate(var(--tx-start), var(--ty-start)) scale(0.7) rotate(var(--r-start)); }
-            20% { opacity: 0.4; }
-            50% { opacity: 0.6; transform: translate(var(--tx-mid), var(--ty-mid)) scale(1) rotate(var(--r-mid)); }
-            80% { opacity: 0.3; }
-        }
-
+        @keyframes loveAppear { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+        @keyframes pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.03); } }
+        #animatedLoveTextContainer { margin-bottom: 20px; font-size: 1.9em; font-weight: bold; color: #e91e63; position: relative; z-index: 2; }
+        .love-char { display: inline-block; opacity: 0; transform: translateY(25px); animation: revealChar 0.6s forwards; text-shadow: 1px 1px 0px rgba(255,255,255,0.5); }
+        @keyframes revealChar { to { opacity: 1; transform: translateY(0); text-shadow: 1px 1px 0px rgba(255,255,255,0.5), 0 0 8px #fff, 0 0 15px #ff80ab, 0 0 25px #ff80ab; } }
+        #animatedCake { font-size: 4.2em; opacity: 0; transform: scale(0.5); animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; animation-delay: 2.3s; text-shadow: 0 0 15px #ffc107, 0 0 25px #ff9800; position: relative; z-index: 2; margin-bottom: 10px; }
+        #pulsingHeartSymbol { font-size: 3.8em; color: #ff4081; opacity: 0; animation: heartPulseSimple 1.5s infinite, popIn 0.8s ease-out forwards; animation-delay: 2.9s; text-shadow: 0 0 10px #fff, 0 0 20px #ff4081; position: relative; z-index: 2; }
+        @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes heartPulseSimple { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        .falling-love-heart { position: absolute; top: -50px; font-size: 1.8em; color: #ff80ab; opacity: 0; animation: fallAndFade 7s linear infinite; user-select: none; pointer-events: none; z-index: 1; }
+        @keyframes fallAndFade { 0% { transform: translateY(0vh) rotate(var(--r-start, 0deg)); opacity: 0.9; } 100% { transform: translateY(115vh) rotate(var(--r-end, 360deg)); opacity: 0; } }
+        .glowing-orb { position: absolute; border-radius: 50%; opacity: 0; animation-name: glowAndDriftEnhanced; animation-timing-function: ease-in-out; animation-iteration-count: infinite; pointer-events: none; z-index: 0; }
+        @keyframes glowAndDriftEnhanced { 0%, 100% { opacity: 0; transform: translate(var(--tx-start), var(--ty-start)) scale(0.7) rotate(var(--r-start)); } 20% { opacity: 0.4; } 50% { opacity: 0.6; transform: translate(var(--tx-mid), var(--ty-mid)) scale(1) rotate(var(--r-mid)); } 80% { opacity: 0.3; } }
 
         /* General .next-button style for popups (birthdayMessage, smallParagraphs, loveAnimation) */
-        .next-button {
+        .next-button { /* This applies to nextButton1, nextButton2, nextButton4 */
             position: absolute; 
             bottom: 25px; 
             right: 25px;  
             z-index: 100; 
             margin: 0; 
-            /* Bounce animation is inherited from .button unless overridden like for #hugeParagraph .next-button */
         }
+        /* Note: #hugeParagraph .next-button has its own specific styles above */
 
-        #loveAnimation .next-button { 
-            opacity: 0; animation: fadeInButton 0.5s ease-in 4.2s forwards;
-        }
+        #loveAnimation .next-button { opacity: 0; animation: fadeInButton 0.5s ease-in 4.2s forwards; }
         @keyframes fadeInButton { 0% { opacity: 0; } 100% { opacity: 1; } }
         
-        .message-container { position: relative; } /* Crucial for absolute positioning of next-buttons */
+        .message-container { position: relative; } /* For absolutely positioned next-buttons within these containers */
 
-        /* === Final Section === */
+        /* === Final Section - ENSURE FULL SCREEN AND NO TRANSFORM === */
         #finalSection {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: none; /* Starts hidden */
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
+            transform: none !important; /* CRITICAL: Ensure no unwanted transform */
             background: linear-gradient(135deg, #ffb6d9 0%, #c8f7c5 100%);
-            z-index: 50; overflow-y: auto; padding: 40px 20px;
+            z-index: 60; /* High z-index to be on top */
+            overflow-y: auto; 
+            padding: 40px 20px;
+            box-sizing: border-box;
         }
-        .para-box {
-            background-color: rgba(255,255,255,0.85); border-radius: 15px; padding: 30px;
-            margin: 25px auto; max-width: 700px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border: 3px solid #ff66b3; position: relative; transition: all 0.3s ease;
-        }
+        .para-box { background-color: rgba(255,255,255,0.85); border-radius: 15px; padding: 30px; margin: 25px auto; max-width: 700px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 3px solid #ff66b3; position: relative; transition: all 0.3s ease; box-sizing: border-box; }
         .para-box:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
-        .para-box::before {
-            content: ""; position: absolute; top: 0; left: 0; right: 0; height: 8px;
-            background: linear-gradient(90deg, #ff66b3, #ffcc00, #66ccff, #ff6666, #cc66ff);
-            border-radius: 15px 15px 0 0;
-        }
-        .para-box h2 {
-            color: #d81b60; margin-top: 0; position: relative; padding-bottom: 10px;
-        }
-        .para-box h2::after {
-            content: ""; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-            width: 100px; height: 3px; background: linear-gradient(90deg, transparent, #ff66b3, transparent);
-        }
+        .para-box::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 8px; background: linear-gradient(90deg, #ff66b3, #ffcc00, #66ccff, #ff6666, #cc66ff); border-radius: 15px 15px 0 0; }
+        .para-box h2 { color: #d81b60; margin-top: 0; position: relative; padding-bottom: 10px; }
+        .para-box h2::after { content: ""; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 100px; height: 3px; background: linear-gradient(90deg, transparent, #ff66b3, transparent); }
 
         /* Decorative elements */
         .balloon, .bulb, .confetti, .floating-heart, .sparkle { position: absolute; pointer-events: none; }
-        /* ... (styles for .balloon, .bulb, .confetti, .floating-heart, .sparkle remain the same) ... */
         .balloon { width: 60px; height: 80px; border-radius: 50%; animation: balloonFloat 8s linear infinite; bottom: -100px; z-index: 10; opacity: 0.8;}
         @keyframes balloonFloat { 0% { transform: translateY(0) rotate(0deg); opacity: 0.8; } 100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }}
         .bulb { width: 25px; height: 25px; border-radius: 50%; animation: blink 1.5s infinite alternate; z-index: 10; filter: drop-shadow(0 0 5px currentColor);}
@@ -338,9 +244,9 @@
     <button class="button next-button" id="nextButton2">Next</button>
 </div>
 
-<!-- #hugeParagraph is the scrollable container and also a .message-container for its button -->
-<div id="hugeParagraph" class="message-container">
-    <p>MY LOVE,
+<div id="hugeParagraph" class="message-container"> <!-- This is the flex container modal -->
+    <div id="hugeParagraphTextWrapper"> <!-- This inner div will scroll -->
+        <p>MY LOVE,
 I truly pray for your successful future with ME, and I hope you achieve everything you want in life which is beneficial for you.
 Hamesha khush rahena jaan — whether I am with you or not, whether I am on earth or not.
 I love everything about you — your personality, your appearance, your mindset, your morals and ethics… literally everything.
@@ -355,8 +261,8 @@ I am so lucky to have you in my life.
 Happy Birthday, Jaana (I tried my best to make it look the best, but still, it isn't perfect, sorryyy) ❤️But I can guarantee my love for you is a hundred percent the best from my side.
 I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 </p>
-    <!-- #nextButton3 is targeted by #hugeParagraph .next-button CSS -->
-    <button class="button next-button" id="nextButton3">Next</button>
+    </div>
+    <button class="button next-button" id="nextButton3">Next</button> <!-- This button is a flex item -->
 </div>
 
 <div id="loveAnimation" class="message-container">
@@ -395,17 +301,8 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 </div>
 
 <script>
-    const nicknames = [
-        "Princess", "Jaan","Cheesecake", "Darling", "Sweetheart",
-        "My Love", "Ma Baby", "Kucchhuuu Pucchuu",
-        "Bongi", "Jaana", "Wifey", "Cheesecake",
-        "Sunshine", "Chandaa", "Husbando", "Bongi"
-    ];
-    const loveStatements = [
-        "Are you sure?", "Think about it...", "Don't do this to me...", "Please reconsider...",
-        "You mean the world to me...", "I can't imagine life without you...", "You're my everything...",
-        "Think again, jaan...", "You're my sunshine...", "You make my heart smile..."
-    ];
+    const nicknames = ["Princess", "Jaan","Cheesecake", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Bongi", "Jaana", "Wifey", "Cheesecake", "Sunshine", "Chandaa", "Husbando", "Bongi"];
+    const loveStatements = ["Are you sure?", "Think about it...", "Don't do this to me...", "Please reconsider...", "You mean the world to me...", "I can't imagine life without you...", "You're my everything...", "Think again, jaan...", "You're my sunshine...", "You make my heart smile..."];
     let loveIndex = 0;
     let nicknameInterval;
 
@@ -415,10 +312,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
     });
 
     function createDecorations() {
-        const balloonColors = ["#ff66b3", "#ffcc00", "#66ccff", "#ff6666", "#cc66ff"];
-        const bulbColors = ["#ff6666", "#66ff66", "#6666ff", "#ffcc00", "#cc66ff"];
-        const confettiColors = ["#ff66b3", "#ff1493", "#66ccff", "#ffcc00", "#ff6666"];
-        
+        const balloonColors = ["#ff66b3", "#ffcc00", "#66ccff", "#ff6666", "#cc66ff"]; const bulbColors = ["#ff6666", "#66ff66", "#6666ff", "#ffcc00", "#cc66ff"]; const confettiColors = ["#ff66b3", "#ff1493", "#66ccff", "#ffcc00", "#ff6666"];
         for (let i = 0; i < 30; i++) { setTimeout(() => { const balloon = document.createElement('div'); balloon.className = 'balloon'; balloon.style.left = `${Math.random() * 100}%`; balloon.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)]; balloon.style.animationDuration = `${Math.random() * 8 + 6}s`; balloon.style.animationDelay = `${Math.random() * 5}s`; document.getElementById('balloons').appendChild(balloon); }, i * 300); }
         for (let i = 0; i < 30; i++) { const bulb = document.createElement('div'); bulb.className = 'bulb'; bulb.style.left = `${Math.random() * 100}%`; bulb.style.top = `${Math.random() * 100}%`; bulb.style.backgroundColor = bulbColors[Math.floor(Math.random() * bulbColors.length)]; bulb.style.animationDuration = `${Math.random() * 1.5 + 0.5}s`; bulb.style.animationDelay = `${Math.random() * 2}s`; document.getElementById('bulbs').appendChild(bulb); }
         for (let i = 0; i < 80; i++) { const confetti = document.createElement('div'); confetti.className = 'confetti'; confetti.style.left = `${Math.random() * 100}%`; confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)]; confetti.style.animationDuration = `${Math.random() * 4 + 3}s`; confetti.style.animationDelay = `${Math.random() * 5}s`; confetti.style.width = `${Math.random() * 10 + 5}px`; confetti.style.height = `${Math.random() * 10 + 5}px`; confetti.style.borderRadius = `${Math.random() * 50}%`; document.getElementById('confetti-container').appendChild(confetti); }
@@ -437,22 +331,23 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         
         document.getElementById('nextButton2').addEventListener('click', () => {
             document.getElementById('smallParagraphs').style.display = 'none';
-            const hugeParagraphEl = document.getElementById('hugeParagraph');
-            const nextButton3 = hugeParagraphEl.querySelector('#nextButton3');
+            const hugeParagraphModal = document.getElementById('hugeParagraph');
+            const hugeParagraphTextScroller = document.getElementById('hugeParagraphTextWrapper'); // The div that scrolls
+            const nextButton3 = hugeParagraphModal.querySelector('#nextButton3');
 
-            hugeParagraphEl.style.display = 'block'; 
+            hugeParagraphModal.style.display = 'flex'; // Show the modal (it's a flex container)
 
             function checkScrollHugeParagraph() {
-                const scrollBuffer = 20; // How close to the bottom to trigger
-                if (hugeParagraphEl.scrollHeight - hugeParagraphEl.scrollTop <= hugeParagraphEl.clientHeight + scrollBuffer) { 
+                const scrollBuffer = 10; // How close to bottom (in pixels) to show button
+                // Check if scrolled to the bottom of the text scroller
+                if (hugeParagraphTextScroller.scrollHeight - hugeParagraphTextScroller.scrollTop <= hugeParagraphTextScroller.clientHeight + scrollBuffer) { 
                     nextButton3.classList.add('visible');
                 } else {
                      nextButton3.classList.remove('visible'); 
                 }
             }
-            // Call once in case content is too short to scroll
-            checkScrollHugeParagraph(); 
-            hugeParagraphEl.addEventListener('scroll', checkScrollHugeParagraph);
+            checkScrollHugeParagraph(); // Call once in case content is too short to scroll
+            hugeParagraphTextScroller.addEventListener('scroll', checkScrollHugeParagraph); // Listen on the text scroller
         });
         
         document.getElementById('nextButton3').addEventListener('click', () => {
@@ -469,7 +364,9 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         
         document.getElementById('nextButton4').addEventListener('click', () => {
             document.getElementById('loveAnimation').style.display = 'none';
-            document.getElementById('finalSection').style.display = 'block';
+            const finalSectionEl = document.getElementById('finalSection');
+            finalSectionEl.style.display = 'block'; 
+            finalSectionEl.style.transform = 'none'; // Explicitly remove any transform
             addFinalEffects();
         });
     }
@@ -478,15 +375,12 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         const questionDiv = document.getElementById('question');
         if (response === 'no') {
             if (loveIndex < loveStatements.length) {
-                questionDiv.innerHTML = `<p>${loveStatements[loveIndex]}</p>
-                    <button class="button" id="yesButtonNew">Yes</button>
-                    <button class="button" id="noButtonNew">No</button>`;
+                questionDiv.innerHTML = `<p>${loveStatements[loveIndex]}</p><button class="button" id="yesButtonNew">Yes</button><button class="button" id="noButtonNew">No</button>`;
                 loveIndex++;
                 questionDiv.querySelector('#yesButtonNew').addEventListener('click', () => handleResponse('yes'));
                 questionDiv.querySelector('#noButtonNew').addEventListener('click', () => handleResponse('no'));
             } else {
-                questionDiv.innerHTML = `<p>I'll keep asking until you say Yes!</p>
-                    <button class="button" id="yesButtonFinal">Yes</button>`;
+                questionDiv.innerHTML = `<p>I'll keep asking until you say Yes!</p><button class="button" id="yesButtonFinal">Yes</button>`;
                 questionDiv.querySelector('#yesButtonFinal').addEventListener('click', () => handleResponse('yes'));
             }
         } else if (response === 'yes') {
@@ -508,8 +402,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 
     function createNickname() {
         const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
-        const nicknameEl = document.createElement('div');
-        nicknameEl.className = 'nickname';
+        const nicknameEl = document.createElement('div'); nicknameEl.className = 'nickname';
         nicknameEl.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
         nicknameEl.style.color = colors[Math.floor(Math.random() * colors.length)];
         nicknameEl.style.left = `${Math.random() * 85 + 7.5}%`; 
@@ -523,12 +416,9 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             setTimeout(() => {
                 const heart = document.createElement('div'); heart.className = 'falling-love-heart';
                 heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                heart.style.left = `${Math.random() * 92 + 4}%`; 
-                heart.style.animationDuration = `${Math.random() * 4 + 6}s`; 
-                heart.style.animationDelay = `${Math.random() * 6}s`; 
-                heart.style.fontSize = `${Math.random() * 0.7 + 1.3}em`; 
-                heart.style.setProperty('--r-start', `${Math.random() * 120 - 60}deg`);
-                heart.style.setProperty('--r-end', `${Math.random() * 360 - 180}deg`);
+                heart.style.left = `${Math.random() * 92 + 4}%`; heart.style.animationDuration = `${Math.random() * 4 + 6}s`; 
+                heart.style.animationDelay = `${Math.random() * 6}s`; heart.style.fontSize = `${Math.random() * 0.7 + 1.3}em`; 
+                heart.style.setProperty('--r-start', `${Math.random() * 120 - 60}deg`); heart.style.setProperty('--r-end', `${Math.random() * 360 - 180}deg`);
                 containerElement.appendChild(heart);
                 heart.addEventListener('animationend', () => { if (heart.parentNode) heart.remove(); });
             }, i * 180); 
@@ -543,14 +433,10 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
                 orb.style.width = orb.style.height = `${Math.random() * 70 + 40}px`;
                 orb.style.backgroundColor = orbColors[Math.floor(Math.random() * orbColors.length)];
                 orb.style.left = `${Math.random() * 90}%`; orb.style.top = `${Math.random() * 85}%`; 
-                orb.style.animationDuration = `${Math.random() * 6 + 8}s`;
-                orb.style.animationDelay = `${Math.random() * 5}s`;
-                orb.style.setProperty('--tx-start', `${Math.random() * 60 - 30}px`); 
-                orb.style.setProperty('--ty-start', `${Math.random() * 50 - 25}px`);
-                orb.style.setProperty('--r-start', `${Math.random() * 180 - 90}deg`);
-                orb.style.setProperty('--tx-mid', `${Math.random() * 80 - 40}px`);
-                orb.style.setProperty('--ty-mid', `${Math.random() * 70 - 35}px`);
-                orb.style.setProperty('--r-mid', `${Math.random() * 360 - 180}deg`);
+                orb.style.animationDuration = `${Math.random() * 6 + 8}s`; orb.style.animationDelay = `${Math.random() * 5}s`;
+                orb.style.setProperty('--tx-start', `${Math.random() * 60 - 30}px`); orb.style.setProperty('--ty-start', `${Math.random() * 50 - 25}px`);
+                orb.style.setProperty('--r-start', `${Math.random() * 180 - 90}deg`); orb.style.setProperty('--tx-mid', `${Math.random() * 80 - 40}px`);
+                orb.style.setProperty('--ty-mid', `${Math.random() * 70 - 35}px`); orb.style.setProperty('--r-mid', `${Math.random() * 360 - 180}deg`);
                 containerElement.appendChild(orb);
             }, i * 250);
         }
