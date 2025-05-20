@@ -41,12 +41,20 @@
             overflow: hidden; z-index: 5; pointer-events: none;
         }
         .nickname {
-            position: absolute; font-size: 2.5em; font-weight: bold;
+            position: absolute; font-size: 2.2em; /* Slightly reduced to help with clustering */
+            font-weight: bold;
             color: #d81b60; text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
             animation: floatUp 7s linear forwards;
-            bottom: -50px; opacity: 0; pointer-events: none;
+            bottom: -60px; /* Start slightly lower */
+            opacity: 0; pointer-events: none;
+            white-space: nowrap; /* Prevent wrapping if nickname is long */
         }
-        @keyframes floatUp { 0% { transform: translateY(0); opacity: 0;} 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100vh); opacity: 0;} }
+        @keyframes floatUp { 
+            0% { transform: translateY(0) scale(0.8); opacity: 0;} /* Start smaller */
+            10% { opacity: 0.9; transform: translateY(-10vh) scale(1); } /* Fade in and grow */
+            90% { opacity: 0.9; transform: translateY(-90vh) scale(1); }
+            100% { transform: translateY(-100vh) scale(0.8); opacity: 0;} /* Fade out and shrink */
+        }
 
         /* Common styles for modal-like sections (except finalSection) */
         #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation {
@@ -99,7 +107,7 @@
         /* Button within #hugeParagraph */
         #hugeParagraph .next-button { /* Targets #nextButton3 specifically */
             position: absolute; /* Relative to #hugeParagraph */
-            bottom: 99px; /* Positioned within the padding-bottom of #hugeParagraph */
+            bottom: 25px; /* Positioned within the padding-bottom of #hugeParagraph */
             left: 50%;
             transform: translateX(-50%); /* Horizontally center */
             
@@ -281,12 +289,12 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         <p> you'll always be my one and only wife Insha'Allah you're more then enough for me, never ever think that i'll ever choose someone over you. I'll never forget you thats a bond promise. muwaa  </p>
     </div>
     <div class="para-box">
-        <h2>Me-a proud sniper</h2>
+        <h2>ME- a proud sniper</h2>
         <p>I have told you before to but its not enough.. I still can't believe how i got you as my wifey- Masha'Allah not only you're beautiful from the outside but he inside toooo, from that cute face, mezmorizing eyes, and those sweet lips🤌🏻 to your mindset, emotional intelligence, thinking pattern and having mindfulness and clarity is something for which i can't express enough words. I seriously serious love you!</p>
     </div>
     <div class="para-box">
         <h2>Best Memories</h2>
-        <p> From seeing slay on your story, making you giggle in the open house, the start of bio talks, that subtle hint in starting time, the ribbon you gave me from your hand, sitting close to you(the challenge), your cake that you made, when i got to know that you also saved dates, THE BAKE SALE, when you send me yo pics(Masha'Allah my gorgeous), and every I love you, kisses and vms, to deep talks and some disagreements and arguments, Every memory we've created together, from the silly moments to the deep conversations, has become a treasure I hold close to my heart. .</p>
+        <p> From seeing slay on your story, making you giggle in the open house, the start of bio talks, that subtle hint in starting time, the ribbon you gave me from your hand, sitting close to you(the challenge), your cake that you made, when i got to know that you also saved dates, THE BAKE SALE, when you send me yo pics(Masha'Allah my gorgeous), and every I love you, kisses and vms, to deeo talks and some disagreements and arguments, Every memory we've created together, from the silly moments to the deep conversations, has become a treasure I hold close to my heart. .</p>
     </div>
     <div class="para-box">
         <h2>Our Future Together</h2>
@@ -295,10 +303,18 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 </div>
 
 <script>
-    const nicknames = ["Princess", "Jaan","Cheesecake", "Darling", "Sweetheart", "My Love", "Ma Baby", "Kucchhuuu Pucchuu", "Jaana", "Wifey", "Bongi"];
+    // ========== UPDATED NICKNAMES LIST ==========
+    const nicknames = [
+        "Princess", "Jaana", "Cheesecake", "Jaan", 
+        "Darling", "Wifey", "Sweetheart", "Bongi"
+    ];
+    // =============================================
+
     const loveStatements = ["Are you sure?", "Think about it...", "Don't do this to me...", "Please reconsider...", "You mean the world to me...", "I can't imagine life without you...", "You're my everything...", "Think again, jaan...", "You're my sunshine...", "You make my heart smile..."];
     let loveIndex = 0;
     let nicknameInterval;
+    let isNicknameAnimationActive = false;
+
 
     document.addEventListener('DOMContentLoaded', function() {
         createDecorations();
@@ -319,6 +335,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         document.getElementById('noButton').addEventListener('click', () => handleResponse('no'));
         
         document.getElementById('nextButton1').addEventListener('click', () => {
+            stopNicknameAnimation(); // Stop nicknames when leaving birthdayMessage
             document.getElementById('birthdayMessage').style.display = 'none'; 
             document.getElementById('smallParagraphs').style.display = 'block'; 
         });
@@ -377,29 +394,53 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             }
         } else if (response === 'yes') {
             questionDiv.style.display = 'none';
-            startCelebration();
+            startNicknameAnimation(); 
+            // Show birthday message after a short delay to let some nicknames appear
+            setTimeout(() => {
+                document.getElementById('birthdayMessage').style.display = 'block';
+            }, 500); 
         }
     }
 
-    function startCelebration() {
-        for (let i = 0; i < 30; i++) { setTimeout(createNickname, i * 220); }
-        nicknameInterval = setInterval(createNickname, 220);
-        setTimeout(() => {
-            clearInterval(nicknameInterval);
-            const nicknameContainer = document.getElementById('nickname-container');
-            while (nicknameContainer.firstChild) { nicknameContainer.removeChild(nicknameContainer.firstChild); }
-            document.getElementById('birthdayMessage').style.display = 'block'; // JS Shows first modal
-        }, 4500); 
+    function startNicknameAnimation() {
+        if (isNicknameAnimationActive) return; // Prevent multiple intervals
+        isNicknameAnimationActive = true;
+        // Create initial batch of nicknames
+        for (let i = 0; i < 5; i++) { // Reduced initial batch
+            setTimeout(createNickname, i * 400); // Slower initial creation
+        }
+        nicknameInterval = setInterval(createNickname, 800); // Slower continuous creation
+    }
+
+    function stopNicknameAnimation() {
+        isNicknameAnimationActive = false;
+        clearInterval(nicknameInterval);
+        const nicknameContainer = document.getElementById('nickname-container');
+        // Remove all child elements (nicknames) from the container
+        while (nicknameContainer.firstChild) {
+            nicknameContainer.removeChild(nicknameContainer.firstChild);
+        }
     }
 
     function createNickname() {
+        if (!isNicknameAnimationActive) return; // Stop creating if animation is no longer active
+
         const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
-        const nicknameEl = document.createElement('div'); nicknameEl.className = 'nickname';
+        const nicknameEl = document.createElement('div'); 
+        nicknameEl.className = 'nickname';
         nicknameEl.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
         nicknameEl.style.color = colors[Math.floor(Math.random() * colors.length)];
-        nicknameEl.style.left = `${Math.random() * 85 + 7.5}%`; 
+        
+        // Try to position more sparsely
+        let randomLeft = Math.random() * 70 + 15; // % from 15% to 85%
+        nicknameEl.style.left = `${randomLeft}%`; 
+        nicknameEl.style.animationDelay = `${Math.random() * 0.5}s`; // Slight random start delay
+
         document.getElementById('nickname-container').appendChild(nicknameEl);
-        setTimeout(() => { if (nicknameEl.parentNode) nicknameEl.remove(); }, 7000);
+        
+        setTimeout(() => { 
+            if (nicknameEl.parentNode) nicknameEl.remove(); 
+        }, 7000); // Corresponds to animation duration
     }
 
     function createFallingLoveHearts(containerElement, count) {
