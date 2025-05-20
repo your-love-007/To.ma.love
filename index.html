@@ -48,9 +48,9 @@
         }
         @keyframes floatUp { 0% { transform: translateY(0); opacity: 0;} 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-100vh); opacity: 0;} }
 
-        /* Common styles for modal-like sections */
+        /* Common styles for modal-like sections (except finalSection) */
         #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation {
-            display: none !important; /* CRITICAL: Force all modals to start hidden */
+            display: none; /* All start hidden, JS will show them */
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%); /* Center on screen */
@@ -63,58 +63,52 @@
             box-sizing: border-box;
         }
 
-        #birthdayMessage {
+        #birthdayMessage { /* Specific to birthdayMessage */
             animation: slideIn 1s ease-in-out;
-            padding: 30px; padding-bottom: 80px; 
+            padding: 30px; padding-bottom: 80px; /* Space for its own next button */
             max-width: 80%;
         }
         @keyframes slideIn { 0% { transform: translate(-50%, -100%); } 100% { transform: translate(-50%, -50%); } }
 
-        #smallParagraphs {
+        #smallParagraphs { /* Specific to smallParagraphs */
             width: 80%; max-width: 800px; text-align: left;
             animation: fadeIn 1s ease-in-out; 
-            padding: 25px; padding-bottom: 80px;
+            padding: 25px; padding-bottom: 80px; /* Space for its own next button */
         }
         .left-paragraphs, .right-paragraphs { width: 45%; display: inline-block; vertical-align: top; margin: 10px; }
         .left-paragraphs { text-align: left; } .right-paragraphs { text-align: right; }
         .paragraph { margin-bottom: 15px; line-height: 1.5; color: #333; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
 
-        /* === #hugeParagraph - THE SCROLLABLE SECTION (Flexbox Approach) === */
+        /* === #hugeParagraph - THE SCROLLABLE SECTION === */
         #hugeParagraph { /* This is the main modal container */
-            /* display: none !important; <-- This is now handled by the shared rule above */
             width: 80%; max-width: 800px; max-height: 80vh; 
             animation: slideIn 1s ease-in-out;
             
-            /* When JS sets display:flex, these flex properties will apply */
-            flex-direction: column; 
-            padding: 25px; 
-        }
-
-        #hugeParagraphTextWrapper { /* Inner wrapper for the text, this will scroll */
-            flex-grow: 1; 
-            overflow-y: auto; 
-            margin-bottom: 20px; 
-            padding-right: 15px; 
+            overflow-y: auto; /* The container itself scrolls if content is too long */
+            padding: 30px; /* Padding for the text content */
+            padding-bottom: 100px; /* CRITICAL: Space at the bottom for the button to sit in */
             
             color: #333; font-size: 1.4em; 
             text-align: center; line-height: 1.6;
         }
-        #hugeParagraphTextWrapper p { margin: 0; } 
+        #hugeParagraph p { /* Ensure the <p> tag inside doesn't have extra margins */
+            margin: 0; 
+            padding: 0;
+        }
 
-        /* Button within #hugeParagraph (now a flex item) */
-        #hugeParagraph .next-button { /* Targets #nextButton3 */
-            flex-shrink: 0; 
-            align-self: center; 
+        /* Button within #hugeParagraph */
+        #hugeParagraph .next-button { /* Targets #nextButton3 specifically */
+            position: absolute; /* Relative to #hugeParagraph */
+            bottom: 25px; /* Positioned within the padding-bottom of #hugeParagraph */
+            left: 50%;
+            transform: translateX(-50%); /* Horizontally center */
             
-            position: relative; 
-            bottom: auto; right: auto; 
-
-            opacity: 0; 
+            opacity: 0; /* Initially hidden */
             pointer-events: none;
             transition: opacity 0.5s ease-in-out;
             
-            margin: 0; 
-            animation: none; 
+            margin: 0; /* Override general .button margin */
+            animation: none; /* Override the general bounce animation for this specific button */
             z-index: 51; 
         }
          #hugeParagraph .next-button.visible {
@@ -125,12 +119,12 @@
 
         /* === #loveAnimation Section === */
         #loveAnimation {
-            /* display: none !important; <-- Handled by shared rule. JS sets to flex. */
+            display: none; /* JS sets to flex */
             flex-direction: column; align-items: center; justify-content: center;
             font-weight: 800; color: #ff66b3; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             animation: loveAppear 1.5s ease-out forwards, pulse 2s infinite 1.5s;
             width: 90%; max-width: 650px; 
-            text-align: center; padding: 30px 20px; padding-bottom: 100px; 
+            text-align: center; padding: 30px 20px; padding-bottom: 100px; /* Space for its button */
             background: rgba(255, 255, 255, 0.3); 
             backdrop-filter: blur(7px); 
             border-radius: 30px; 
@@ -159,16 +153,17 @@
             z-index: 100; 
             margin: 0; 
         }
-        /* Note: #hugeParagraph .next-button has its own specific styles above */
+        /* Note: #hugeParagraph .next-button has its own specific styles above, making it centered at the bottom */
 
         #loveAnimation .next-button { opacity: 0; animation: fadeInButton 0.5s ease-in 4.2s forwards; }
         @keyframes fadeInButton { 0% { opacity: 0; } 100% { opacity: 1; } }
         
+        /* This class is added to each modal for context, if needed, but .next-button positioning is handled above */
         .message-container { position: relative; } 
 
         /* === Final Section - ENSURE FULL SCREEN AND NO TRANSFORM === */
         #finalSection {
-            display: none !important; /* CRITICAL: Force hidden initially */
+            display: none; /* Starts hidden, JS will show it */
             position: fixed; 
             top: 0; 
             left: 0; 
@@ -246,8 +241,7 @@
 </div>
 
 <div id="hugeParagraph" class="message-container"> 
-    <div id="hugeParagraphTextWrapper"> 
-        <p>MY LOVE,
+    <p>MY LOVE,
 I truly pray for your successful future with ME, and I hope you achieve everything you want in life which is beneficial for you.
 Hamesha khush rahena jaan — whether I am with you or not, whether I am on earth or not.
 I love everything about you — your personality, your appearance, your mindset, your morals and ethics… literally everything.
@@ -262,7 +256,6 @@ I am so lucky to have you in my life.
 Happy Birthday, Jaana (I tried my best to make it look the best, but still, it isn't perfect, sorryyy) ❤️But I can guarantee my love for you is a hundred percent the best from my side.
 I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 </p>
-    </div>
     <button class="button next-button" id="nextButton3">Next</button> 
 </div>
 
@@ -326,28 +319,27 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         document.getElementById('noButton').addEventListener('click', () => handleResponse('no'));
         
         document.getElementById('nextButton1').addEventListener('click', () => {
-            document.getElementById('birthdayMessage').style.display = 'none'; // JS hides previous
-            document.getElementById('smallParagraphs').style.display = 'block'; // JS shows current
+            document.getElementById('birthdayMessage').style.display = 'none'; 
+            document.getElementById('smallParagraphs').style.display = 'block'; 
         });
         
         document.getElementById('nextButton2').addEventListener('click', () => {
             document.getElementById('smallParagraphs').style.display = 'none';
             const hugeParagraphModal = document.getElementById('hugeParagraph');
-            const hugeParagraphTextScroller = document.getElementById('hugeParagraphTextWrapper'); 
             const nextButton3 = hugeParagraphModal.querySelector('#nextButton3');
 
-            hugeParagraphModal.style.display = 'flex'; // JS shows current, uses flex for layout
+            hugeParagraphModal.style.display = 'block'; // Show the modal. It's scrollable due to CSS.
 
             function checkScrollHugeParagraph() {
-                const scrollBuffer = 10; 
-                if (hugeParagraphTextScroller.scrollHeight - hugeParagraphTextScroller.scrollTop <= hugeParagraphTextScroller.clientHeight + scrollBuffer) { 
+                const scrollBuffer = 15; 
+                if (hugeParagraphModal.scrollHeight - hugeParagraphModal.scrollTop <= hugeParagraphModal.clientHeight + scrollBuffer) { 
                     nextButton3.classList.add('visible');
                 } else {
                      nextButton3.classList.remove('visible'); 
                 }
             }
             checkScrollHugeParagraph(); 
-            hugeParagraphTextScroller.addEventListener('scroll', checkScrollHugeParagraph); 
+            hugeParagraphModal.addEventListener('scroll', checkScrollHugeParagraph); 
         });
         
         document.getElementById('nextButton3').addEventListener('click', () => {
@@ -366,7 +358,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             document.getElementById('loveAnimation').style.display = 'none';
             const finalSectionEl = document.getElementById('finalSection');
             finalSectionEl.style.display = 'block'; 
-            finalSectionEl.style.transform = 'none'; // Ensure no transform from centering modals
+            finalSectionEl.style.transform = 'none'; 
             addFinalEffects();
         });
     }
