@@ -5,33 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Birthday Surprise</title>
     <style>
+        html {
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
         body {
             background: linear-gradient(135deg, #ffb6c1 0%, #e0f7e0 100%);
             color: #004d00;
             font-family: 'Arial', sans-serif;
             text-align: center;
-            overflow: hidden;
+            overflow: hidden; /* Prevents scrollbars from main body, modals handle their own if needed */
             margin: 0;
             padding: 0;
             min-height: 100vh;
             border: 15px solid transparent;
             border-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%23ff66b3" stroke-width="5" stroke-dasharray="5,5"/><path d="M20,20 Q30,10 40,20 T60,20 T80,20" fill="none" stroke="%23ff1493" stroke-width="2"/><circle cx="15" cy="15" r="3" fill="%23ff66b3"/><circle cx="85" cy="15" r="3" fill="%23ff66b3"/><circle cx="15" cy="85" r="3" fill="%23ff66b3"/><circle cx="85" cy="85" r="3" fill="%23ff66b3"/></svg>') 30 round;
-            box-sizing: border-box;
+            /* box-sizing: border-box; /* Moved to global */
         }
 
         #question {
-            margin-top: 20%; font-size: 2em; animation: fadeIn 2s ease-in-out;
-            text-shadow: 2px 2px 4px rgba(255,255,255,0.7); position: relative; z-index: 100;
+            margin-top: 20vh; /* Use vh for vertical responsive positioning */
+            font-size: clamp(1.5em, 4vw, 2.2em); /* Responsive font size */
+            animation: fadeIn 2s ease-in-out;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.7);
+            position: relative;
+            z-index: 100;
+            padding: 0 15px; /* Add some horizontal padding for narrow screens */
         }
         @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
 
         .button {
-            padding: 12px 25px; font-size: 1.5em; margin: 20px; cursor: pointer;
-            border: none; border-radius: 30px;
-            background: linear-gradient(45deg, #ff66b3, #ff1493); color: white;
+            padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 25px); /* Responsive padding */
+            font-size: clamp(1.1em, 2.5vw, 1.5em); /* Responsive font size */
+            margin: 15px 10px; /* Adjusted margin */
+            cursor: pointer;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(45deg, #ff66b3, #ff1493);
+            color: white;
             animation: bounce 2s infinite;
             box-shadow: 0 5px 15px rgba(255,102,179,0.4);
-            transition: all 0.3s ease; position: relative; z-index: 100;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 100;
         }
         .button:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(255,102,179,0.6); }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -41,111 +60,121 @@
             overflow: hidden; z-index: 5; pointer-events: none;
         }
         .nickname {
-            position: absolute; font-size: 2.2em; /* Slightly reduced to help with clustering */
+            position: absolute;
+            font-size: clamp(1.6em, 3.5vw, 2.2em); /* Responsive font size */
             font-weight: bold;
             color: #d81b60; text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
             animation: floatUp 7s linear forwards;
-            bottom: -60px; /* Start slightly lower */
+            bottom: -60px;
             opacity: 0; pointer-events: none;
-            white-space: nowrap; /* Prevent wrapping if nickname is long */
+            white-space: nowrap;
         }
-        @keyframes floatUp { 
-            0% { transform: translateY(0) scale(0.8); opacity: 0;} /* Start smaller */
-            10% { opacity: 0.9; transform: translateY(-10vh) scale(1); } /* Fade in and grow */
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.8); opacity: 0;}
+            10% { opacity: 0.9; transform: translateY(-10vh) scale(1); }
             90% { opacity: 0.9; transform: translateY(-90vh) scale(1); }
-            100% { transform: translateY(-100vh) scale(0.8); opacity: 0;} /* Fade out and shrink */
+            100% { transform: translateY(-100vh) scale(0.8); opacity: 0;}
         }
 
-        /* Common styles for modal-like sections (except finalSection) */
+        /* Common styles for modal-like sections */
         #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation {
-            display: none; /* All start hidden, JS will show them */
+            display: none;
             position: fixed;
             top: 50%; left: 50%;
-            transform: translate(-50%, -50%); /* Center on screen */
+            transform: translate(-50%, -50%);
             z-index: 50;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             border: 2px solid rgba(255,102,179,0.3);
             box-shadow: 0 10px 30px rgba(255,102,179,0.2);
-            box-sizing: border-box;
+            width: 90%; /* More width on smaller screens */
+            max-width: 800px; /* Cap width on larger screens */
+            max-height: 90vh; /* Prevent modals from exceeding viewport height */
+            padding: clamp(20px, 3vw, 30px); /* Responsive padding */
+            overflow-y: auto; /* Allow internal scroll if content exceeds max-height */
         }
 
-        #birthdayMessage { /* Specific to birthdayMessage */
+        #birthdayMessage {
             animation: slideIn 1s ease-in-out;
-            padding: 30px; padding-bottom: 80px; /* Space for its own next button */
-            max-width: 80%;
+            /* max-width: 80%; /* Now handled by common modal style */
+            padding-bottom: clamp(70px, 10vh, 80px); /* Responsive space for next button */
+        }
+        #birthdayMessage h1 {
+            font-size: clamp(1.6em, 4vw, 2em); /* Responsive heading */
         }
         @keyframes slideIn { 0% { transform: translate(-50%, -100%); } 100% { transform: translate(-50%, -50%); } }
 
-        #smallParagraphs { /* Specific to smallParagraphs */
-            width: 80%; max-width: 800px; text-align: left;
-            animation: fadeIn 1s ease-in-out; 
-            padding: 25px; padding-bottom: 80px; /* Space for its own next button */
+        #smallParagraphs {
+            /* width: 80%; max-width: 800px; /* Handled by common */
+            text-align: left;
+            animation: fadeIn 1s ease-in-out;
+            padding-bottom: clamp(70px, 10vh, 80px); /* Responsive space for next button */
         }
-        .left-paragraphs, .right-paragraphs { width: 45%; display: inline-block; vertical-align: top; margin: 10px; }
+        .left-paragraphs, .right-paragraphs {
+            width: 45%; display: inline-block; vertical-align: top; margin: 10px;
+        }
         .left-paragraphs { text-align: left; } .right-paragraphs { text-align: right; }
-        .paragraph { margin-bottom: 15px; line-height: 1.5; color: #333; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
+        .paragraph { margin-bottom: 15px; line-height: 1.6; color: #333; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
+        
+        /* Common paragraph font size for modals */
+        #birthdayMessage p,
+        #smallParagraphs .paragraph p,
+        #finalSection p {
+            font-size: clamp(0.9em, 2.2vw, 1.1em);
+            line-height: 1.6;
+        }
 
-        /* === #hugeParagraph - THE SCROLLABLE SECTION === */
-        #hugeParagraph { /* This is the main modal container */
-            width: 80%; max-width: 800px; max-height: 80vh; 
+        #hugeParagraph {
+            /* width: 80%; max-width: 800px; max-height: 80vh; /* Handled by common */
             animation: slideIn 1s ease-in-out;
-            
-            overflow-y: auto; /* The container itself scrolls if content is too long */
-            padding: 30px; /* Padding for the text content */
-            padding-bottom: 100px; /* CRITICAL: Space at the bottom for the button to sit in */
-            
-            color: #333; font-size: 1.4em; 
+            /* overflow-y: auto; /* Handled by common */
+            padding: clamp(20px, 3vw, 30px); /* Base padding */
+            padding-bottom: clamp(80px, 12vh, 100px); /* Responsive space for its button */
+            color: #333;
+            font-size: clamp(1em, 2.5vw, 1.4em); /* Responsive font for this specific paragraph */
             text-align: center; line-height: 1.6;
         }
-        #hugeParagraph p { /* Ensure the <p> tag inside doesn't have extra margins */
-            margin: 0; 
-            padding: 0;
+        #hugeParagraph p {
+            margin: 0; padding: 0;
         }
-
-        /* Button within #hugeParagraph */
-        #hugeParagraph .next-button { /* Targets #nextButton3 specifically */
-            position: absolute; /* Relative to #hugeParagraph */
-            bottom: 99px; /* Positioned within the padding-bottom of #hugeParagraph */
+        #hugeParagraph .next-button {
+            position: absolute;
+            bottom: clamp(20px, 4vh, 30px); /* Responsive positioning from bottom */
             left: 50%;
-            transform: translateX(-50%); /* Horizontally center */
-            
-            opacity: 0; /* Initially hidden */
-            pointer-events: none;
+            transform: translateX(-50%);
+            opacity: 0; pointer-events: none;
             transition: opacity 0.5s ease-in-out;
-            
-            margin: 0; /* Override general .button margin */
-            animation: none; /* Override the general bounce animation for this specific button */
-            z-index: 51; 
+            margin: 0;
+            animation: none;
+            z-index: 51;
         }
-         #hugeParagraph .next-button.visible {
-            opacity: 1;
-            pointer-events: auto;
+        #hugeParagraph .next-button.visible {
+            opacity: 1; pointer-events: auto;
         }
 
-
-        /* === #loveAnimation Section === */
         #loveAnimation {
-            display: none; /* JS sets to flex */
+            display: none;
             flex-direction: column; align-items: center; justify-content: center;
             font-weight: 800; color: #ff66b3; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             animation: loveAppear 1.5s ease-out forwards, pulse 2s infinite 1.5s;
-            width: 90%; max-width: 650px; 
-            text-align: center; padding: 30px 20px; padding-bottom: 100px; /* Space for its button */
-            background: rgba(255, 255, 255, 0.3); 
-            backdrop-filter: blur(7px); 
-            border-radius: 30px; 
+            /* width: 90%; max-width: 650px; /* Handled by common */
+            text-align: center;
+            padding: clamp(20px, 3vw, 30px) clamp(15px, 2.5vw, 20px); /* Responsive padding */
+            padding-bottom: clamp(80px, 12vh, 100px); /* Responsive space for button */
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(7px);
+            border-radius: 30px;
             box-shadow: 0 12px 40px rgba(255,102,179,0.4);
-            overflow: hidden; 
+            /* overflow: hidden; /* Handled by common modal style if needed, or by design */
         }
         @keyframes loveAppear { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
         @keyframes pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.03); } }
-        #animatedLoveTextContainer { margin-bottom: 20px; font-size: 1.9em; font-weight: bold; color: #e91e63; position: relative; z-index: 2; }
+        #animatedLoveTextContainer { margin-bottom: 20px; font-size: clamp(1.3em, 3.5vw, 1.9em); font-weight: bold; color: #e91e63; position: relative; z-index: 2; }
         .love-char { display: inline-block; opacity: 0; transform: translateY(25px); animation: revealChar 0.6s forwards; text-shadow: 1px 1px 0px rgba(255,255,255,0.5); }
         @keyframes revealChar { to { opacity: 1; transform: translateY(0); text-shadow: 1px 1px 0px rgba(255,255,255,0.5), 0 0 8px #fff, 0 0 15px #ff80ab, 0 0 25px #ff80ab; } }
-        #animatedCake { font-size: 4.2em; opacity: 0; transform: scale(0.5); animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; animation-delay: 2.3s; text-shadow: 0 0 15px #ffc107, 0 0 25px #ff9800; position: relative; z-index: 2; margin-bottom: 10px; }
-        #pulsingHeartSymbol { font-size: 3.8em; color: #ff4081; opacity: 0; animation: heartPulseSimple 1.5s infinite, popIn 0.8s ease-out forwards; animation-delay: 2.9s; text-shadow: 0 0 10px #fff, 0 0 20px #ff4081; position: relative; z-index: 2; }
+        #animatedCake { font-size: clamp(3em, 7vw, 4.2em); opacity: 0; transform: scale(0.5); animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; animation-delay: 2.3s; text-shadow: 0 0 15px #ffc107, 0 0 25px #ff9800; position: relative; z-index: 2; margin-bottom: 10px; }
+        #pulsingHeartSymbol { font-size: clamp(2.8em, 6vw, 3.8em); color: #ff4081; opacity: 0; animation: heartPulseSimple 1.5s infinite, popIn 0.8s ease-out forwards; animation-delay: 2.9s; text-shadow: 0 0 10px #fff, 0 0 20px #ff4081; position: relative; z-index: 2; }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
         @keyframes heartPulseSimple { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         .falling-love-heart { position: absolute; top: -50px; font-size: 1.8em; color: #ff80ab; opacity: 0; animation: fallAndFade 7s linear infinite; user-select: none; pointer-events: none; z-index: 1; }
@@ -155,39 +184,46 @@
 
         /* General .next-button style for popups (birthdayMessage, smallParagraphs, loveAnimation) */
         .next-button { /* This applies to nextButton1, nextButton2, nextButton4 */
-            position: absolute; 
-            bottom: 25px; 
-            right: 25px;  
-            z-index: 100; 
-            margin: 0; 
+            position: absolute;
+            bottom: clamp(15px, 2.5vh, 25px); /* Responsive positioning */
+            right: clamp(15px, 2.5vw, 25px); /* Responsive positioning */
+            z-index: 100;
+            margin: 0;
         }
         /* Note: #hugeParagraph .next-button has its own specific styles above, making it centered at the bottom */
 
         #loveAnimation .next-button { opacity: 0; animation: fadeInButton 0.5s ease-in 4.2s forwards; }
         @keyframes fadeInButton { 0% { opacity: 0; } 100% { opacity: 1; } }
         
-        /* This class is added to each modal for context, if needed, but .next-button positioning is handled above */
-        .message-container { position: relative; } 
+        .message-container { position: relative; }
 
-        /* === Final Section - ENSURE FULL SCREEN AND NO TRANSFORM === */
         #finalSection {
-            display: none; /* Starts hidden, JS will show it */
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            transform: none !important; /* CRITICAL: Ensure no unwanted transform from other modals */
+            display: none;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            transform: none !important;
             background: linear-gradient(135deg, #ffb6d9 0%, #c8f7c5 100%);
-            z-index: 60; 
-            overflow-y: auto; 
-            padding: 40px 20px;
-            box-sizing: border-box;
+            z-index: 60;
+            overflow-y: auto;
+            padding: clamp(20px, 5vh, 40px) clamp(10px, 3vw, 20px); /* Responsive padding */
         }
-        .para-box { background-color: rgba(255,255,255,0.85); border-radius: 15px; padding: 30px; margin: 25px auto; max-width: 700px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 3px solid #ff66b3; position: relative; transition: all 0.3s ease; box-sizing: border-box; }
+        .para-box {
+            background-color: rgba(255,255,255,0.85);
+            border-radius: 15px;
+            padding: clamp(15px, 3vw, 30px); /* Responsive padding */
+            margin: clamp(15px, 3vh, 25px) auto; /* Responsive margin */
+            max-width: 700px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 3px solid #ff66b3;
+            position: relative;
+            transition: all 0.3s ease;
+        }
         .para-box:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
         .para-box::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 8px; background: linear-gradient(90deg, #ff66b3, #ffcc00, #66ccff, #ff6666, #cc66ff); border-radius: 15px 15px 0 0; }
-        .para-box h2 { color: #d81b60; margin-top: 0; position: relative; padding-bottom: 10px; }
+        .para-box h2 {
+            color: #d81b60; margin-top: 0; position: relative; padding-bottom: 10px;
+            font-size: clamp(1.3em, 3.5vw, 1.7em); /* Responsive heading */
+        }
         .para-box h2::after { content: ""; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 100px; height: 3px; background: linear-gradient(90deg, transparent, #ff66b3, transparent); }
 
         /* Decorative elements */
@@ -202,6 +238,78 @@
         @keyframes floatHeart { 0% { transform: translateY(100vh) rotate(0deg); opacity: 0; } 20% { opacity: 0.7; } 80% { opacity: 0.7; } 100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }}
         .sparkle { width: 5px; height: 5px; background-color: gold; border-radius: 50%; animation: sparkleTwinkle 2s infinite alternate; z-index: 10;}
         @keyframes sparkleTwinkle { 0% { opacity: 0.2; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1.2); }}
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            body {
+                border-width: 10px; /* Thinner border for medium screens */
+            }
+            #question {
+                margin-top: 25vh;
+            }
+            #smallParagraphs {
+                text-align: center; /* Center the container for paragraphs */
+            }
+            #smallParagraphs .left-paragraphs,
+            #smallParagraphs .right-paragraphs {
+                width: 100%; /* Full width for stacking */
+                display: block; /* Stack them */
+                margin: 10px 0; /* Adjust margin for stacked layout */
+                text-align: left; /* Keep text left-aligned within each block */
+            }
+            #birthdayMessage, #smallParagraphs, #loveAnimation {
+                 /* Already have responsive padding, ensure button space is fine */
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                border-width: 8px; /* Even thinner border for small screens */
+            }
+            #question .button { /* Stack buttons on initial question */
+                display: block;
+                width: 80%;
+                max-width: 300px;
+                margin-left: auto;
+                margin-right: auto;
+                margin-top: 15px;
+                margin-bottom: 15px;
+            }
+
+            #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation {
+                width: 95%; /* More width on very small screens */
+                padding: 15px; /* General padding reduction */
+            }
+            #birthdayMessage h1 { font-size: 1.5em; }
+            #birthdayMessage p, #smallParagraphs .paragraph p, #finalSection p { font-size: 0.85em; }
+            #hugeParagraph p { font-size: 0.95em; }
+
+
+            #birthdayMessage, #smallParagraphs { padding-bottom: 65px; } /* Space for next button */
+            #hugeParagraph { padding-bottom: 70px; }
+            #hugeParagraph .next-button { bottom: 15px; }
+            #loveAnimation { padding-bottom: 70px; }
+
+            .next-button { /* General next buttons (non-hugeParagraph) */
+                bottom: 10px;
+                right: 10px;
+                font-size: 1em;
+                padding: 8px 15px;
+            }
+             /* Also adjust the hugeParagraph centered button */
+            #hugeParagraph .next-button, #loveAnimation .next-button {
+                font-size: 1em;
+                padding: 8px 15px;
+            }
+
+            #animatedLoveTextContainer { font-size: 1.2em; }
+            #animatedCake { font-size: 2.8em; }
+            #pulsingHeartSymbol { font-size: 2.5em; }
+
+            #finalSection { padding: 15px 5px; }
+            .para-box { padding: 15px; margin: 10px auto; }
+            .para-box h2 { font-size: 1.2em; }
+        }
 
     </style>
 </head>
@@ -248,7 +356,7 @@
     <button class="button next-button" id="nextButton2">Next</button>
 </div>
 
-<div id="hugeParagraph" class="message-container"> 
+<div id="hugeParagraph" class="message-container">
     <p>MY LOVE,
 I truly pray for your successful future with ME, and I hope you achieve everything you want in life which is beneficial for you.
 Hamesha khush rahena jaan — whether I am with you or not, whether I am on earth or not.
@@ -260,11 +368,11 @@ I love you… MWAAAAAAAAAAA. I CAN'T WAIT TO HAVE YOU NEXT TO ME.
 May our duaas get accepted; indeed, Allah never disappoints His believers.
 But for now…
 Happy birthday kucchuuu… my everything, my princess, my jaan, my darling, my sweetheart, my cheesecake, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey.
-I am so lucky to have you in my life. 
+I am so lucky to have you in my life.
 Happy Birthday, Jaana (I tried my best to make it look the best, but still, it isn't perfect, sorryyy) ❤️But I can guarantee my love for you is a hundred percent the best from my side.
 I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 </p>
-    <button class="button next-button" id="nextButton3">Next</button> 
+    <button class="button next-button" id="nextButton3">Next</button>
 </div>
 
 <div id="loveAnimation" class="message-container">
@@ -297,7 +405,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         <p> From seeing slay on your story, making you giggle in the open house, the start of bio talks, that subtle hint in starting time, the ribbon you gave me from your hand, sitting close to you(the challenge), your cake that you made, when i got to know that you also saved dates, THE BAKE SALE, when you send me yo pics(Masha'Allah my gorgeous), and every I love you, kisses and vms, to deep talks and some disagreements and arguments, Every memory we've created together, from the silly moments to the deep conversations, has become a treasure I hold close to my heart. .</p>
     </div>
     <div class="para-box">
-        <h2>Our Future r</h2>
+        <h2>Our Future</h2>
         <p>I dream of our future - building a life together filled with love, laughter, and mutual growth. With you by my side, I know it won't be easy to have sabr and don't miss eachother but we are doing for the sake of Allah so I'm sure He will reunite us, I don't know when but I trust Allah's every plan and His decisions that take place. Always be hopefull from Allah and be close to Him and never think He is not with you no matter how difficult life gets, sometime He tests His believers by giving something and sometimes by taking something...just have sabr my love.  </p>
     </div>
 </div>
@@ -305,7 +413,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 <script>
     // ========== UPDATED NICKNAMES LIST ==========
     const nicknames = [
-        "Princess", "Jaana", "Cheesecake", "Jaan", 
+        "Princess", "Jaana", "Cheesecake", "Jaan",
         "Darling", "Wifey", "Sweetheart", "Bongi"
     ];
     // =============================================
@@ -333,13 +441,13 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
     function setupEventListeners() {
         document.getElementById('yesButton').addEventListener('click', () => handleResponse('yes'));
         document.getElementById('noButton').addEventListener('click', () => handleResponse('no'));
-        
+
         document.getElementById('nextButton1').addEventListener('click', () => {
             stopNicknameAnimation(); // Stop nicknames when leaving birthdayMessage
-            document.getElementById('birthdayMessage').style.display = 'none'; 
-            document.getElementById('smallParagraphs').style.display = 'block'; 
+            document.getElementById('birthdayMessage').style.display = 'none';
+            document.getElementById('smallParagraphs').style.display = 'block';
         });
-        
+
         document.getElementById('nextButton2').addEventListener('click', () => {
             document.getElementById('smallParagraphs').style.display = 'none';
             const hugeParagraphModal = document.getElementById('hugeParagraph');
@@ -348,34 +456,34 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             hugeParagraphModal.style.display = 'block'; // Show the modal. It's scrollable due to CSS.
 
             function checkScrollHugeParagraph() {
-                const scrollBuffer = 15; 
-                if (hugeParagraphModal.scrollHeight - hugeParagraphModal.scrollTop <= hugeParagraphModal.clientHeight + scrollBuffer) { 
+                const scrollBuffer = 15;
+                if (hugeParagraphModal.scrollHeight - hugeParagraphModal.scrollTop <= hugeParagraphModal.clientHeight + scrollBuffer) {
                     nextButton3.classList.add('visible');
                 } else {
-                     nextButton3.classList.remove('visible'); 
+                     nextButton3.classList.remove('visible');
                 }
             }
-            checkScrollHugeParagraph(); 
-            hugeParagraphModal.addEventListener('scroll', checkScrollHugeParagraph); 
+            checkScrollHugeParagraph();
+            hugeParagraphModal.addEventListener('scroll', checkScrollHugeParagraph);
         });
-        
+
         document.getElementById('nextButton3').addEventListener('click', () => {
             document.getElementById('hugeParagraph').style.display = 'none';
             const loveAnimationSection = document.getElementById('loveAnimation');
-            loveAnimationSection.style.display = 'flex'; 
+            loveAnimationSection.style.display = 'flex';
 
             const chars = loveAnimationSection.querySelectorAll('#animatedLoveTextContainer .love-char');
             chars.forEach((char, index) => { char.style.animationDelay = `${index * 0.12}s`; });
-            
+
             createFallingLoveHearts(loveAnimationSection, 30);
             createGlowingOrbs(loveAnimationSection, 18);
         });
-        
+
         document.getElementById('nextButton4').addEventListener('click', () => {
             document.getElementById('loveAnimation').style.display = 'none';
             const finalSectionEl = document.getElementById('finalSection');
-            finalSectionEl.style.display = 'block'; 
-            finalSectionEl.style.transform = 'none'; 
+            finalSectionEl.style.display = 'block';
+            finalSectionEl.style.transform = 'none';
             addFinalEffects();
         });
     }
@@ -394,11 +502,11 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             }
         } else if (response === 'yes') {
             questionDiv.style.display = 'none';
-            startNicknameAnimation(); 
+            startNicknameAnimation();
             // Show birthday message after a short delay to let some nicknames appear
             setTimeout(() => {
                 document.getElementById('birthdayMessage').style.display = 'block';
-            }, 500); 
+            }, 500);
         }
     }
 
@@ -426,20 +534,20 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         if (!isNicknameAnimationActive) return; // Stop creating if animation is no longer active
 
         const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
-        const nicknameEl = document.createElement('div'); 
+        const nicknameEl = document.createElement('div');
         nicknameEl.className = 'nickname';
         nicknameEl.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
         nicknameEl.style.color = colors[Math.floor(Math.random() * colors.length)];
-        
+
         // Try to position more sparsely
         let randomLeft = Math.random() * 70 + 15; // % from 15% to 85%
-        nicknameEl.style.left = `${randomLeft}%`; 
+        nicknameEl.style.left = `${randomLeft}%`;
         nicknameEl.style.animationDelay = `${Math.random() * 0.5}s`; // Slight random start delay
 
         document.getElementById('nickname-container').appendChild(nicknameEl);
-        
-        setTimeout(() => { 
-            if (nicknameEl.parentNode) nicknameEl.remove(); 
+
+        setTimeout(() => {
+            if (nicknameEl.parentNode) nicknameEl.remove();
         }, 7000); // Corresponds to animation duration
     }
 
@@ -449,12 +557,12 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             setTimeout(() => {
                 const heart = document.createElement('div'); heart.className = 'falling-love-heart';
                 heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                heart.style.left = `${Math.random() * 92 + 4}%`; heart.style.animationDuration = `${Math.random() * 4 + 6}s`; 
-                heart.style.animationDelay = `${Math.random() * 6}s`; heart.style.fontSize = `${Math.random() * 0.7 + 1.3}em`; 
+                heart.style.left = `${Math.random() * 92 + 4}%`; heart.style.animationDuration = `${Math.random() * 4 + 6}s`;
+                heart.style.animationDelay = `${Math.random() * 6}s`; heart.style.fontSize = `${Math.random() * 0.7 + 1.3}em`;
                 heart.style.setProperty('--r-start', `${Math.random() * 120 - 60}deg`); heart.style.setProperty('--r-end', `${Math.random() * 360 - 180}deg`);
                 containerElement.appendChild(heart);
                 heart.addEventListener('animationend', () => { if (heart.parentNode) heart.remove(); });
-            }, i * 180); 
+            }, i * 180);
         }
     }
 
@@ -465,7 +573,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
                 const orb = document.createElement('div'); orb.className = 'glowing-orb';
                 orb.style.width = orb.style.height = `${Math.random() * 70 + 40}px`;
                 orb.style.backgroundColor = orbColors[Math.floor(Math.random() * orbColors.length)];
-                orb.style.left = `${Math.random() * 90}%`; orb.style.top = `${Math.random() * 85}%`; 
+                orb.style.left = `${Math.random() * 90}%`; orb.style.top = `${Math.random() * 85}%`;
                 orb.style.animationDuration = `${Math.random() * 6 + 8}s`; orb.style.animationDelay = `${Math.random() * 5}s`;
                 orb.style.setProperty('--tx-start', `${Math.random() * 60 - 30}px`); orb.style.setProperty('--ty-start', `${Math.random() * 50 - 25}px`);
                 orb.style.setProperty('--r-start', `${Math.random() * 180 - 90}deg`); orb.style.setProperty('--tx-mid', `${Math.random() * 80 - 40}px`);
@@ -483,7 +591,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 
     // MUSIC PLAYER CODE
     window.addEventListener('DOMContentLoaded', () => {
-        const audio = new Audio('iradey2.mp3'); // upload this file to GitHub in the same folder
+        const audio = new Audio('iradey2.mp3'); // Ensure 'iradey2.mp3' is in the same folder or update path
         audio.loop = true;
         audio.volume = 0.8;
 
@@ -511,19 +619,27 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 
         playBtn.addEventListener('click', () => {
             if (audio.paused) {
-                audio.play().catch(() => {
-                    alert('Browser blocked autoplay. Tap the button again!');
+                audio.play().catch((e) => {
+                    console.error("Error playing audio:", e);
+                    // Fallback for browsers that might require more interaction or have strict autoplay policies
+                    // Alerting is one way, or you could change button text to "Tap to Play"
+                    alert('Browser blocked autoplay. Please tap the button again to play music!');
                 });
             }
         });
 
         document.body.appendChild(playBtn);
 
-        // Try to autoplay
-        audio.play().catch(() => {
-            // Browser blocked it. Button will still work.
-            console.log('Autoplay blocked. User interaction required.');
-        });
+        // Try to autoplay (might be blocked by browser policies)
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log('Autoplay was prevented:', error);
+                // Autoplay was prevented.
+                // Show a "Play" button or similar UI to let the user start playback.
+                // The button is already there, so this mainly informs the console.
+            });
+        }
     });
 </script>
 </body>
