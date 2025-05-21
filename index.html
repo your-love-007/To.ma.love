@@ -75,9 +75,9 @@
             100% { transform: translateY(-100vh) scale(0.8); opacity: 0;}
         }
 
-        /* Common styles for modal-like sections */
+        /* Common styles for modal-like sections (except finalSection) */
         #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation {
-            display: none;
+            display: none; /* All start hidden, JS will show them */
             position: fixed;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -90,32 +90,31 @@
             width: 90%;
             max-width: 800px;
             max-height: 85vh;
-            padding: clamp(15px, 3vw, 25px); /* General padding */
-            overflow-x: hidden;
-            overflow-y: auto;
-            /* NEW: Using flex to help position button container at bottom */
-            display: flex;
-            flex-direction: column;
+            padding: clamp(15px, 3vw, 25px); /* General padding for T, L, R */
+            overflow-x: hidden; /* Crucial */
+            overflow-y: auto; /* Fallback if content + button area exceeds max-height */
         }
 
-        /* Content area within modals like birthdayMessage, smallParagraphs, loveAnimation */
-        .modal-content-area {
-            flex-grow: 1; /* Allows this area to take up available space */
-            overflow-y: auto; /* If content here is too long, it scrolls independently */
-            margin-bottom: 15px; /* Space before the button container */
+        #birthdayMessage,
+        #smallParagraphs, /* Your "3rd section" */
+        #loveAnimation {
+            /* Increased padding-bottom to create ample space for the absolute positioned button */
+            padding-bottom: clamp(90px, 14vh, 110px); /* ADJUSTED - More space */
         }
-
 
         #birthdayMessage h1 {
             font-size: clamp(1.6em, 4vw, 2em);
         }
         @keyframes slideIn { 0% { transform: translate(-50%, -100%); } 100% { transform: translate(-50%, -50%); } }
 
-        #smallParagraphs .modal-content-area { /* Specific styling if needed for smallParagraphs content */
-             text-align: left;
+        #smallParagraphs {
+            animation: fadeIn 1s ease-in-out;
+             /* Content itself should not have excessive bottom margin */
         }
-        .left-paragraphs, .right-paragraphs {
+         #smallParagraphs .left-paragraphs, 
+         #smallParagraphs .right-paragraphs {
             width: 45%; display: inline-block; vertical-align: top; margin: 10px;
+            margin-bottom: 0; /* Ensure no extra margin pushing content down */
         }
         .left-paragraphs { text-align: left; } .right-paragraphs { text-align: right; }
         .paragraph { margin-bottom: 15px; line-height: 1.6; color: #333; text-shadow: 1px 1px 2px rgba(255,255,255,0.5); }
@@ -127,39 +126,36 @@
             line-height: 1.6;
         }
 
-        /* For #hugeParagraph, we are not using flex like above because its content is one large scrollable block */
-        #hugeParagraph {
-            display: block; /* Override flex from common modal style */
+        #hugeParagraph { /* Your "4th section" */
             animation: slideIn 1s ease-in-out;
-            padding: clamp(15px, 3vw, 25px); /* Reset padding to be uniform */
+            /* padding-top, padding-left, padding-right are from common modal style. */
+            /* Generous padding-bottom to create scrollable space AFTER text for sticky button */
+            padding-bottom: clamp(100px, 18vh, 130px); /* ADJUSTED - More space */
             color: #333;
             font-size: clamp(1em, 2.5vw, 1.4em);
             text-align: center; line-height: 1.6;
-            overflow-y: auto; /* This IS the main scrollable area */
+            /* overflow-y: auto; is inherited */
         }
         #hugeParagraph p {
-            margin: 0; padding: 0;
-        }
-        /* NEW: Spacer div inside hugeParagraph to push button down */
-        .huge-paragraph-spacer {
-            height: clamp(60px, 10vh, 80px); /* This space will be below the text, above the sticky button */
+            margin: 0; padding: 0; /* Keep this */
         }
 
         /* Button within #hugeParagraph (nextButton3 - STICKY) */
         #hugeParagraph .next-button {
             position: sticky;
-            bottom: clamp(15px, 3vh, 20px); /* Distance from bottom of #hugeParagraph's scrollport */
+            /* This 'bottom' is relative to the scrollport (visible area) of #hugeParagraph */
+            bottom: clamp(20px, 4vh, 30px); /* ADJUSTED - Distance from bottom edge */
             left: 50%;
             transform: translateX(-50%);
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease-in-out;
-            z-index: 51; /* Above spacer and paragraph */
+            z-index: 51;
             animation: none;
-            /* Copied .button styles for self-containment */
+            /* Self-contained button styles */
             padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 25px);
             font-size: clamp(1.1em, 2.5vw, 1.5em);
-            margin-top: 10px; /* Ensures some space if spacer is minimal */
+            margin: 0; /* Override general button margin */
             cursor: pointer;
             border: none;
             border-radius: 30px;
@@ -172,30 +168,15 @@
             pointer-events: auto;
         }
 
-        /* NEW: Button container for non-sticky buttons */
-        .modal-button-container {
-            padding-top: 10px; /* Space above button */
-            padding-bottom: 5px; /* Space below button if modal padding is tight */
-            text-align: right; /* Default for next buttons */
-            flex-shrink: 0; /* Prevent this container from shrinking */
-        }
-
 
         #loveAnimation {
-            /* display: flex; /* Already set by common modal */
-            /* flex-direction: column; /* Already set */
-            align-items: center; justify-content: center; /* For its internal animated content */
+            display: none; /* JS sets to flex */
+            flex-direction: column; align-items: center; justify-content: center;
             font-weight: 800; color: #ff66b3; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             animation: loveAppear 1.5s ease-out forwards, pulse 2s infinite 1.5s;
             text-align: center;
+            /* padding-bottom is from its group rule above */
         }
-         #loveAnimation .modal-content-area { /* Center the animated text/cake/heart */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
         @keyframes loveAppear { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
         @keyframes pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.03); } }
         #animatedLoveTextContainer { margin-bottom: 20px; font-size: clamp(1.3em, 3.5vw, 1.9em); font-weight: bold; color: #e91e63; position: relative; z-index: 2; }
@@ -205,24 +186,29 @@
         #pulsingHeartSymbol { font-size: clamp(2.8em, 6vw, 3.8em); color: #ff4081; opacity: 0; animation: heartPulseSimple 1.5s infinite, popIn 0.8s ease-out forwards; animation-delay: 2.9s; text-shadow: 0 0 10px #fff, 0 0 20px #ff4081; position: relative; z-index: 2; }
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
         @keyframes heartPulseSimple { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-        .falling-love-heart { position: absolute; top: -50px; font-size: 1.8em; color: #ff80ab; opacity: 0; animation: fallAndFade 7s linear infinite; user-select: none; pointer-events: none; z-index: 1; }
-        @keyframes fallAndFade { 0% { transform: translateY(0vh) rotate(var(--r-start, 0deg)); opacity: 0.9; } 100% { transform: translateY(115vh) rotate(var(--r-end, 360deg)); opacity: 0; } }
-        .glowing-orb { position: absolute; border-radius: 50%; opacity: 0; animation-name: glowAndDriftEnhanced; animation-timing-function: ease-in-out; animation-iteration-count: infinite; pointer-events: none; z-index: 0; }
-        @keyframes glowAndDriftEnhanced { 0%, 100% { opacity: 0; transform: translate(var(--tx-start), var(--ty-start)) scale(0.7) rotate(var(--r-start)); } 20% { opacity: 0.4; } 50% { opacity: 0.6; transform: translate(var(--tx-mid), var(--ty-mid)) scale(1) rotate(var(--r-mid)); } 80% { opacity: 0.3; } }
+        .falling-love-heart { position: absolute; top: -50px; font-.message-container { position: relative; } /* For absolute positioning of .next-buttons within */
 
-        /* General .next-button style for NON-STICKY buttons (now placed in .modal-button-container) */
-        .modal-button-container .next-button {
-            /* No 'position: absolute' here, it's in normal flow within its container */
-            /* margin ensures it's not flush if container is text-align: right */
-            margin-left: auto; /* Pushes to right if container is wider */
+        /* General .next-button style for NON-STICKY buttons (birthdayMessage, smallParagraphs, loveAnimation) */
+        /* These buttons are absolutely positioned within their parent modal's padding area */
+        #birthdayMessage .next-button,
+        #smallParagraphs .next-button, /* This targets nextButton2 */
+        #loveAnimation .next-button {
+            position: absolute;
+            /* Positioned within the increased padding-bottom of their parent modal */
+            bottom: clamp(20px, 4vh, 30px); /* ADJUSTED - Sits in the bottom padding */
+            right: clamp(15px, 2.5vw, 25px);
+            z-index: 100; /* Above other modal content if any overlap */
+            margin: 0; /* Override general button margin */
         }
-
 
         #loveAnimation .next-button { opacity: 0; animation: fadeInButton 0.5s ease-in 4.2s forwards; }
         @keyframes fadeInButton { 0% { opacity: 0; } 100% { opacity: 1; } }
         
-        .message-container { position: relative; } /* Still useful for potential absolute children if any */
+        /* This class is added to each modal for context, if needed, but .next-button positioning is handled above */
+        .message-container { position: relative; } /* For absolute positioning of .next-buttons */
 
+
+        /* === Final Section - ENSURE FULL SCREEN AND NO TRANSFORM === */
         #finalSection {
             display: none; /* Starts hidden, JS will show it */
             position: fixed; 
@@ -230,13 +216,11 @@
             left: 0; 
             width: 100%; 
             height: 100%;
-            transform: none !important;
+            transform: none !important; /* CRITICAL: Ensure no unwanted transform from other modals */
             background: linear-gradient(135deg, #ffb6d9 0%, #c8f7c5 100%);
             z-index: 60; 
             overflow-y: auto; 
             padding: clamp(20px, 5vh, 40px) clamp(10px, 3vw, 20px);
-            /* Override flex from common modal style as this is full screen */
-            display: block;
         }
         .para-box { background-color: rgba(255,255,255,0.85); border-radius: 15px; padding: clamp(15px, 3vw, 30px); margin: clamp(15px, 3vh, 25px) auto; max-width: 700px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 3px solid #ff66b3; position: relative; transition: all 0.3s ease;}
         .para-box:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
@@ -266,15 +250,15 @@
             #question {
                 margin-top: 25vh;
             }
-            #smallParagraphs .modal-content-area {
-                text-align: center; /* Center the container for paragraphs */
+            #smallParagraphs {
+                /* text-align: center; /* Removed, as internal paragraphs are inline-block and handle their own alignment */
             }
             #smallParagraphs .left-paragraphs,
             #smallParagraphs .right-paragraphs {
                 width: 100%; /* Full width for stacking */
                 display: block; /* Stack them */
                 margin: 10px 0; /* Adjust margin for stacked layout */
-                text-align: left; /* Keep text left-aligned within each block */
+                /* text-align: left; /* Already set */
             }
         }
 
@@ -294,34 +278,37 @@
 
             #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation {
                 width: 95%;
-                padding: 10px; /* Further reduce padding on very small screens */
+                padding: 10px; /* General padding reduction for very small screens */
             }
-             #birthdayMessage .modal-content-area,
-             #smallParagraphs .modal-content-area,
-             #loveAnimation .modal-content-area {
-                margin-bottom: 10px; /* Less space before button container */
-             }
-
-
             #birthdayMessage h1 { font-size: 1.5em; }
             #birthdayMessage p, #smallParagraphs .paragraph p, #finalSection p { font-size: 0.85em; }
             #hugeParagraph p { font-size: 0.95em; }
-            .huge-paragraph-spacer {
-                 height: clamp(40px, 8vh, 60px);
+
+
+            /* Adjust bottom padding for modals on small screens to ensure button space */
+            #birthdayMessage,
+            #smallParagraphs,
+            #loveAnimation {
+                padding-bottom: 80px; /* Ensure button space on small screens */
+            }
+            #hugeParagraph {
+                padding-bottom: 90px; /* Space for sticky button on small screens */
             }
 
-
             /* Next buttons in regular modals */
-            .modal-button-container .next-button {
+            #birthdayMessage .next-button,
+            #smallParagraphs .next-button, /* This targets nextButton2 */
+            #loveAnimation .next-button {
+                bottom: 15px; /* Fine-tune for smaller padding */
+                right: 10px;
                 font-size: 1em; /* Smaller button text */
                 padding: 8px 15px; /* Smaller button padding */
             }
             /* Sticky button in hugeParagraph */
             #hugeParagraph .next-button { /* This targets nextButton3 */
-                bottom: 10px; /* Sticky position from bottom of scrollport on small screens */
+                bottom: 15px; /* Sticky position from bottom of scrollport on small screens */
                 font-size: 1em;
                 padding: 8px 15px;
-                margin-top: 5px;
             }
 
             #animatedLoveTextContainer { font-size: 1.2em; }
@@ -351,44 +338,35 @@
 
 <div id="nickname-container"></div>
 
-<!-- MODAL 1: birthdayMessage -->
+<!-- Modals -->
 <div id="birthdayMessage" class="message-container">
-    <div class="modal-content-area">
-        <h1>Happy Birthday, My Love! 🎂</h1>
-        <p>You are my everything, my princess, my cheesecake, my jaan, my darling, my sweetheart, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, my love!</p>
-    </div>
-    <div class="modal-button-container">
-        <button class="button next-button" id="nextButton1">Next</button>
-    </div>
+    <h1>Happy Birthday, My Love! 🎂</h1>
+    <p>You are my everything, my princess, my cheesecake, my jaan, my darling, my sweetheart, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, my love!</p>
+    <button class="button next-button" id="nextButton1">Next</button>
 </div>
 
-<!-- MODAL 2: smallParagraphs (Your "3rd Section") -->
 <div id="smallParagraphs" class="message-container">
-    <div class="modal-content-area">
-        <div class="left-paragraphs">
-            <div class="paragraph">
-                <p>Your laugh, your giggles, your goofyness truly keeps me alive, can't wait to hear it non-stop in our house. Your smile is literally black magic the way it pulled me in love with you... (ma favourite witch)😂.</p>
-            </div>
-            <div class="paragraph">
-                <p>I don't know what I would do without your magic in ma boring a** life. Life without you would literly be like a book with blank pages... useless. I pray for us and your success every day, Jaana... ILubu infinite times.Muwaaaa</p>
-            </div>
+    <!-- Paragraphs content -->
+    <div class="left-paragraphs">
+        <div class="paragraph">
+            <p>Your laugh, your giggles, your goofyness truly keeps me alive, can't wait to hear it non-stop in our house. Your smile is literally black magic the way it pulled me in love with you... (ma favourite witch)😂.</p>
         </div>
-        <div class="right-paragraphs">
-            <div class="paragraph">
-                <p>Every moment with you feels like a dream, a dream I never want to wake up from... and You can't imagine how many dreams I've had of us being together... its crazy!! ..Enjoy your birthday; one day you'll enjoy it with me too, ameen.</p>
-            </div>
-            <div class="paragraph">
-                <p>When writing this, the bake sale memory was playing in ma head constantly. What a day that was, ahhhhhh!! Although ma heart was racing and itni sharam arahi thi, but still, it was a once-in-a-lifetime moment!!</p>
-                <p>Jaan, I really really really hope that our duaa gets accepted and we live a very happy, romantic, funny, supportive life together. HAPPY BIRTHDAY MY CHEESECAKE FROM YOUR SUNSHINE, HUSBANDnO, LOVE, BONGA, manhoos, beghairat.... CHANDAA💗</p>
-            </div>
+        <div class="paragraph">
+            <p>I don't know what I would do without your magic in ma boring a** life. Life without you would literly be like a book with blank pages... useless. I pray for us and your success every day, Jaana... ILubu infinite times.Muwaaaa</p>
         </div>
     </div>
-    <div class="modal-button-container">
-        <button class="button next-button" id="nextButton2">Next</button>
+    <div class="right-paragraphs">
+        <div class="paragraph">
+            <p>Every moment with you feels like a dream, a dream I never want to wake up from... and You can't imagine how many dreams I've had of us being together... its crazy!! ..Enjoy your birthday; one day you'll enjoy it with me too, ameen.</p>
+        </div>
+        <div class="paragraph">
+            <p>When writing this, the bake sale memory was playing in ma head constantly. What a day that was, ahhhhhh!! Although ma heart was racing and itni sharam arahi thi, but still, it was a once-in-a-lifetime moment!!</p>
+            <p>Jaan, I really really really hope that our duaa gets accepted and we live a very happy, romantic, funny, supportive life together. HAPPY BIRTHDAY MY CHEESECAKE FROM YOUR SUNSHINE, HUSBANDnO, LOVE, BONGA, manhoos, beghairat.... CHANDAA💗</p>
+        </div>
     </div>
+    <button class="button next-button" id="nextButton2">Next</button>
 </div>
 
-<!-- MODAL 3: hugeParagraph (Your "4th Section") -->
 <div id="hugeParagraph" class="message-container">
     <p>MY LOVE,
 I truly pray for your successful future with ME, and I hope you achieve everything you want in life which is beneficial for you.
@@ -405,29 +383,24 @@ I am so lucky to have you in my life.
 Happy Birthday, Jaana (I tried my best to make it look the best, but still, it isn't perfect, sorryyy) ❤️But I can guarantee my love for you is a hundred percent the best from my side.
 I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 </p>
-    <div class="huge-paragraph-spacer"></div> <!-- NEW SPACER -->
+    <!-- The nextButton3 is a direct child now, sticky positioning will work with parent's padding -->
     <button class="button next-button" id="nextButton3">Next</button>
 </div>
 
-<!-- MODAL 4: loveAnimation -->
 <div id="loveAnimation" class="message-container">
-    <div class="modal-content-area">
-        <div id="animatedLoveTextContainer">
-            <span class="love-char">H</span><span class="love-char">a</span><span class="love-char">p</span><span class="love-char">p</span><span class="love-char">y</span>
-            <span class="love-char"> </span>
-            <span class="love-char">B</span><span class="love-char">i</span><span class="love-char">r</span><span class="love-char">t</span><span class="love-char">h</span><span class="love-char">d</span><span class="love-char">a</span><span class="love-char">y</span>
-            <br>
-            <span class="love-char">M</span><span class="love-char">y</span>
-            <span class="love-char"> </span>
-            <span class="love-char">L</span><span class="love-char">o</span><span class="love-char">v</span><span class="love-char">e</span>
-            <span class="love-char">!</span>
-        </div>
-        <div id="animatedCake">🎂</div>
-        <div id="pulsingHeartSymbol">❤️</div>
+    <div id="animatedLoveTextContainer"> <!-- This will be centered by #loveAnimation's flex properties -->
+        <span class="love-char">H</span><span class="love-char">a</span><span class="love-char">p</span><span class="love-char">p</span><span class="love-char">y</span>
+        <span class="love-char"> </span>
+        <span class="love-char">B</span><span class="love-char">i</span><span class="love-char">r</span><span class="love-char">t</span><span class="love-char">h</span><span class="love-char">d</span><span class="love-char">a</span><span class="love-char">y</span>
+        <br>
+        <span class="love-char">M</span><span class="love-char">y</span>
+        <span class="love-char"> </span>
+        <span class="love-char">L</span><span class="love-char">o</span><span class="love-char">v</span><span class="love-char">e</span>
+        <span class="love-char">!</span>
     </div>
-    <div class="modal-button-container">
-        <button class="button next-button" id="nextButton4">Next</button>
-    </div>
+    <div id="animatedCake">🎂</div>
+    <div id="pulsingHeartSymbol">❤️</div>
+    <button class="button next-button" id="nextButton4">Next</button>
 </div>
 
 <div id="finalSection">
@@ -484,7 +457,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         document.getElementById('nextButton1').addEventListener('click', () => {
             stopNicknameAnimation();
             document.getElementById('birthdayMessage').style.display = 'none';
-            document.getElementById('smallParagraphs').style.display = 'flex'; // Changed to flex
+            document.getElementById('smallParagraphs').style.display = 'block'; // Changed to block
         });
 
         document.getElementById('nextButton2').addEventListener('click', () => {
@@ -492,7 +465,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             const hugeParagraphModal = document.getElementById('hugeParagraph');
             const nextButton3 = hugeParagraphModal.querySelector('#nextButton3');
 
-            hugeParagraphModal.style.display = 'block'; // Keep as block
+            hugeParagraphModal.style.display = 'block';
 
             function checkScrollHugeParagraph() {
                 const scrollBuffer = 20;
@@ -511,7 +484,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         document.getElementById('nextButton3').addEventListener('click', () => {
             document.getElementById('hugeParagraph').style.display = 'none';
             const loveAnimationSection = document.getElementById('loveAnimation');
-            loveAnimationSection.style.display = 'flex'; // Keep as flex
+            loveAnimationSection.style.display = 'flex'; // This one IS flex for centering its content
 
             const chars = loveAnimationSection.querySelectorAll('#animatedLoveTextContainer .love-char');
             chars.forEach((char, index) => { char.style.animationDelay = `${index * 0.12}s`; });
@@ -545,7 +518,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             questionDiv.style.display = 'none';
             startNicknameAnimation();
             setTimeout(() => {
-                document.getElementById('birthdayMessage').style.display = 'flex'; // Changed to flex
+                document.getElementById('birthdayMessage').style.display = 'block'; // Changed to block
             }, 500);
         }
     }
