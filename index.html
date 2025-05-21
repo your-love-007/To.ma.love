@@ -89,25 +89,26 @@
             box-shadow: 0 10px 30px rgba(255,102,179,0.2);
             width: 90%;
             max-width: 800px;
-            max-height: 85vh; /* Reduced max-height */
-            padding: clamp(15px, 3vw, 25px); /* Adjusted padding */
-            overflow-x: hidden; /* Prevent ALL horizontal scroll */
-            overflow-y: auto;   /* Allow vertical scroll IF content overflows max-height */
+            max-height: 85vh;
+            padding: clamp(15px, 3vw, 25px);
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         #birthdayMessage {
             animation: slideIn 1s ease-in-out;
-            padding-bottom: clamp(70px, 10vh, 80px);
+            padding-bottom: clamp(80px, 12vh, 100px); /* Increased padding for button */
         }
         #birthdayMessage h1 {
             font-size: clamp(1.6em, 4vw, 2em);
         }
         @keyframes slideIn { 0% { transform: translate(-50%, -100%); } 100% { transform: translate(-50%, -50%); } }
 
-        #smallParagraphs {
+        #smallParagraphs { /* This is the one you called "3rd section" */
             text-align: left;
             animation: fadeIn 1s ease-in-out;
-            padding-bottom: clamp(70px, 10vh, 80px);
+            /* Increased bottom padding to ensure button is well below text */
+            padding-bottom: clamp(80px, 12vh, 100px);
         }
         .left-paragraphs, .right-paragraphs {
             width: 45%; display: inline-block; vertical-align: top; margin: 10px;
@@ -122,38 +123,36 @@
             line-height: 1.6;
         }
 
-        #hugeParagraph { /* This is the intentionally scrollable one */
+        #hugeParagraph { /* This is the one you called "4th section" */
             animation: slideIn 1s ease-in-out;
-            padding-top: clamp(15px, 3vw, 25px); /* Standard top/side padding */
+            padding-top: clamp(15px, 3vw, 25px);
             padding-left: clamp(15px, 3vw, 25px);
             padding-right: clamp(15px, 3vw, 25px);
-            padding-bottom: clamp(70px, 10vh, 90px); /* Generous bottom padding for sticky button */
+            /* Increased bottom padding to give more space for the lower sticky button */
+            padding-bottom: clamp(80px, 13vh, 110px);
             color: #333;
             font-size: clamp(1em, 2.5vw, 1.4em);
             text-align: center; line-height: 1.6;
         }
         #hugeParagraph p {
-            margin: 0; padding: 0; /* Important for scroll height calculation */
+            margin: 0; padding: 0;
         }
 
-        /* Button within #hugeParagraph */
+        /* Button within #hugeParagraph (nextButton3) */
         #hugeParagraph .next-button {
-            position: sticky; /* Stick to the bottom of #hugeParagraph's scrollport */
-            bottom: 15px;     /* Adjust distance from bottom as needed */
+            position: sticky;
+            /* Moved further down from the text */
+            bottom: clamp(15px, 3vh, 25px); /* Increased space from bottom of scrollport */
             left: 50%;
-            transform: translateX(-50%); /* Center it horizontally */
-            
-            opacity: 0; /* Initially hidden by JS */
+            transform: translateX(-50%);
+            opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease-in-out;
-            
-            z-index: 51; /* Above paragraph content */
-            /* Inherit general .button styles for appearance, override position-related animation */
-            animation: none; /* Override bounce */
-            /* Ensure it has button styles if not automatically inherited due to specificity */
+            z-index: 51;
+            animation: none;
             padding: clamp(10px, 2vw, 12px) clamp(20px, 4vw, 25px);
             font-size: clamp(1.1em, 2.5vw, 1.5em);
-            margin: 0; /* Override general .button margin */
+            margin: 0;
             cursor: pointer;
             border: none;
             border-radius: 30px;
@@ -168,13 +167,13 @@
 
 
         #loveAnimation {
-            display: none; /* JS sets to flex */
+            display: none;
             flex-direction: column; align-items: center; justify-content: center;
             font-weight: 800; color: #ff66b3; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             animation: loveAppear 1.5s ease-out forwards, pulse 2s infinite 1.5s;
             text-align: center;
             padding: clamp(20px, 3vw, 30px) clamp(15px, 2.5vw, 20px);
-            padding-bottom: clamp(80px, 12vh, 100px);
+            padding-bottom: clamp(80px, 12vh, 100px); /* For its button */
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(7px);
             border-radius: 30px;
@@ -195,22 +194,21 @@
         @keyframes glowAndDriftEnhanced { 0%, 100% { opacity: 0; transform: translate(var(--tx-start), var(--ty-start)) scale(0.7) rotate(var(--r-start)); } 20% { opacity: 0.4; } 50% { opacity: 0.6; transform: translate(var(--tx-mid), var(--ty-mid)) scale(1) rotate(var(--r-mid)); } 80% { opacity: 0.3; } }
 
         /* General .next-button style for popups (birthdayMessage, smallParagraphs, loveAnimation) */
-        /* This does NOT apply to #hugeParagraph .next-button which has its own specific style */
+        /* This does NOT apply to #hugeParagraph .next-button */
         #birthdayMessage .next-button,
-        #smallParagraphs .next-button,
+        #smallParagraphs .next-button, /* This targets nextButton2 */
         #loveAnimation .next-button {
             position: absolute;
-            bottom: clamp(15px, 2.5vh, 25px);
+            bottom: clamp(20px, 3.5vh, 30px); /* Positioned within the increased padding-bottom of their parent */
             right: clamp(15px, 2.5vw, 25px);
             z-index: 100;
             margin: 0;
-            /* It will inherit .button styles for appearance */
         }
 
         #loveAnimation .next-button { opacity: 0; animation: fadeInButton 0.5s ease-in 4.2s forwards; }
         @keyframes fadeInButton { 0% { opacity: 0; } 100% { opacity: 1; } }
         
-        .message-container { position: relative; } /* For absolute positioning of .next-buttons */
+        .message-container { position: relative; }
 
         #finalSection {
             display: none;
@@ -288,25 +286,24 @@
             #birthdayMessage p, #smallParagraphs .paragraph p, #finalSection p { font-size: 0.85em; }
             #hugeParagraph p { font-size: 0.95em; }
 
-
-            #birthdayMessage, #smallParagraphs { padding-bottom: 65px; }
-            #hugeParagraph { padding-bottom: 70px; } /* For sticky button */
-            #loveAnimation { padding-bottom: 70px; }
+            /* Adjust bottom padding for modals on small screens */
+            #birthdayMessage, #smallParagraphs, #loveAnimation { padding-bottom: 75px; }
+            #hugeParagraph { padding-bottom: 80px; } /* For sticky button */
 
             /* Next buttons in regular modals */
             #birthdayMessage .next-button,
-            #smallParagraphs .next-button,
+            #smallParagraphs .next-button, /* This targets nextButton2 */
             #loveAnimation .next-button {
-                bottom: 10px;
+                bottom: 15px;
                 right: 10px;
                 font-size: 1em;
                 padding: 8px 15px;
             }
             /* Sticky button in hugeParagraph */
-            #hugeParagraph .next-button {
+            #hugeParagraph .next-button { /* This targets nextButton3 */
                 font-size: 1em;
                 padding: 8px 15px;
-                bottom: 10px; /* Adjust sticky position for smaller screens */
+                bottom: 15px; /* Sticky position from bottom of scrollport */
             }
 
             #animatedLoveTextContainer { font-size: 1.2em; }
@@ -458,22 +455,20 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         document.getElementById('nextButton2').addEventListener('click', () => {
             document.getElementById('smallParagraphs').style.display = 'none';
             const hugeParagraphModal = document.getElementById('hugeParagraph');
-            const nextButton3 = hugeParagraphModal.querySelector('#nextButton3'); // Ensure this selector targets .next-button specifically in hugeParagraph
+            const nextButton3 = hugeParagraphModal.querySelector('#nextButton3');
 
             hugeParagraphModal.style.display = 'block';
 
             function checkScrollHugeParagraph() {
-                const scrollBuffer = 20; // Increased buffer slightly
-                // Check if scrolled to bottom or if content is shorter than modal height
-                if (hugeParagraphModal.scrollHeight <= hugeParagraphModal.clientHeight || // Content fits, no scroll needed
-                    (hugeParagraphModal.scrollHeight - hugeParagraphModal.scrollTop <= hugeParagraphModal.clientHeight + scrollBuffer) // Scrolled to bottom
+                const scrollBuffer = 20;
+                if (hugeParagraphModal.scrollHeight <= hugeParagraphModal.clientHeight ||
+                    (hugeParagraphModal.scrollHeight - hugeParagraphModal.scrollTop <= hugeParagraphModal.clientHeight + scrollBuffer)
                    ) {
                     nextButton3.classList.add('visible');
                 } else {
                      nextButton3.classList.remove('visible');
                 }
             }
-            // Initial check in case content is already short enough
             checkScrollHugeParagraph();
             hugeParagraphModal.addEventListener('scroll', checkScrollHugeParagraph);
         });
