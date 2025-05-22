@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Birthday Surprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
         body {
             background: linear-gradient(135deg, #ffb6c1 0%, #e0f7e0 100%);
             color: #004d00;
             font-family: 'Arial', sans-serif;
             text-align: center;
-            overflow-x: hidden; 
+            overflow-x: hidden;
             margin: 0;
             padding: 0;
             min-height: 100vh;
@@ -20,10 +21,10 @@
         }
 
         #question {
-            margin-top: 15%; 
+            margin-top: 15%;
             font-size: 2em; animation: fadeIn 2s ease-in-out;
             text-shadow: 2px 2px 4px rgba(255,255,255,0.7);
-            position: relative; 
+            position: relative;
             z-index: 100;
         }
         @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
@@ -59,12 +60,44 @@
             100% { transform: translateY(-100vh) scale(0.8); opacity: 0;}
         }
 
-        #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation {
-            display: none; 
+        /* Interstitial Message Styling */
+        #interstitialMessage {
+            /* Inherits from .message-container for basic positioning and backdrop */
+            padding: 50px 40px; /* Adjusted padding for a single message */
+            text-align: center;
+            border-color: rgba(255, 20, 147, 0.7); /* A deeper, romantic pink border */
+            box-shadow: 0 15px 50px rgba(255, 20, 147, 0.35);
+            /* Animation will be controlled by JavaScript */
+        }
+
+        .interstitial-text {
+            font-size: 2.8em; /* Prominent text */
+            color: #e91e63;   /* Vibrant pink */
+            font-family: 'Pacifico', cursive; /* A romantic, flowing font */
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7),
+                         0 0 10px #ff80ab,
+                         0 0 15px #ff80ab;
+            margin: 0;
+            line-height: 1.35;
+        }
+
+        @keyframes fadeInInterstitial {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        @keyframes fadeOutInterstitial {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+        }
+
+
+        #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation, #interstitialMessage { /* Added #interstitialMessage here */
+            display: none;
             position: fixed;
-            top: 50%; 
+            top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%); 
+            transform: translate(-50%, -50%);
             z-index: 50;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
@@ -72,16 +105,16 @@
             border: 2px solid rgba(255,102,179,0.3);
             box-shadow: 0 10px 30px rgba(255,102,179,0.2);
             box-sizing: border-box;
-            width: 90%; 
-            max-width: 650px; 
-            padding: 30px 20px; 
-            padding-bottom: 100px; 
+            width: 90%;
+            max-width: 650px;
+            padding: 30px 20px;
+            padding-bottom: 100px;
         }
 
         #birthdayMessage {
             animation: slideIn 1s ease-in-out;
         }
-        @keyframes slideIn { 0% { transform: translate(-50%, -100%); } 100% { transform: translate(-50%, -50%); } } 
+        @keyframes slideIn { 0% { transform: translate(-50%, -100%); } 100% { transform: translate(-50%, -50%); } }
 
         #smallParagraphs {
             width: 80%; max-width: 800px; text-align: left;
@@ -105,7 +138,7 @@
 
         #hugeParagraph .next-button { /* Centered button for hugeParagraph */
             position: absolute;
-            bottom: 30px; 
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             opacity: 0;
@@ -121,59 +154,59 @@
         }
 
         #loveAnimation {
-            font-weight: 800; 
-            color: #ff66b3; 
+            font-weight: 800;
+            color: #ff66b3;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            animation-name: loveAppear, pulse; 
+            animation-name: loveAppear, pulse;
             animation-duration: 1.5s, 2s;
             animation-timing-function: ease-out, infinite;
-            animation-delay: 0s, 1.5s; 
-            animation-fill-mode: forwards, normal; 
-            text-align: center; 
-            overflow: hidden; 
+            animation-delay: 0s, 1.5s;
+            animation-fill-mode: forwards, normal;
+            text-align: center;
+            overflow: hidden;
         }
-        @keyframes loveAppear { 
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } 
-            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } 
+        @keyframes loveAppear {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
         }
-        @keyframes pulse { 
-            0%, 100% { transform: translate(-50%, -50%) scale(1); } 
-            50% { transform: translate(-50%, -50%) scale(1.03); } 
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.03); }
         }
-        
+
         #animatedLoveTextContainer { margin-bottom: 20px; font-size: 1.9em; font-weight: bold; color: #e91e63; position: relative; z-index: 2; }
         .love-char { display: inline-block; opacity: 0; transform: translateY(25px); animation: revealChar 0.6s forwards; text-shadow: 1px 1px 0px rgba(255,255,255,0.5); }
         @keyframes revealChar { to { opacity: 1; transform: translateY(0); text-shadow: 1px 1px 0px rgba(255,255,255,0.5), 0 0 8px #fff, 0 0 15px #ff80ab, 0 0 25px #ff80ab; } }
-        #animatedCake { 
-            font-size: 4.2em; 
-            opacity: 0; 
-            transform: scale(0.5); 
-            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; 
-            animation-delay: 2.3s; 
-            text-shadow: 0 0 15px #ffc107, 0 0 25px #ff9800; 
-            position: relative; 
-            z-index: 2; 
-            margin-bottom: 10px; 
-            margin-top: 15px; 
+        #animatedCake {
+            font-size: 4.2em;
+            opacity: 0;
+            transform: scale(0.5);
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            animation-delay: 2.3s;
+            text-shadow: 0 0 15px #ffc107, 0 0 25px #ff9800;
+            position: relative;
+            z-index: 2;
+            margin-bottom: 10px;
+            margin-top: 15px;
         }
-        
+
         .dynamic-heart-container {
-            position: absolute; 
+            position: absolute;
             /* width & height set by JS based on scale */
-            opacity: 0; 
-            z-index: 1; 
+            opacity: 0;
+            z-index: 1;
         }
         .drawing-heart-svg {
             width: 100%;
             height: 100%;
-            overflow: visible; 
+            overflow: visible;
         }
         .heart-drawing-path {
             stroke: red;
-            stroke-width: 2.3; 
+            stroke-width: 2.3;
             fill: none;
-            stroke-linecap: round;   
-            stroke-linejoin: round;  
+            stroke-linecap: round;
+            stroke-linejoin: round;
             filter: drop-shadow(0 0 2.5px red) drop-shadow(0 0 4.5px rgba(255,0,0,0.65));
         }
         @keyframes heartPathDrawAnimation {
@@ -189,17 +222,17 @@
         @keyframes glowAndDriftEnhanced { 0%, 100% { opacity: 0; transform: translate(var(--tx-start), var(--ty-start)) scale(0.7) rotate(var(--r-start)); } 20% { opacity: 0.4; } 50% { opacity: 0.6; transform: translate(var(--tx-mid), var(--ty-mid)) scale(1) rotate(var(--r-mid)); } 80% { opacity: 0.3; } }
 
         /* Default .next-button (bottom right) */
-        .next-button { 
+        .next-button {
             position: absolute;
             bottom: 25px;
             right: 25px;
-            z-index: 100; 
+            z-index: 100;
             margin: 0;
         }
 
         /* Specific style for #loveAnimation .next-button to center it at the bottom */
-        #loveAnimation .next-button { 
-            opacity: 0; 
+        #loveAnimation .next-button {
+            opacity: 0;
             position: absolute;
             bottom: 30px; /* Adjust as needed for spacing */
             left: 50%;
@@ -248,9 +281,9 @@
         /* ========== MOBILE OPTIMIZATIONS (REVISED) ========== */
         @media (max-width: 768px) {
             html, body {
-                overflow-x: hidden; 
-                height: 100%; 
-                -webkit-text-size-adjust: 100%; 
+                overflow-x: hidden;
+                height: 100%;
+                -webkit-text-size-adjust: 100%;
                 text-size-adjust: 100%;
             }
             body {
@@ -258,48 +291,60 @@
             }
 
             #question {
-                position: fixed; 
+                position: fixed;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -70%); 
-                width: 90vw; 
-                max-width: 380px; 
-                padding: 25px 20px; 
+                transform: translate(-50%, -70%);
+                width: 90vw;
+                max-width: 380px;
+                padding: 25px 20px;
                 box-sizing: border-box;
-                background-color: rgba(255, 255, 255, 0.2); 
-                border-radius: 15px; 
-                margin-top: 0; 
-                font-size: 1.4em; 
+                background-color: rgba(255, 255, 255, 0.2);
+                border-radius: 15px;
+                margin-top: 0;
+                font-size: 1.4em;
             }
             #question p {
                 margin-bottom: 20px;
                 line-height: 1.35;
-                font-size: 1.1em; 
+                font-size: 1.1em;
             }
-            .button { 
+            .button {
                 padding: 12px 18px;
                 font-size: 1.05em;
                 margin: 10px 5px;
             }
-            #question .button { 
+            #question .button {
                  display: block;
-                 width: 100%; 
-                 max-width: 220px; 
-                 margin: 12px auto; 
-                 padding: 14px 15px; 
+                 width: 100%;
+                 max-width: 220px;
+                 margin: 12px auto;
+                 padding: 14px 15px;
                  font-size: 1.1em;
             }
 
             .nickname {
-                font-size: 1.5em; 
+                font-size: 1.5em;
             }
+
+            #interstitialMessage { /* Mobile Optimization */
+                padding: 40px 25px;
+                width: 92vw;
+                max-width: 92vw;
+                max-height: 85vh;
+                padding-bottom: 60px; /* Less bottom padding as no buttons */
+            }
+            .interstitial-text { /* Mobile Optimization */
+                font-size: 2em;
+            }
+
 
             #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation {
                 width: 92vw;
-                max-width: 92vw; 
-                max-height: 85vh; 
-                padding: 15px; 
-                padding-bottom: 80px; 
+                max-width: 92vw;
+                max-height: 85vh;
+                padding: 15px;
+                padding-bottom: 80px;
             }
 
             #birthdayMessage h1 {
@@ -324,8 +369,8 @@
                 font-size: 0.95em;
                 line-height: 1.55;
             }
-            #hugeParagraph .next-button { 
-                bottom: 18px; 
+            #hugeParagraph .next-button {
+                bottom: 18px;
                 padding: 10px 20px;
                 font-size: 1em;
             }
@@ -336,13 +381,13 @@
                 line-height: 1.25;
             }
             #animatedCake { font-size: 3em; margin-bottom: 6px; margin-top: 10px; }
-            
+
             .dynamic-heart-container { /* Mobile size will be set by JS scale */ }
             .heart-drawing-path {
                 stroke-width: 2px;
                 filter: drop-shadow(0 0 2px red) drop-shadow(0 0 3.5px rgba(255,0,0,0.6));
             }
-            
+
             #loveAnimation .next-button { /* Centered for loveAnimation on mobile too */
                 bottom: 20px; /* Adjusted for mobile */
             }
@@ -351,7 +396,7 @@
             .glowing-orb { width: 35px !important; height: 35px !important; }
 
             /* Default .next-button for mobile (bottom right) */
-            .next-button { 
+            .next-button {
                 bottom: 12px;
                 right: 12px;
                 padding: 9px 16px;
@@ -360,7 +405,7 @@
 
 
             #finalSection {
-                padding: 15px 8px; 
+                padding: 15px 8px;
             }
             .para-box {
                 padding: 18px 12px;
@@ -382,49 +427,57 @@
             }
         }
 
-        @media (max-width: 480px) { 
+        @media (max-width: 480px) {
             body {
                 border-width: 5px;
             }
             #question {
-                font-size: 1.25em; 
+                font-size: 1.25em;
                 width: 92vw;
                 padding: 20px 15px;
             }
             #question p {
-                font-size: 1em; 
+                font-size: 1em;
                 margin-bottom: 18px;
             }
             #question .button {
-                 padding: 12px 15px; 
+                 padding: 12px 15px;
                  font-size: 1em;
             }
 
             .nickname { font-size: 1.3em; }
-            
+
+            #interstitialMessage { /* Mobile Optimization */
+                padding: 30px 20px;
+                padding-bottom: 50px; /* Less bottom padding as no buttons */
+            }
+            .interstitial-text { /* Mobile Optimization */
+                font-size: 1.6em;
+            }
+
             #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation {
-                padding-bottom: 70px; 
+                padding-bottom: 70px;
             }
 
             #birthdayMessage h1 { font-size: 1.4em; }
             #birthdayMessage p,
             #smallParagraphs .paragraph p,
             #finalSection .para-box p {
-                font-size: 0.75em; 
+                font-size: 0.75em;
                 line-height: 1.45;
             }
              #hugeParagraph {
                 font-size: 0.85em;
              }
              #hugeParagraph .next-button {
-                bottom: 15px; 
+                bottom: 15px;
                 padding: 8px 16px;
                 font-size: 0.95em;
              }
 
             #animatedLoveTextContainer { font-size: 1.15em; }
             #animatedCake { font-size: 2.6em; margin-top: 8px;}
-            
+
             /* .dynamic-heart-container mobile size set by JS scale */
             .heart-drawing-path {
                 stroke-width: 1.8px;
@@ -437,10 +490,10 @@
             }
 
             /* Default .next-button for very small mobile (bottom right) */
-            .next-button { 
+            .next-button {
                 padding: 8px 12px;
                 font-size: 0.9em;
-                bottom: 10px; 
+                bottom: 10px;
                 right: 10px;
             }
 
@@ -469,8 +522,12 @@
 
 <div id="nickname-container"></div>
 
+<div id="interstitialMessage" class="message-container">
+    <p class="interstitial-text">I knew you loved me muwaa 😘</p>
+</div>
+
 <div id="birthdayMessage" class="message-container">
-    <h1>Happy Birthday, My Love!..I knew you loved me!muwa 🎂</h1>
+    <h1>Happy Birthday, My Love!🎂</h1>
     <p>You are my everything, my princess, my cheesecake, my jaan, my darling, my sweetheart, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey. I am so lucky to have you in my life. Happy Birthday, my love!</p>
     <button class="button next-button" id="nextButton1">Next</button>
 </div>
@@ -496,7 +553,7 @@
     <button class="button next-button" id="nextButton2">Next</button>
 </div>
 
-<div id="hugeParagraph" class="message-container"> 
+<div id="hugeParagraph" class="message-container">
     <p>MY LOVE,
 I truly pray for your successful future with ME, and I hope you achieve everything you want in life which is beneficial for you.
 Hamesha khush rahena jaan — whether I am with you or not, whether I am on earth or not.
@@ -508,11 +565,11 @@ I love you… MWAAAAAAAAAAA. I CAN'T WAIT TO HAVE YOU NEXT TO ME.
 May our duaas get accepted; indeed, Allah never disappoints His believers.
 But for now…
 Happy birthday kucchuuu… my everything, my princess, my jaan, my darling, my sweetheart, my cheesecake, my love, my baby, my kucchhuuu pucchuu, my bongi, my wifey.
-I am so lucky to have you in my life. 
+I am so lucky to have you in my life.
 Happy Birthday, Jaana (I tried my best to make it look the best, but still, it isn't perfect, sorryyy) ❤️But I can guarantee my love for you is a hundred percent the best from my side.
 I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 </p>
-    <button class="button next-button" id="nextButton3">Next</button> 
+    <button class="button next-button" id="nextButton3">Next</button>
 </div>
 
 <div id="loveAnimation" class="message-container">
@@ -553,7 +610,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 <script>
     // ========== UPDATED NICKNAMES LIST ==========
     const nicknames = [
-        "Princess", "Jaana", "Cheesecake", "Jaan", 
+        "Princess", "Jaana", "Cheesecake", "Jaan",
         "Darling", "Wifey", "Sweetheart", "Bongi"
     ];
     // =============================================
@@ -581,49 +638,49 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
     function setupEventListeners() {
         document.getElementById('yesButton').addEventListener('click', () => handleResponse('yes'));
         document.getElementById('noButton').addEventListener('click', () => handleResponse('no'));
-        
+
         document.getElementById('nextButton1').addEventListener('click', () => {
-            stopNicknameAnimation(); 
-            document.getElementById('birthdayMessage').style.display = 'none'; 
-            document.getElementById('smallParagraphs').style.display = 'block'; 
+            stopNicknameAnimation();
+            document.getElementById('birthdayMessage').style.display = 'none';
+            document.getElementById('smallParagraphs').style.display = 'block';
         });
-        
+
         document.getElementById('nextButton2').addEventListener('click', () => {
             document.getElementById('smallParagraphs').style.display = 'none';
             const hugeParagraphModal = document.getElementById('hugeParagraph');
             const nextButton3 = hugeParagraphModal.querySelector('#nextButton3');
 
-            hugeParagraphModal.style.display = 'block'; 
+            hugeParagraphModal.style.display = 'block';
 
             function checkScrollHugeParagraph() {
-                const scrollBuffer = 15; 
-                if (hugeParagraphModal.scrollHeight - hugeParagraphModal.scrollTop <= hugeParagraphModal.clientHeight + scrollBuffer) { 
+                const scrollBuffer = 15;
+                if (hugeParagraphModal.scrollHeight - hugeParagraphModal.scrollTop <= hugeParagraphModal.clientHeight + scrollBuffer) {
                     nextButton3.classList.add('visible');
                 } else {
-                     nextButton3.classList.remove('visible'); 
+                     nextButton3.classList.remove('visible');
                 }
             }
-            checkScrollHugeParagraph(); 
-            hugeParagraphModal.addEventListener('scroll', checkScrollHugeParagraph); 
+            checkScrollHugeParagraph();
+            hugeParagraphModal.addEventListener('scroll', checkScrollHugeParagraph);
         });
-        
+
         document.getElementById('nextButton3').addEventListener('click', () => {
             document.getElementById('hugeParagraph').style.display = 'none';
             const loveAnimationSection = document.getElementById('loveAnimation');
-            
-            loveAnimationSection.style.display = 'flex'; 
-            loveAnimationSection.style.flexDirection = 'column'; 
-            loveAnimationSection.style.alignItems = 'center'; 
-            loveAnimationSection.style.justifyContent = 'center'; 
+
+            loveAnimationSection.style.display = 'flex';
+            loveAnimationSection.style.flexDirection = 'column';
+            loveAnimationSection.style.alignItems = 'center';
+            loveAnimationSection.style.justifyContent = 'center';
 
             const chars = loveAnimationSection.querySelectorAll('#animatedLoveTextContainer .love-char');
             chars.forEach((char, index) => { char.style.animationDelay = `${index * 0.12}s`; });
-            
+
             const existingHearts = loveAnimationSection.querySelectorAll('.dynamic-heart-container');
             existingHearts.forEach(h => h.remove());
 
             const numHearts = 5; // Increased to 5 for more variation, including smaller ones
-            const basePopInDelay = 2.8; 
+            const basePopInDelay = 2.8;
             const popInStagger = 0.20; // Slightly reduced stagger for more overlap
             const popInDuration = 0.8;
             const heartDrawDuration = 1.8;
@@ -633,9 +690,9 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             for (let i = 0; i < numHearts; i++) {
                 const heartContainer = document.createElement('div');
                 heartContainer.className = 'dynamic-heart-container';
-                
+
                 const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                svg.setAttribute('viewBox', '-10 -15 70 65'); 
+                svg.setAttribute('viewBox', '-10 -15 70 65');
                 svg.classList.add('drawing-heart-svg');
 
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -644,36 +701,36 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 
                 svg.appendChild(path);
                 heartContainer.appendChild(svg);
-                loveAnimationSection.appendChild(heartContainer); 
+                loveAnimationSection.appendChild(heartContainer);
 
                 let randomTopPercent, randomLeftPercent;
                 let scaleMultiplier = Math.random() * 0.3 + 0.75; // Scale between 0.75 and 1.05
-                
+
                 // Make one or two hearts noticeably smaller
                 if (i === numHearts - 1 || i === numHearts - 2 ) { // Last two hearts can be smaller
                     if (Math.random() > 0.3) { // Good chance of being smaller
                        scaleMultiplier = Math.random() * 0.2 + 0.5; // Scale between 0.5 and 0.7
                     }
                 }
-                
+
                 heartContainer.style.width = `${baseHeartSize * scaleMultiplier}px`;
                 heartContainer.style.height = `${baseHeartSize * scaleMultiplier}px`;
 
 
                 if (i % 4 === 0) { // Top-left-ish
-                    randomTopPercent = Math.random() * 15 + 15; 
-                    randomLeftPercent = Math.random() * 20 + 10; 
+                    randomTopPercent = Math.random() * 15 + 15;
+                    randomLeftPercent = Math.random() * 20 + 10;
                 } else if (i % 4 === 1) { // Top-right-ish
-                    randomTopPercent = Math.random() * 15 + 20; 
-                    randomLeftPercent = Math.random() * 20 + 70; 
+                    randomTopPercent = Math.random() * 15 + 20;
+                    randomLeftPercent = Math.random() * 20 + 70;
                 } else if (i % 4 === 2) { // Bottom-left-ish
-                    randomTopPercent = Math.random() * 15 + 65; 
-                    randomLeftPercent = Math.random() * 25 + 15; 
+                    randomTopPercent = Math.random() * 15 + 65;
+                    randomLeftPercent = Math.random() * 25 + 15;
                 } else { // Bottom-right-ish
-                    randomTopPercent = Math.random() * 15 + 60; 
-                    randomLeftPercent = Math.random() * 25 + 65; 
+                    randomTopPercent = Math.random() * 15 + 60;
+                    randomLeftPercent = Math.random() * 25 + 65;
                 }
-                
+
                 let randomRotation;
                 if (i % 2 === 0) { // Tilt left for even hearts
                     randomRotation = -(Math.random() * 25 + 15); // -15 to -40 degrees
@@ -684,10 +741,8 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 
                 heartContainer.style.top = `${randomTopPercent}%`;
                 heartContainer.style.left = `${randomLeftPercent}%`;
-                // The transform on the container itself should only be for rotation and its own scale (not the global scale)
-                // The popIn animation will handle its initial scale.
-                heartContainer.style.transform = `translate(-50%, -50%) rotate(${randomRotation}deg)`; 
-                heartContainer.style.opacity = '0'; 
+                heartContainer.style.transform = `translate(-50%, -50%) rotate(${randomRotation}deg)`;
+                heartContainer.style.opacity = '0';
 
                 const pathLength = path.getTotalLength();
                 path.style.strokeDasharray = pathLength;
@@ -696,7 +751,6 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
                 const currentPopInDelay = basePopInDelay + (i * popInStagger);
                 const currentDrawDelay = currentPopInDelay + (popInDuration * 0.2);
 
-                // Apply popIn animation with its own scale, not the randomScale applied to the container.
                 heartContainer.style.animation = `popIn ${popInDuration}s ease-out ${currentPopInDelay}s forwards`;
                 path.style.animation = `heartPathDrawAnimation ${heartDrawDuration}s cubic-bezier(0.65, 0, 0.35, 1) ${currentDrawDelay}s forwards`;
             }
@@ -704,27 +758,30 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             const lastHeartPopInStartTime = basePopInDelay + ((numHearts - 1) * popInStagger);
             const lastHeartDrawStartTime = lastHeartPopInStartTime + (popInDuration * 0.2);
             const lastHeartAnimationEndTime = lastHeartDrawStartTime + heartDrawDuration;
-            const nextButtonDelay = lastHeartAnimationEndTime + 0.8; // Increased buffer slightly
+            const nextButtonDelay = lastHeartAnimationEndTime + 0.8;
 
             const nextButtonLoveAnim = loveAnimationSection.querySelector('#nextButton4');
             nextButtonLoveAnim.style.animation = `fadeInButton 0.5s ease-in ${nextButtonDelay}s forwards`;
-            
+
             const isMobile = window.innerWidth <= 768;
-            createFallingLoveHearts(loveAnimationSection, isMobile ? 8 : 18); // Slightly reduced again
-            createGlowingOrbs(loveAnimationSection, isMobile ? 6 : 10); // Slightly reduced again
+            createFallingLoveHearts(loveAnimationSection, isMobile ? 8 : 18);
+            createGlowingOrbs(loveAnimationSection, isMobile ? 6 : 10);
         });
-        
+
         document.getElementById('nextButton4').addEventListener('click', () => {
             document.getElementById('loveAnimation').style.display = 'none';
             const finalSectionEl = document.getElementById('finalSection');
-            finalSectionEl.style.display = 'block'; 
-            finalSectionEl.style.transform = 'none'; 
+            finalSectionEl.style.display = 'block';
+            finalSectionEl.style.transform = 'none';
             addFinalEffects();
         });
     }
 
     function handleResponse(response) {
         const questionDiv = document.getElementById('question');
+        const interstitialMessageDiv = document.getElementById('interstitialMessage');
+        const birthdayMessageDiv = document.getElementById('birthdayMessage');
+
         if (response === 'no') {
             if (loveIndex < loveStatements.length) {
                 questionDiv.innerHTML = `<p>${loveStatements[loveIndex]}</p><button class="button" id="yesButtonNew">Yes</button><button class="button" id="noButtonNew">No</button>`;
@@ -737,20 +794,36 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             }
         } else if (response === 'yes') {
             questionDiv.style.display = 'none';
-            startNicknameAnimation(); 
+            startNicknameAnimation(); // Start floating nicknames
+
+            // Show interstitial message
+            interstitialMessageDiv.style.display = 'block';
+            interstitialMessageDiv.style.animation = 'fadeInInterstitial 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards';
+
             setTimeout(() => {
-                document.getElementById('birthdayMessage').style.display = 'block';
-            }, 500); 
+                // Fade out interstitial message
+                interstitialMessageDiv.style.animation = 'fadeOutInterstitial 0.8s ease-in forwards';
+
+                // After fade out animation completes (approx 0.8s), then show birthday message
+                setTimeout(() => {
+                    interstitialMessageDiv.style.display = 'none'; // Ensure it's fully hidden
+                    interstitialMessageDiv.style.animation = ''; // Reset animation
+
+                    birthdayMessageDiv.style.display = 'block';
+                    // birthdayMessage already has its 'slideIn' animation defined in CSS by its ID
+                }, 800); // This duration should match the fadeOutInterstitial animation
+
+            }, 3000); // Interstitial message visible for 3 seconds (total time before fade-out starts)
         }
     }
 
     function startNicknameAnimation() {
-        if (isNicknameAnimationActive) return; 
+        if (isNicknameAnimationActive) return;
         isNicknameAnimationActive = true;
-        for (let i = 0; i < 5; i++) { 
-            setTimeout(createNickname, i * 400); 
+        for (let i = 0; i < 5; i++) {
+            setTimeout(createNickname, i * 400);
         }
-        nicknameInterval = setInterval(createNickname, 800); 
+        nicknameInterval = setInterval(createNickname, 800);
     }
 
     function stopNicknameAnimation() {
@@ -763,23 +836,23 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
     }
 
     function createNickname() {
-        if (!isNicknameAnimationActive) return; 
+        if (!isNicknameAnimationActive) return;
 
         const colors = ["#d81b60", "#ff1493", "#c71585", "#ff69b4", "#db7093"];
-        const nicknameEl = document.createElement('div'); 
+        const nicknameEl = document.createElement('div');
         nicknameEl.className = 'nickname';
         nicknameEl.textContent = nicknames[Math.floor(Math.random() * nicknames.length)];
         nicknameEl.style.color = colors[Math.floor(Math.random() * colors.length)];
-        
-        let randomLeft = Math.random() * 70 + 15; 
-        nicknameEl.style.left = `${randomLeft}%`; 
-        nicknameEl.style.animationDelay = `${Math.random() * 0.5}s`; 
+
+        let randomLeft = Math.random() * 70 + 15;
+        nicknameEl.style.left = `${randomLeft}%`;
+        nicknameEl.style.animationDelay = `${Math.random() * 0.5}s`;
 
         document.getElementById('nickname-container').appendChild(nicknameEl);
-        
-        setTimeout(() => { 
-            if (nicknameEl.parentNode) nicknameEl.remove(); 
-        }, 7000); 
+
+        setTimeout(() => {
+            if (nicknameEl.parentNode) nicknameEl.remove();
+        }, 7000);
     }
 
     function createFallingLoveHearts(containerElement, count) {
@@ -788,12 +861,12 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             setTimeout(() => {
                 const heart = document.createElement('div'); heart.className = 'falling-love-heart';
                 heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                heart.style.left = `${Math.random() * 92 + 4}%`; heart.style.animationDuration = `${Math.random() * 4 + 6}s`; 
-                heart.style.animationDelay = `${Math.random() * 6}s`; 
+                heart.style.left = `${Math.random() * 92 + 4}%`; heart.style.animationDuration = `${Math.random() * 4 + 6}s`;
+                heart.style.animationDelay = `${Math.random() * 6}s`;
                 heart.style.setProperty('--r-start', `${Math.random() * 120 - 60}deg`); heart.style.setProperty('--r-end', `${Math.random() * 360 - 180}deg`);
                 containerElement.appendChild(heart);
                 heart.addEventListener('animationend', () => { if (heart.parentNode) heart.remove(); });
-            }, i * 220); 
+            }, i * 220);
         }
     }
 
@@ -803,16 +876,16 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             setTimeout(() => {
                 const orb = document.createElement('div'); orb.className = 'glowing-orb';
                 orb.style.backgroundColor = orbColors[Math.floor(Math.random() * orbColors.length)];
-                orb.style.left = `${Math.random() * 90}%`; orb.style.top = `${Math.random() * 85}%`; 
+                orb.style.left = `${Math.random() * 90}%`; orb.style.top = `${Math.random() * 85}%`;
                 orb.style.animationDuration = `${Math.random() * 6 + 8}s`; orb.style.animationDelay = `${Math.random() * 5}s`;
-                orb.style.setProperty('--tx-start', `${Math.random() * 40 - 20}px`); 
+                orb.style.setProperty('--tx-start', `${Math.random() * 40 - 20}px`);
                 orb.style.setProperty('--ty-start', `${Math.random() * 30 - 15}px`);
-                orb.style.setProperty('--r-start', `${Math.random() * 180 - 90}deg`); 
+                orb.style.setProperty('--r-start', `${Math.random() * 180 - 90}deg`);
                 orb.style.setProperty('--tx-mid', `${Math.random() * 50 - 25}px`);
                 orb.style.setProperty('--ty-mid', `${Math.random() * 40 - 20}px`);
                 orb.style.setProperty('--r-mid', `${Math.random() * 360 - 180}deg`);
                 containerElement.appendChild(orb);
-            }, i * 300); 
+            }, i * 300);
         }
     }
 
@@ -825,13 +898,13 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
 
     // MUSIC PLAYER CODE
     window.addEventListener('DOMContentLoaded', () => {
-        const audio = new Audio('iradey4.mp3'); 
+        const audio = new Audio('iradey4.mp3'); // Ensure 'iradey4.mp3' is in the same directory or provide the correct path
         audio.loop = true;
         audio.volume = 0.8;
 
         const playBtn = document.createElement('button');
         playBtn.innerText = '🎵 Play Music';
-        playBtn.className = 'music-play-button'; 
+        playBtn.className = 'music-play-button';
         playBtn.style.position = 'fixed';
         playBtn.style.zIndex = '9999';
         playBtn.style.background = 'linear-gradient(to right, #ffb6c1, #ff69b4)';
@@ -841,7 +914,12 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         playBtn.style.color = 'white';
         playBtn.style.cursor = 'pointer';
         playBtn.style.transition = 'transform 0.2s ease';
-        
+
+        // Apply existing .music-play-button styles from media queries as well
+        // This part is tricky to do dynamically without re-parsing CSS. For simplicity,
+        // the base styles are set here, and media query styles for .music-play-button
+        // in the <style> tag will apply for padding, font-size, bottom, right.
+
         playBtn.addEventListener('mouseenter', () => { playBtn.style.transform = 'scale(1.05)'; });
         playBtn.addEventListener('mouseleave', () => { playBtn.style.transform = 'scale(1)'; });
 
