@@ -140,9 +140,39 @@
         .love-char { display: inline-block; opacity: 0; transform: translateY(25px); animation: revealChar 0.6s forwards; text-shadow: 1px 1px 0px rgba(255,255,255,0.5); }
         @keyframes revealChar { to { opacity: 1; transform: translateY(0); text-shadow: 1px 1px 0px rgba(255,255,255,0.5), 0 0 8px #fff, 0 0 15px #ff80ab, 0 0 25px #ff80ab; } }
         #animatedCake { font-size: 4.2em; opacity: 0; transform: scale(0.5); animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards; animation-delay: 2.3s; text-shadow: 0 0 15px #ffc107, 0 0 25px #ff9800; position: relative; z-index: 2; margin-bottom: 10px; }
-        #pulsingHeartSymbol { font-size: 3.8em; color: #ff4081; opacity: 0; animation: heartPulseSimple 1.5s infinite, popIn 0.8s ease-out forwards; animation-delay: 2.9s; text-shadow: 0 0 10px #fff, 0 0 20px #ff4081; position: relative; z-index: 2; }
+        
+        /* New Animated Heart SVG Styles */
+        #animatedHeartContainer {
+            width: 70px; 
+            height: 70px;
+            margin: 15px auto;
+            opacity: 0;
+            transform: scale(0.5); 
+            position: relative;
+            z-index: 2;
+        }
+        #drawingHeart {
+            width: 100%;
+            height: 100%;
+            overflow: visible; 
+        }
+        #heartPath {
+            stroke: red;
+            stroke-width: 2.5; 
+            fill: none;
+            stroke-linecap: round;   
+            stroke-linejoin: round;  
+            filter: drop-shadow(0 0 3px red) drop-shadow(0 0 5px rgba(255,0,0,0.7));
+        }
+        @keyframes heartPathDrawAnimation {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        /* End New Animated Heart SVG Styles */
+
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
-        @keyframes heartPulseSimple { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+        /* @keyframes heartPulseSimple { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } } */ /* Old emoji heart pulse */
         .falling-love-heart { position: absolute; top: -50px; font-size: 1.8em; color: #ff80ab; opacity: 0; animation: fallAndFade 7s linear infinite; user-select: none; pointer-events: none; z-index: 1; }
         @keyframes fallAndFade { 0% { transform: translateY(0vh) rotate(var(--r-start, 0deg)); opacity: 0.9; } 100% { transform: translateY(115vh) rotate(var(--r-end, 360deg)); opacity: 0; } }
         .glowing-orb { position: absolute; border-radius: 50%; opacity: 0; animation-name: glowAndDriftEnhanced; animation-timing-function: ease-in-out; animation-iteration-count: infinite; pointer-events: none; z-index: 0; }
@@ -156,7 +186,10 @@
             margin: 0;
         }
 
-        #loveAnimation .next-button { opacity: 0; animation: fadeInButton 0.5s ease-in 4.2s forwards; }
+        #loveAnimation .next-button { 
+            opacity: 0; 
+            animation: fadeInButton 0.5s ease-in 5.3s forwards; /* Adjusted delay */
+        }
         @keyframes fadeInButton { 0% { opacity: 0; } 100% { opacity: 1; } }
 
         .message-container { position: relative; }
@@ -299,7 +332,16 @@
                 line-height: 1.25;
             }
             #animatedCake { font-size: 3em; margin-bottom: 6px; }
-            #pulsingHeartSymbol { font-size: 2.6em; }
+            /* #pulsingHeartSymbol { font-size: 2.6em; } */ /* Old emoji heart style */
+             #animatedHeartContainer { /* Responsive new heart */
+                width: 50px;
+                height: 50px;
+                margin: 12px auto;
+            }
+            #heartPath { /* Responsive new heart path */
+                stroke-width: 2;
+                filter: drop-shadow(0 0 2px red) drop-shadow(0 0 4px rgba(255,0,0,0.7));
+            }
             .falling-love-heart { font-size: 1.4em; }
             .glowing-orb { width: 35px !important; height: 35px !important; }
 
@@ -374,7 +416,17 @@
 
             #animatedLoveTextContainer { font-size: 1.15em; }
             #animatedCake { font-size: 2.6em; }
-            #pulsingHeartSymbol { font-size: 2.2em; }
+            /* #pulsingHeartSymbol { font-size: 2.2em; } */ /* Old emoji heart style */
+            #animatedHeartContainer { /* Responsive new heart for very small screens */
+                width: 40px;
+                height: 40px;
+                margin: 10px auto;
+            }
+            #heartPath { /* Responsive new heart path for very small screens */
+                stroke-width: 1.5;
+                filter: drop-shadow(0 0 1px red) drop-shadow(0 0 3px rgba(255,0,0,0.7));
+            }
+
 
             .next-button { /* General next buttons in modals */
                 padding: 8px 12px;
@@ -391,12 +443,6 @@
     </style>
 </head>
 <body>
-
-    <!-- YOUR HTML BODY CONTENT REMAINS EXACTLY THE SAME AS BEFORE -->
-    <!-- FROM: <div id="bulbs"></div> -->
-    <!-- TO:   </script> -->
-    <!--       </body> -->
-    <!--       </html> -->
 
 <div id="bulbs"></div>
 <div id="balloons"></div>
@@ -470,7 +516,12 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         <span class="love-char">!</span>
     </div>
     <div id="animatedCake">🎂</div>
-    <div id="pulsingHeartSymbol">❤️</div>
+    <div id="animatedHeartContainer"> <!-- New SVG Heart -->
+        <svg id="drawingHeart" viewBox="-5 -5 60 60">
+            <path id="heartPath" d="M25,10 C20,-10 0,5 0,15 C0,30 25,45 25,45 C25,45 50,30 50,15 C50,5 30,-10 25,10 Z"
+                  fill="none" />
+        </svg>
+    </div>
     <button class="button next-button" id="nextButton4">Next</button>
 </div>
 
@@ -501,7 +552,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
     ];
     // =============================================
 
-    const loveStatements = ["Are you sure?", "Think about it...", "Don't do this to me...", "Please reconsider...", "You mean the world to me...", "I can't imagine life without you...", "You're my everything...", "Think again, jaan...", "You're my sunshine...", "You make my heart smile..."];
+    const loveStatements = ["Are you sure?", "Think about it...", "Don't do this to me...", "Please reconsider...", "You mean the world to me...", "I can't imagine life without you...", "You're my everything...", "Think again, jaan...", "I'm your sunshine...", "You make my heart smile..."];
     let loveIndex = 0;
     let nicknameInterval;
     let isNicknameAnimationActive = false;
@@ -558,10 +609,40 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             const chars = loveAnimationSection.querySelectorAll('#animatedLoveTextContainer .love-char');
             chars.forEach((char, index) => { char.style.animationDelay = `${index * 0.12}s`; });
             
-            // Counts can be adjusted based on mobile performance
+            // --- New Animated Heart SVG Setup ---
+            const animatedHeartContainer = document.getElementById('animatedHeartContainer');
+            const heartPath = document.getElementById('heartPath');
+
+            // Reset animations if this section can be re-triggered
+            animatedHeartContainer.style.animation = 'none';
+            heartPath.style.animation = 'none';
+            // Force reflow to restart animation, crucial for re-triggering CSS animations
+            void animatedHeartContainer.offsetWidth; 
+            void heartPath.offsetWidth;
+
+
+            // Set initial states for animations
+            animatedHeartContainer.style.opacity = '0'; // For popIn
+            animatedHeartContainer.style.transform = 'scale(0.5)'; // For popIn
+
+            const pathLength = heartPath.getTotalLength();
+            heartPath.style.strokeDasharray = pathLength;
+            heartPath.style.strokeDashoffset = pathLength;
+
+            // Define animation timings
+            const heartPopInDelay = 2.9; 
+            const heartPopInDuration = 0.8; 
+            const heartDrawDelay = heartPopInDelay + (heartPopInDuration * 0.25); 
+            const heartDrawDuration = 2.0; 
+
+            // Apply animations
+            animatedHeartContainer.style.animation = `popIn ${heartPopInDuration}s ease-out ${heartPopInDelay}s forwards`;
+            heartPath.style.animation = `heartPathDrawAnimation ${heartDrawDuration}s cubic-bezier(0.65, 0, 0.35, 1) ${heartDrawDelay}s forwards`;
+            // --- End New Animated Heart SVG Setup ---
+            
             const isMobile = window.innerWidth <= 768;
-            createFallingLoveHearts(loveAnimationSection, isMobile ? 15 : 30); 
-            createGlowingOrbs(loveAnimationSection, isMobile ? 10 : 18);
+            createFallingLoveHearts(loveAnimationSection, isMobile ? 12 : 25); // Slightly reduced count
+            createGlowingOrbs(loveAnimationSection, isMobile ? 8 : 15); // Slightly reduced count
         });
         
         document.getElementById('nextButton4').addEventListener('click', () => {
@@ -640,7 +721,6 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
                 heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
                 heart.style.left = `${Math.random() * 92 + 4}%`; heart.style.animationDuration = `${Math.random() * 4 + 6}s`; 
                 heart.style.animationDelay = `${Math.random() * 6}s`; 
-                // Font size for these hearts is now primarily controlled by CSS media queries
                 heart.style.setProperty('--r-start', `${Math.random() * 120 - 60}deg`); heart.style.setProperty('--r-end', `${Math.random() * 360 - 180}deg`);
                 containerElement.appendChild(heart);
                 heart.addEventListener('animationend', () => { if (heart.parentNode) heart.remove(); });
@@ -653,7 +733,6 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         for (let i = 0; i < count; i++) {
             setTimeout(() => {
                 const orb = document.createElement('div'); orb.className = 'glowing-orb';
-                // Width/Height for orbs is now primarily controlled by CSS media queries
                 orb.style.backgroundColor = orbColors[Math.floor(Math.random() * orbColors.length)];
                 orb.style.left = `${Math.random() * 90}%`; orb.style.top = `${Math.random() * 85}%`; 
                 orb.style.animationDuration = `${Math.random() * 6 + 8}s`; orb.style.animationDelay = `${Math.random() * 5}s`;
