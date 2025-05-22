@@ -20,10 +20,10 @@
         }
 
         #question {
-            margin-top: 20%; /* This is for desktop */
+            margin-top: 18%; /* Adjusted slightly up for desktop */
             font-size: 2em; animation: fadeIn 2s ease-in-out;
             text-shadow: 2px 2px 4px rgba(255,255,255,0.7);
-            position: relative; /* Changed for mobile, but base is relative */
+            position: relative; 
             z-index: 100;
         }
         @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
@@ -143,9 +143,9 @@
         
         /* New Animated Heart SVG Styles */
         #animatedHeartContainer {
-            width: 70px; 
-            height: 70px;
-            margin: 15px auto;
+            width: 80px;  /* Slightly bigger */
+            height: 80px; /* Slightly bigger */
+            margin: 22px auto 15px auto; /* Adjusted for "a little lower" */
             opacity: 0;
             transform: scale(0.5); 
             position: relative;
@@ -172,7 +172,6 @@
         /* End New Animated Heart SVG Styles */
 
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
-        /* @keyframes heartPulseSimple { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } } */ /* Old emoji heart pulse */
         .falling-love-heart { position: absolute; top: -50px; font-size: 1.8em; color: #ff80ab; opacity: 0; animation: fallAndFade 7s linear infinite; user-select: none; pointer-events: none; z-index: 1; }
         @keyframes fallAndFade { 0% { transform: translateY(0vh) rotate(var(--r-start, 0deg)); opacity: 0.9; } 100% { transform: translateY(115vh) rotate(var(--r-end, 360deg)); opacity: 0; } }
         .glowing-orb { position: absolute; border-radius: 50%; opacity: 0; animation-name: glowAndDriftEnhanced; animation-timing-function: ease-in-out; animation-iteration-count: infinite; pointer-events: none; z-index: 0; }
@@ -231,9 +230,9 @@
         /* ========== MOBILE OPTIMIZATIONS (REVISED) ========== */
         @media (max-width: 768px) {
             html, body {
-                overflow-x: hidden; /* Prevent horizontal scroll */
-                height: 100%; /* Help with full screen element positioning */
-                -webkit-text-size-adjust: 100%; /* Prevent iOS font scaling */
+                overflow-x: hidden; 
+                height: 100%; 
+                -webkit-text-size-adjust: 100%; 
                 text-size-adjust: 100%;
             }
             body {
@@ -241,23 +240,23 @@
             }
 
             #question {
-                position: fixed; /* Change to fixed for reliable centering */
+                position: fixed; 
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%);
-                width: 90vw; /* Use most of the viewport width */
-                max-width: 380px; /* But not excessively wide */
-                padding: 25px 20px; /* More padding inside */
+                transform: translate(-50%, -58%); /* Adjusted slightly up for mobile */
+                width: 90vw; 
+                max-width: 380px; 
+                padding: 25px 20px; 
                 box-sizing: border-box;
-                background-color: rgba(255, 255, 255, 0.2); /* Optional: subtle bg */
-                border-radius: 15px; /* Optional: rounded corners */
-                margin-top: 0; /* Override desktop margin */
-                font-size: 1.4em; /* Adjusted font size */
+                background-color: rgba(255, 255, 255, 0.2); 
+                border-radius: 15px; 
+                margin-top: 0; 
+                font-size: 1.4em; 
             }
             #question p {
                 margin-bottom: 20px;
                 line-height: 1.35;
-                font-size: 1.1em; /* Make question text prominent */
+                font-size: 1.1em; 
             }
             .button { /* General buttons on mobile */
                 padding: 12px 18px;
@@ -266,27 +265,27 @@
             }
             #question .button { /* Buttons within the initial question */
                  display: block;
-                 width: 100%; /* Full width of their container (#question) */
-                 max-width: 220px; /* Max width for these buttons */
-                 margin: 12px auto; /* Center stacked buttons */
-                 padding: 14px 15px; /* Good tap size */
+                 width: 100%; 
+                 max-width: 220px; 
+                 margin: 12px auto; /* This should center them */
+                 padding: 14px 15px; 
                  font-size: 1.1em;
             }
 
             .nickname {
-                font-size: 1.5em; /* Smaller floating nicknames */
+                font-size: 1.5em; 
             }
 
             /* Modal common styles for mobile */
             #birthdayMessage, #smallParagraphs, #hugeParagraph, #loveAnimation {
                 width: 92vw;
                 max-width: 92vw;
-                max-height: 85vh; /* More vertical space for modals */
-                padding: 15px; /* Base padding for modals */
+                max-height: 85vh; 
+                padding: 15px; 
             }
 
             #birthdayMessage {
-                padding-bottom: 70px; /* Space for its next button */
+                padding-bottom: 70px; 
             }
             #birthdayMessage h1 {
                 font-size: 1.6em;
@@ -299,7 +298,7 @@
 
             #smallParagraphs {
                 padding: 15px;
-                padding-bottom: 70px; /* Space for its next button */
+                padding-bottom: 70px; 
             }
             .left-paragraphs, .right-paragraphs {
                 width: 100%;
@@ -311,20 +310,20 @@
             }
 
             #hugeParagraph {
-                padding: 15px 10px; /* Tighter horizontal padding */
-                padding-bottom: 75px; /* Space for its centered button */
+                padding: 15px 10px; 
+                padding-bottom: 75px; 
                 font-size: 0.95em;
                 line-height: 1.55;
             }
-            #hugeParagraph .next-button { /* Centered button in hugeParagraph */
-                bottom: 18px; /* Positioned within padding-bottom */
+            #hugeParagraph .next-button { 
+                bottom: 18px; 
                 padding: 10px 20px;
                 font-size: 1em;
             }
 
             #loveAnimation {
                 padding: 15px 10px;
-                padding-bottom: 75px; /* Space for its button */
+                padding-bottom: 75px; 
             }
             #animatedLoveTextContainer {
                 font-size: 1.3em;
@@ -332,11 +331,10 @@
                 line-height: 1.25;
             }
             #animatedCake { font-size: 3em; margin-bottom: 6px; }
-            /* #pulsingHeartSymbol { font-size: 2.6em; } */ /* Old emoji heart style */
-             #animatedHeartContainer { /* Responsive new heart */
-                width: 50px;
-                height: 50px;
-                margin: 12px auto;
+            #animatedHeartContainer { /* Responsive new heart */
+                width: 60px; /* Slightly bigger */
+                height: 60px; /* Slightly bigger */
+                margin: 18px auto 10px auto; /* Adjusted for "a little lower" */
             }
             #heartPath { /* Responsive new heart path */
                 stroke-width: 2;
@@ -347,7 +345,7 @@
 
 
             /* General .next-button for modals (bottom right) */
-            .next-button { /* Applies to nextButton1, nextButton2, nextButton4 */
+            .next-button { 
                 bottom: 12px;
                 right: 12px;
                 padding: 9px 16px;
@@ -355,7 +353,7 @@
             }
 
             #finalSection {
-                padding: 15px 8px; /* Tighter padding for final section */
+                padding: 15px 8px; 
             }
             .para-box {
                 padding: 18px 12px;
@@ -382,16 +380,17 @@
                 border-width: 5px;
             }
             #question {
-                font-size: 1.25em; /* Slightly smaller */
+                font-size: 1.25em; 
                 width: 92vw;
                 padding: 20px 15px;
+                /* transform: translate(-50%, -58%); already inherited */
             }
             #question p {
-                font-size: 1em; /* Maintain readability of question */
+                font-size: 1em; 
                 margin-bottom: 18px;
             }
             #question .button {
-                 padding: 12px 15px; /* Ensure good tap target */
+                 padding: 12px 15px; 
                  font-size: 1em;
             }
 
@@ -401,32 +400,30 @@
             #birthdayMessage p,
             #smallParagraphs .paragraph p,
             #finalSection .para-box p {
-                font-size: 0.75em; /* Further reduce paragraph text */
+                font-size: 0.75em; 
                 line-height: 1.45;
             }
              #hugeParagraph {
                 font-size: 0.85em;
-                padding-bottom: 70px; /* Space for its button */
+                padding-bottom: 70px; 
              }
              #hugeParagraph .next-button {
-                bottom: 15px; /* Adjusted for padding */
+                bottom: 15px; 
                 padding: 8px 16px;
                 font-size: 0.95em;
              }
 
             #animatedLoveTextContainer { font-size: 1.15em; }
             #animatedCake { font-size: 2.6em; }
-            /* #pulsingHeartSymbol { font-size: 2.2em; } */ /* Old emoji heart style */
             #animatedHeartContainer { /* Responsive new heart for very small screens */
-                width: 40px;
-                height: 40px;
-                margin: 10px auto;
+                width: 50px; /* Slightly bigger */
+                height: 50px; /* Slightly bigger */
+                margin: 15px auto 8px auto; /* Adjusted for "a little lower" */
             }
             #heartPath { /* Responsive new heart path for very small screens */
                 stroke-width: 1.5;
                 filter: drop-shadow(0 0 1px red) drop-shadow(0 0 3px rgba(255,0,0,0.7));
             }
-
 
             .next-button { /* General next buttons in modals */
                 padding: 8px 12px;
@@ -516,9 +513,9 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         <span class="love-char">!</span>
     </div>
     <div id="animatedCake">🎂</div>
-    <div id="animatedHeartContainer"> <!-- New SVG Heart -->
-        <svg id="drawingHeart" viewBox="-5 -5 60 60">
-            <path id="heartPath" d="M25,10 C20,-10 0,5 0,15 C0,30 25,45 25,45 C25,45 50,30 50,15 C50,5 30,-10 25,10 Z"
+    <div id="animatedHeartContainer"> 
+        <svg id="drawingHeart" viewBox="-10 -15 70 60"> <!-- Adjusted viewBox for new path -->
+            <path id="heartPath" d="M25,3 C16,-10 -5,5 2,17 C8,28 25,40 25,40 C25,40 42,28 48,17 C55,5 34,-10 25,3 Z" <!-- New heart path with better curves -->
                   fill="none" />
         </svg>
     </div>
@@ -609,40 +606,32 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
             const chars = loveAnimationSection.querySelectorAll('#animatedLoveTextContainer .love-char');
             chars.forEach((char, index) => { char.style.animationDelay = `${index * 0.12}s`; });
             
-            // --- New Animated Heart SVG Setup ---
             const animatedHeartContainer = document.getElementById('animatedHeartContainer');
             const heartPath = document.getElementById('heartPath');
 
-            // Reset animations if this section can be re-triggered
             animatedHeartContainer.style.animation = 'none';
             heartPath.style.animation = 'none';
-            // Force reflow to restart animation, crucial for re-triggering CSS animations
             void animatedHeartContainer.offsetWidth; 
             void heartPath.offsetWidth;
 
-
-            // Set initial states for animations
-            animatedHeartContainer.style.opacity = '0'; // For popIn
-            animatedHeartContainer.style.transform = 'scale(0.5)'; // For popIn
+            animatedHeartContainer.style.opacity = '0'; 
+            animatedHeartContainer.style.transform = 'scale(0.5)'; 
 
             const pathLength = heartPath.getTotalLength();
             heartPath.style.strokeDasharray = pathLength;
             heartPath.style.strokeDashoffset = pathLength;
 
-            // Define animation timings
             const heartPopInDelay = 2.9; 
             const heartPopInDuration = 0.8; 
             const heartDrawDelay = heartPopInDelay + (heartPopInDuration * 0.25); 
             const heartDrawDuration = 2.0; 
 
-            // Apply animations
             animatedHeartContainer.style.animation = `popIn ${heartPopInDuration}s ease-out ${heartPopInDelay}s forwards`;
             heartPath.style.animation = `heartPathDrawAnimation ${heartDrawDuration}s cubic-bezier(0.65, 0, 0.35, 1) ${heartDrawDelay}s forwards`;
-            // --- End New Animated Heart SVG Setup ---
             
             const isMobile = window.innerWidth <= 768;
-            createFallingLoveHearts(loveAnimationSection, isMobile ? 12 : 25); // Slightly reduced count
-            createGlowingOrbs(loveAnimationSection, isMobile ? 8 : 15); // Slightly reduced count
+            createFallingLoveHearts(loveAnimationSection, isMobile ? 12 : 25); 
+            createGlowingOrbs(loveAnimationSection, isMobile ? 8 : 15); 
         });
         
         document.getElementById('nextButton4').addEventListener('click', () => {
