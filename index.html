@@ -64,7 +64,7 @@
             display: none;
             position: fixed;
             top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); /* This is key for centering */
             z-index: 50;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(10px);
@@ -122,21 +122,21 @@
         }
 
         #loveAnimation {
-            display: none;
-            flex-direction: column; align-items: center; justify-content: center;
+            /* display: none; Flex, align, justify set by JS for content */
+            /* position, top, left, transform, z-index, background, etc. inherited from common modal styles */
             font-weight: 800; color: #ff66b3; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             animation: loveAppear 1.5s ease-out forwards, pulse 2s infinite 1.5s;
             width: 90%; max-width: 650px;
-            text-align: center; padding: 30px 20px; padding-bottom: 100px; /* Increased padding-bottom for next button */
-            background: rgba(255, 255, 255, 0.3);
-            backdrop-filter: blur(7px);
-            border-radius: 30px;
-            box-shadow: 0 12px 40px rgba(255,102,179,0.4);
-            overflow: visible; /* Allow hearts to potentially peek out if positioned at edges */
-            position: relative; /* Crucial for absolute positioning of dynamic hearts */
+            text-align: center; 
+            padding: 30px 20px; padding-bottom: 100px; /* Increased padding-bottom for next button */
+            border-radius: 30px; /* Already defined, but good to keep in mind */
+            box-shadow: 0 12px 40px rgba(255,102,179,0.4); /* Already defined */
+            overflow: hidden; /* Changed from visible to hidden for cleaner edges */
+            /* position: relative; NOT NEEDED HERE as it's already fixed and transformed */
         }
         @keyframes loveAppear { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
         @keyframes pulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.03); } }
+        
         #animatedLoveTextContainer { margin-bottom: 20px; font-size: 1.9em; font-weight: bold; color: #e91e63; position: relative; z-index: 2; }
         .love-char { display: inline-block; opacity: 0; transform: translateY(25px); animation: revealChar 0.6s forwards; text-shadow: 1px 1px 0px rgba(255,255,255,0.5); }
         @keyframes revealChar { to { opacity: 1; transform: translateY(0); text-shadow: 1px 1px 0px rgba(255,255,255,0.5), 0 0 8px #fff, 0 0 15px #ff80ab, 0 0 25px #ff80ab; } }
@@ -150,17 +150,15 @@
             position: relative; 
             z-index: 2; 
             margin-bottom: 10px; 
-            margin-top: 15px; /* Added margin top for spacing from text */
+            margin-top: 15px; 
         }
         
-        /* Styles for Multiple Dynamic Hearts */
         .dynamic-heart-container {
             position: absolute; 
             width: 70px; 
             height: 70px;
             opacity: 0; 
-            z-index: 1; /* Behind cake and text (z-index 2) */
-            /* transform set by JS */
+            z-index: 1; 
         }
         .drawing-heart-svg {
             width: 100%;
@@ -180,7 +178,6 @@
                 stroke-dashoffset: 0;
             }
         }
-        /* End Multiple Dynamic Hearts Styles */
 
         @keyframes popIn { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
         .falling-love-heart { position: absolute; top: -50px; font-size: 1.8em; color: #ff80ab; opacity: 0; animation: fallAndFade 7s linear infinite; user-select: none; pointer-events: none; z-index: 1; }
@@ -188,25 +185,24 @@
         .glowing-orb { position: absolute; border-radius: 50%; opacity: 0; animation-name: glowAndDriftEnhanced; animation-timing-function: ease-in-out; animation-iteration-count: infinite; pointer-events: none; z-index: 0; }
         @keyframes glowAndDriftEnhanced { 0%, 100% { opacity: 0; transform: translate(var(--tx-start), var(--ty-start)) scale(0.7) rotate(var(--r-start)); } 20% { opacity: 0.4; } 50% { opacity: 0.6; transform: translate(var(--tx-mid), var(--ty-mid)) scale(1) rotate(var(--r-mid)); } 80% { opacity: 0.3; } }
 
-        .next-button { 
+        .next-button { /* General button style for modals, not #hugeParagraph */
             position: absolute;
             bottom: 25px;
             right: 25px;
-            z-index: 100;
+            z-index: 100; /* Ensure it's above other modal content */
             margin: 0;
         }
 
         #loveAnimation .next-button { 
             opacity: 0; 
-            /* Delay will be set by JS */
-            position: absolute; /* Ensure it's positioned correctly */
-            left: 50%;
-            transform: translateX(-50%);
-            bottom: 30px; /* Give it enough space from bottom */
+            /* animation properties (name, duration, timing, delay, fill-mode) set by JS */
+            /* position, bottom, right inherited from .next-button */
+            /* transform: translateX(-50%); REMOVED - not needed for bottom-right button */
+            /* left: 50%; REMOVED */
         }
         @keyframes fadeInButton { 0% { opacity: 0; } 100% { opacity: 1; } }
 
-        .message-container { position: relative; }
+        .message-container { position: relative; } /* Ensures z-index works correctly within modals for next buttons */
 
         #finalSection {
             display: none;
@@ -258,7 +254,7 @@
                 position: fixed; 
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -70%); /* Adjusted further up for mobile */
+                transform: translate(-50%, -70%); 
                 width: 90vw; 
                 max-width: 380px; 
                 padding: 25px 20px; 
@@ -337,7 +333,7 @@
 
             #loveAnimation {
                 padding: 15px 10px;
-                padding-bottom: 80px; /* Increased for next button */
+                padding-bottom: 80px; 
             }
             #animatedLoveTextContainer {
                 font-size: 1.3em;
@@ -354,14 +350,12 @@
                 stroke-width: 2px;
                 filter: drop-shadow(0 0 2px red) drop-shadow(0 0 3.5px rgba(255,0,0,0.6));
             }
-            #loveAnimation .next-button {
-                bottom: 20px;
-            }
+            /* #loveAnimation .next-button specific positioning handled by .next-button general rule */
 
             .falling-love-heart { font-size: 1.4em; }
             .glowing-orb { width: 35px !important; height: 35px !important; }
 
-            .next-button { 
+            .next-button { /* General .next-button for modals (bottom right) */
                 bottom: 12px;
                 right: 12px;
                 padding: 9px 16px;
@@ -439,11 +433,8 @@
                 stroke-width: 1.8px;
                 filter: drop-shadow(0 0 1.5px red) drop-shadow(0 0 2.5px rgba(255,0,0,0.6));
             }
-             #loveAnimation .next-button {
-                bottom: 15px;
-                padding: 8px 16px;
-                font-size: 0.9em;
-            }
+             /* #loveAnimation .next-button specific positioning handled by .next-button general rule */
+
 
             .next-button { 
                 padding: 8px 12px;
@@ -616,20 +607,22 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
         document.getElementById('nextButton3').addEventListener('click', () => {
             document.getElementById('hugeParagraph').style.display = 'none';
             const loveAnimationSection = document.getElementById('loveAnimation');
-            loveAnimationSection.style.display = 'flex'; 
+            loveAnimationSection.style.display = 'flex'; // Re-set display here as it's a flex container
+            loveAnimationSection.style.alignItems = 'center'; // For vertical centering of text/cake
+            loveAnimationSection.style.justifyContent = 'center'; // For horizontal centering of text/cake
+
 
             const chars = loveAnimationSection.querySelectorAll('#animatedLoveTextContainer .love-char');
             chars.forEach((char, index) => { char.style.animationDelay = `${index * 0.12}s`; });
             
-            // --- Multiple Dynamic Hearts Setup ---
             const existingHearts = loveAnimationSection.querySelectorAll('.dynamic-heart-container');
-            existingHearts.forEach(h => h.remove()); // Clear previous hearts
+            existingHearts.forEach(h => h.remove());
 
             const numHearts = 4; 
-            const basePopInDelay = 2.8; // When the first heart starts popping in (slightly earlier than cake)
-            const popInStagger = 0.25;   // Delay between subsequent hearts popping in
+            const basePopInDelay = 2.8; 
+            const popInStagger = 0.25;   
             const popInDuration = 0.8;
-            const heartDrawDuration = 1.8; // Drawing duration per heart
+            const heartDrawDuration = 1.8;
 
             for (let i = 0; i < numHearts; i++) {
                 const heartContainer = document.createElement('div');
@@ -640,39 +633,34 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
                 svg.classList.add('drawing-heart-svg');
 
                 const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                // A nice curvy heart path:
                 path.setAttribute('d', 'M25,10 C15,-10 -10,5 0,18 C10,31 25,45 25,45 C25,45 40,31 50,18 C60,5 35,-10 25,10 Z');
                 path.classList.add('heart-drawing-path');
 
                 svg.appendChild(path);
                 heartContainer.appendChild(svg);
-                loveAnimationSection.appendChild(heartContainer);
+                loveAnimationSection.appendChild(heartContainer); // Append to the centered modal
 
-                // Random positioning and rotation within the modal
-                // Ensure hearts are spread out and don't concentrate too much in one spot.
-                // For a 650px wide modal, left could be 10% to 80% (container width is ~70px).
-                // For a ~400-500px high modal content area, top could be 15% to 75%.
-                let randomTop, randomLeft;
-                if (i === 0) { // Top-left-ish
-                    randomTop = Math.random() * 20 + 20; // 20-40%
-                    randomLeft = Math.random() * 25 + 15; // 15-40%
-                } else if (i === 1) { // Top-right-ish
-                    randomTop = Math.random() * 20 + 25; // 25-45%
-                    randomLeft = Math.random() * 25 + 60; // 60-85%
-                } else if (i === 2) { // Bottom-left-ish, below cake
-                    randomTop = Math.random() * 20 + 65; // 65-85%
-                    randomLeft = Math.random() * 30 + 15; // 15-45%
-                } else { // Bottom-right-ish, below cake
-                    randomTop = Math.random() * 20 + 60; // 60-80%
-                    randomLeft = Math.random() * 30 + 55; // 55-85%
+                let randomTopPercent, randomLeftPercent;
+                // Position hearts relative to the modal's center area, avoiding direct overlap with text/cake initially
+                if (i === 0) { // Top-left area relative to modal center
+                    randomTopPercent = Math.random() * 20 + 20; // 20% to 40% from top of modal
+                    randomLeftPercent = Math.random() * 25 + 10; // 10% to 35% from left of modal
+                } else if (i === 1) { // Top-right area
+                    randomTopPercent = Math.random() * 20 + 25; // 25% to 45%
+                    randomLeftPercent = Math.random() * 25 + 65; // 65% to 90%
+                } else if (i === 2) { // Bottom-left area
+                    randomTopPercent = Math.random() * 20 + 60; // 60% to 80%
+                    randomLeftPercent = Math.random() * 30 + 15; // 15% to 45%
+                } else { // Bottom-right area
+                    randomTopPercent = Math.random() * 20 + 55; // 55% to 75%
+                    randomLeftPercent = Math.random() * 30 + 60; // 60% to 90%
                 }
                 
-                const randomRotation = Math.random() * 80 - 40; // -40 to 40 degrees
-                const randomScale = Math.random() * 0.3 + 0.75; // Scale between 0.75 and 1.05
+                const randomRotation = Math.random() * 70 - 35; // -35 to 35 degrees
+                const randomScale = Math.random() * 0.25 + 0.75; // Scale between 0.75 and 1.0
 
-                heartContainer.style.top = `${randomTop}%`;
-                heartContainer.style.left = `${randomLeft}%`;
-                // Translate(-50%, -50%) centers the heart's origin at the random top/left point
+                heartContainer.style.top = `${randomTopPercent}%`;
+                heartContainer.style.left = `${randomLeftPercent}%`;
                 heartContainer.style.transform = `translate(-50%, -50%) rotate(${randomRotation}deg) scale(${randomScale})`; 
                 heartContainer.style.opacity = '0'; 
 
@@ -681,21 +669,25 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
                 path.style.strokeDashoffset = pathLength;
 
                 const currentPopInDelay = basePopInDelay + (i * popInStagger);
-                const currentDrawDelay = currentPopInDelay + (popInDuration * 0.2); // Start drawing a bit into popIn
+                const currentDrawDelay = currentPopInDelay + (popInDuration * 0.2);
 
                 heartContainer.style.animation = `popIn ${popInDuration}s ease-out ${currentPopInDelay}s forwards`;
                 path.style.animation = `heartPathDrawAnimation ${heartDrawDuration}s cubic-bezier(0.65, 0, 0.35, 1) ${currentDrawDelay}s forwards`;
             }
 
-            // Adjust nextButton4's fadeIn delay
             const lastHeartPopInStartTime = basePopInDelay + ((numHearts - 1) * popInStagger);
             const lastHeartDrawStartTime = lastHeartPopInStartTime + (popInDuration * 0.2);
             const lastHeartAnimationEndTime = lastHeartDrawStartTime + heartDrawDuration;
-            const nextButtonDelay = lastHeartAnimationEndTime + 0.7; // Give a little buffer
+            const nextButtonDelay = lastHeartAnimationEndTime + 0.7; 
 
             const nextButtonLoveAnim = loveAnimationSection.querySelector('#nextButton4');
+            // Ensure button specific styles are applied if they were overridden
+            nextButtonLoveAnim.style.position = 'absolute'; // Keep it absolute
+            nextButtonLoveAnim.style.right = '25px'; // Restore right positioning
+            nextButtonLoveAnim.style.bottom = '25px'; // Restore bottom positioning
+            nextButtonLoveAnim.style.left = 'auto'; // Remove left if it was set
+            nextButtonLoveAnim.style.transform = 'none'; // Remove transform if it was set
             nextButtonLoveAnim.style.animation = `fadeInButton 0.5s ease-in ${nextButtonDelay}s forwards`;
-            // --- End Multiple Dynamic Hearts Setup ---
             
             const isMobile = window.innerWidth <= 768;
             createFallingLoveHearts(loveAnimationSection, isMobile ? 10 : 20); 
@@ -781,7 +773,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
                 heart.style.setProperty('--r-start', `${Math.random() * 120 - 60}deg`); heart.style.setProperty('--r-end', `${Math.random() * 360 - 180}deg`);
                 containerElement.appendChild(heart);
                 heart.addEventListener('animationend', () => { if (heart.parentNode) heart.remove(); });
-            }, i * 220); // Slightly increased delay between falling hearts
+            }, i * 220); 
         }
     }
 
@@ -800,7 +792,7 @@ I’ll always love you — Meri dil ki dharkan, jaan-e-mann…
                 orb.style.setProperty('--ty-mid', `${Math.random() * 40 - 20}px`);
                 orb.style.setProperty('--r-mid', `${Math.random() * 360 - 180}deg`);
                 containerElement.appendChild(orb);
-            }, i * 300); // Slightly increased delay between orbs
+            }, i * 300); 
         }
     }
 
